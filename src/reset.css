@@ -41,3 +41,7 @@ h6 {
 #__next {
   isolation: isolate;
 }
+body,
+html {
+  font-family: Arial, Helvetica, sans-serif;
+}

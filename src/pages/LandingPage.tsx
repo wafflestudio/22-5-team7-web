@@ -1,16 +1,23 @@
-import './reset.css';
+/*
+  처음 접속 시 보이는 당근마켓 랜딩페이지.
+*/
 
 //import { useNavigate } from 'react-router-dom';
-import DaangnLogo from './assets/DaangnMarket_Logo.png';
-import GoogleLogo from './assets/GoogleLogo.png';
-import KakaoLogo from './assets/Kakaosmall.png';
-import styles from './css/LandingPage.module.css';
+import DaangnLogo from '../assets/Daangn_logo.png';
+import GoogleLogo from '../assets/GoogleLogo.png';
+import KakaoLogo from '../assets/Kakaosmall.png';
+import styles from '../css/LandingPage.module.css';
 
 const LandingPage = () => {
   return (
     <div className={styles.main}>
       <div className={styles.logobox}>
-        <img src={DaangnLogo} className={styles.wafflelogo} />
+        <img src={DaangnLogo} className={styles.daangnLogo} />
+        <p className={styles.daangnMainText}>당신 근처의 당근</p>
+        <p className={styles.daangnSubText}>
+          동네라서 가능한 모든 것<br />
+          지금 내 동네를 선택하고 시작해보세요!
+        </p>
       </div>
       <div className={styles.toolbox}>
         <div className={styles.loginbox}>
