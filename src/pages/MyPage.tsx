@@ -9,3 +9,9 @@
   - 앱 설정정
   정도만 구현할 예정
 */
+
+const MyPage = () => {
+  return <div>나의 당근</div>;
+};
+
+export default MyPage;
