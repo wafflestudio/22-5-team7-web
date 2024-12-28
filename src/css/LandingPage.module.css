@@ -1,0 +1,158 @@
+/*@font-face {
+  font-family: 'SF Pro';
+  src: url('./src/fonts/SF-Pro-Display-Heavy.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}*/
+
+.main {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 232px;
+  gap: 136px;
+}
+
+.logobox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.wafflelogo {
+  width: 100px;
+  height: 110px;
+}
+
+.timetabletext {
+  color: var(--Text-Normal, #000);
+  text-align: center;
+  font-family: 'SF Pro';
+  font-size: 21.353px;
+  font-style: normal;
+  font-weight: 860;
+  line-height: normal;
+}
+
+.loginbox {
+  width: 100%;
+  display: flex;
+  padding: 0px 32px;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.loginbutton {
+  width: 100%;
+  padding: 12px;
+  border: transparent;
+  border-radius: 6px;
+  background: var(--SNUTT-orange, #f58d3d);
+  color: var(--Text-onBG, #fff);
+  font-feature-settings:
+    'liga' off,
+    'clig' off;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.registertext {
+  color: var(--Text-Plain, #505050);
+  text-align: center;
+  font-feature-settings:
+    'liga' off,
+    'clig' off;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.toolbox {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+.snsbox {
+  display: flex;
+  padding: 0px 12px;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.snstextbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  align-self: stretch;
+}
+
+.snstext {
+  color: var(--Text-Assistive, #c4c4c4);
+  font-feature-settings:
+    'liga' off,
+    'clig' off;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.snstextline {
+  width: 100px;
+  height: 0.75px;
+}
+
+.snslogobox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.Kakaologo {
+  width: 44px;
+  height: 44px;
+  border-radius: 21.6px;
+}
+
+.Googlelogobox {
+  display: flex;
+  width: 44px;
+  padding: 9.6px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  border-radius: 42.8px;
+  border: 0.4px solid var(--Text-Assistive, #c4c4c4);
+  background: var(--Background-Normal, #fff);
+}
+
+.Googlelogo {
+  width: 24.8px;
+  height: 24.8px;
+  flex-shrink: 0;
+  border-radius: 24.4px;
+}
+
+.Facebooklogo {
+  width: 44px;
+  height: 44px;
+}
+
+.Applelogo {
+  width: 44px;
+  height: 44px;
+  border-radius: 28.4px;
+}
