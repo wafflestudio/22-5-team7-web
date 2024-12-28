@@ -3,13 +3,53 @@ import './reset.css';
 //import { useReducer } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import LandingPage from './LandingPage';
+import AuctionPage from './pages/AuctionPage';
+import ChatPage from './pages/ChatPage';
+import ChatRoomPage from './pages/ChatRoomPage';
+import CommunityPage from './pages/CommunityPage';
+import CommunityPostPage from './pages/CommunityPostPage';
+import ItemPage from './pages/ItemPage';
+import LandingPage from './pages/LandingPage';
+import LoginPage from './pages/LoginPage';
+import MainPage from './pages/MainPage';
+import MannersPage from './pages/MannersPage';
+import MyBuysPage from './pages/MyBuysPage';
+import MyLikesPage from './pages/MyLikesPage';
+import MyPage from './pages/MyPage';
+import MyProfilePage from './pages/MyProfilePage';
+import MySellsPage from './pages/MySellsPage';
+import ProfilePage from './pages/ProfilePage';
+import ReviewsPage from './pages/ReviewsPage';
+import SearchPage from './pages/SearchPage';
+import SearchResultPage from './pages/SearchResultPage';
+import SellsPage from './pages/SellsPage';
+import SettingsPage from './pages/SettingsPage';
 
 export const App = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/items/:id" element={<ItemPage />} />
+        <Route path="/main" element={<MainPage />} />
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/search/:query" element={<SearchResultPage />} />
+        <Route path="/community" element={<CommunityPage />} />
+        <Route path="/community/:id" element={<CommunityPostPage />} />
+        <Route path="/auctions" element={<AuctionPage />} />
+        <Route path="/chat" element={<ChatPage />} />
+        <Route path="/chat/:id" element={<ChatRoomPage />} />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/mypage/settings" element={<SettingsPage />} />
+        <Route path="/mypage/profile" element={<MyProfilePage />} />
+        <Route path="/mypage/likes" element={<MyLikesPage />} />
+        <Route path="/mypage/sells" element={<MySellsPage />} />
+        <Route path="/mypage/buys" element={<MyBuysPage />} />
+        <Route path="/profile/:id" element={<ProfilePage />} />
+        <Route path="/profile/:id/sells" element={<SellsPage />} />
+        <Route path="/profile/:id/manners" element={<MannersPage />} />
+        <Route path="/profile/:id/reviews" element={<ReviewsPage />} />
       </Routes>
     </Router>
   );
