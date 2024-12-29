@@ -3,7 +3,7 @@
 */
 
 const AuctionPage = () => {
-  return <div></div>;
+  return <div>경매</div>;
 };
 
 export default AuctionPage;

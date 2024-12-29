@@ -49,16 +49,14 @@
   padding: 12px;
   border: transparent;
   border-radius: 6px;
-  background: var(--SNUTT-orange, #f58d3d);
+  background: var(--daangn-orange, #ff8a3d);
   color: var(--Text-onBG, #fff);
-  font-feature-settings:
-    'liga' off,
-    'clig' off;
-  font-family: Pretendard;
   font-size: 14px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  text-align: center;
+  text-decoration: none;
 }
 
 .registertext {
