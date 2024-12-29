@@ -9,9 +9,29 @@
   - 앱 설정정
   정도만 구현할 예정
 */
+import settingsIcon from '../assets/upperbar-settings.svg';
+import UpperBar from '../components/UpperBar';
+import type { toolBarInfo } from '../typings/toolBar';
+
+const myPageToolBarInfo: toolBarInfo = {
+  path: '/mypage',
+  mainText: '나의 당근',
+  toolBarItems: [
+    {
+      pathTo: 'settings',
+      alt: 'settings',
+      icon: settingsIcon,
+    },
+  ],
+};
 
 const MyPage = () => {
-  return <div>나의 당근</div>;
+  return (
+    <div>
+      <UpperBar toolBarInfo={myPageToolBarInfo} />
+      <div>나의 당근</div>
+    </div>
+  );
 };
 
 export default MyPage;

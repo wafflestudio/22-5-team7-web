@@ -30,6 +30,7 @@ import SearchPage from './pages/SearchPage';
 import SearchResultPage from './pages/SearchResultPage';
 import SellsPage from './pages/SellsPage';
 import SettingsPage from './pages/SettingsPage';
+import TempPage from './pages/TempPage';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
@@ -76,6 +77,7 @@ export const App = () => {
           <Route path="/profile/:id/sells" element={<SellsPage />} />
           <Route path="/profile/:id/manners" element={<MannersPage />} />
           <Route path="/profile/:id/reviews" element={<ReviewsPage />} />
+          <Route path="/temp" element={<TempPage />} />
         </Routes>
       </Layout>
     </Router>
