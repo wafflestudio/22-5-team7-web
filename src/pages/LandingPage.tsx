@@ -2,7 +2,8 @@
   처음 접속 시 보이는 당근마켓 랜딩페이지.
 */
 
-//import { useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+
 import DaangnLogo from '../assets/Daangn_logo.png';
 import GoogleLogo from '../assets/GoogleLogo.png';
 import KakaoLogo from '../assets/Kakaosmall.png';
@@ -21,7 +22,9 @@ const LandingPage = () => {
       </div>
       <div className={styles.toolbox}>
         <div className={styles.loginbox}>
-          <button className={styles.loginbutton}>로그인</button>
+          <NavLink to="/login" className={styles.loginbutton}>
+            로그인
+          </NavLink>
           <h5 className={styles.registertext}>회원가입</h5>
         </div>
         <div className={styles.snsbox}>

@@ -1,0 +1,25 @@
+.navBar {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 10px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.navBarLink {
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.navBarItem {
+  justify-items: center;
+  width: 17.5vw;
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  margin-bottom: 4px;
+}
