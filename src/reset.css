@@ -45,3 +45,6 @@ body,
 html {
   font-family: Arial, Helvetica, sans-serif;
 }
+:root {
+  --daangn-orange: #ff8a3d;
+}

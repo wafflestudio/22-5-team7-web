@@ -9,7 +9,7 @@ const UpperBar = ({ toolBarInfo }: UpperBarProps) => {
       <p className={styles.mainText}>{toolBarInfo.mainText}</p>
       <div className={styles.upperBarIconDiv}>
         {toolBarInfo.toolBarItems.map((item) => (
-          <NavLink key={item.pathTo} to={item.pathTo}>
+          <NavLink key={item.alt} to={item.pathTo}>
             <img src={item.icon} alt={item.alt} className={styles.icon} />
           </NavLink>
         ))}
