@@ -1,15 +1,15 @@
 import { NavLink } from 'react-router-dom';
 
-import auctionIconOn from '../assets/navbar-auction-black.svg';
-import auctionIconOff from '../assets/navbar-auction-gray.svg';
-import chatIconOn from '../assets/navbar-chat-black.svg';
-import chatIconOff from '../assets/navbar-chat-gray.svg';
-import communityIconOn from '../assets/navbar-community-black.svg';
-import communityIconOff from '../assets/navbar-community-gray.svg';
-import homeIconOn from '../assets/navbar-home-black.svg';
-import homeIconOff from '../assets/navbar-home-gray.svg';
-import myPageIconOn from '../assets/navbar-mypage-black.svg';
-import myPageIconOff from '../assets/navbar-mypage-gray.svg';
+import auctionIconOn from '../assets/navbar/navbar-auction-black.svg';
+import auctionIconOff from '../assets/navbar/navbar-auction-gray.svg';
+import chatIconOn from '../assets/navbar/navbar-chat-black.svg';
+import chatIconOff from '../assets/navbar/navbar-chat-gray.svg';
+import communityIconOn from '../assets/navbar/navbar-community-black.svg';
+import communityIconOff from '../assets/navbar/navbar-community-gray.svg';
+import homeIconOn from '../assets/navbar/navbar-home-black.svg';
+import homeIconOff from '../assets/navbar/navbar-home-gray.svg';
+import myPageIconOn from '../assets/navbar/navbar-mypage-black.svg';
+import myPageIconOff from '../assets/navbar/navbar-mypage-gray.svg';
 import styles from '../css/BottomNavBar.module.css';
 
 const BottomNavBar = () => {
