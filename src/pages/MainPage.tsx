@@ -5,6 +5,7 @@
 import bellIcon from '../assets/upperbar-bell.svg';
 import menuIcon from '../assets/upperbar-menu.svg';
 import searchIcon from '../assets/upperbar-search.svg';
+import Item from '../components/Item';
 import UpperBar from '../components/UpperBar';
 import type { toolBarInfo } from '../typings/toolBar';
 
@@ -34,7 +35,16 @@ const MainPage = () => {
   return (
     <div>
       <UpperBar toolBarInfo={mainPageToolBarInfo} />
-      <div>홈</div>
+      <div>
+        <Item />
+        <Item />
+        <Item />
+        <Item />
+        <Item />
+        <Item />
+        <Item />
+        <Item />
+      </div>
     </div>
   );
 };
