@@ -25,6 +25,7 @@ import MyPage from './pages/MyPage';
 import MyProfilePage from './pages/MyProfilePage';
 import MySellsPage from './pages/MySellsPage';
 import ProfilePage from './pages/ProfilePage';
+import RegisterPage from './pages/RegisterPage';
 import ReviewsPage from './pages/ReviewsPage';
 import SearchPage from './pages/SearchPage';
 import SearchResultPage from './pages/SearchResultPage';
@@ -58,6 +59,7 @@ export const App = () => {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route path="/items/:id" element={<ItemPage />} />
           <Route path="/main" element={<MainPage />} />
           <Route path="/search" element={<SearchPage />} />

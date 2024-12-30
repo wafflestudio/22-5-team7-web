@@ -61,6 +61,7 @@
 
 .registertext {
   color: var(--Text-Plain, #505050);
+  text-decoration: none;
   text-align: center;
   font-feature-settings:
     'liga' off,

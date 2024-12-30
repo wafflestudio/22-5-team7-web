@@ -25,7 +25,9 @@ const LandingPage = () => {
           <NavLink to="/login" className={styles.loginbutton}>
             로그인
           </NavLink>
-          <h5 className={styles.registertext}>회원가입</h5>
+          <NavLink to="/register" className={styles.registertext}>
+            회원가입
+          </NavLink>
         </div>
         <div className={styles.snsbox}>
           <div className={styles.snstextbox}>

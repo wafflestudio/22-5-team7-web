@@ -1,0 +1,59 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 10px;
+  gap: 20px;
+}
+
+.leftArrow {
+  height: 25px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mainText {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.subText {
+  font-size: 14px;
+}
+
+.inputBox {
+  border-radius: 8px;
+  border-color: #999999;
+  padding: 8px;
+  font-size: 18px;
+}
+
+.registerButton {
+  background: var(--daangn-orange);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  padding: 8px;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.helpBox {
+  margin-top: 5px;
+  text-align: center;
+}
+
+.helpText {
+  color: gray;
+  text-decoration: underline;
+  margin: 2px;
+}
+
+.helpTextSplicer {
+  margin: 0 5px;
+  color: gray;
+}
