@@ -1,0 +1,63 @@
+.main {
+  background-color: #f0f0f0;
+  height: 100vh;
+}
+
+.contentBox {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 15px;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background-color: white;
+  border-radius: 15px;
+  padding: 15px;
+  gap: 15px;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  text-decoration: none;
+  color: black;
+}
+
+.profilePic {
+  border-radius: 100%;
+  width: 50px;
+}
+
+.nickName {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.temperature {
+  border-radius: 10px;
+  padding: 2px 5px 1px;
+  background-color: lightgreen;
+  color: green;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.blockTitle {
+  font-weight: bold;
+}
+
+.blockLine {
+  display: flex;
+  gap: 10px;
+  text-decoration: none;
+  color: black;
+}
+
+.icon {
+  height: 24px;
+}

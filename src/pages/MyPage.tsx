@@ -9,8 +9,15 @@
   - 앱 설정
   정도만 구현할 예정
 */
+import { NavLink } from 'react-router-dom';
+
+import heartIcon from '../assets/heart.svg';
+import placeHolder from '../assets/placeholder_gray.png';
+import receiptIcon from '../assets/receipt.svg';
+import shoppingBagIcon from '../assets/shoppingbag.svg';
 import settingsIcon from '../assets/upperbar-settings.svg';
 import UpperBar from '../components/UpperBar';
+import styles from '../css/MyPage.module.css';
 import type { toolBarInfo } from '../typings/toolBar';
 
 const myPageToolBarInfo: toolBarInfo = {
@@ -27,9 +34,38 @@ const myPageToolBarInfo: toolBarInfo = {
 
 const MyPage = () => {
   return (
-    <div>
+    <div className={styles.main}>
       <UpperBar toolBarInfo={myPageToolBarInfo} />
-      <div>나의 당근</div>
+      <div className={styles.contentBox}>
+        <div className={styles.block}>
+          <NavLink to="profile" className={styles.profile}>
+            <img src={placeHolder} className={styles.profilePic} />
+            <p className={styles.nickName}>닉네임</p>
+            <div className={styles.temperature}>36.5°C</div>
+          </NavLink>
+        </div>
+        <div className={styles.block}>
+          <p className={styles.blockTitle}>나의 거래</p>
+          <NavLink to="likes" className={styles.blockLine}>
+            <img src={heartIcon} className={styles.icon} />
+            관심목록
+          </NavLink>
+          <NavLink to="sells" className={styles.blockLine}>
+            <img src={receiptIcon} className={styles.icon} />
+            판매내역
+          </NavLink>
+          <NavLink to="buys" className={styles.blockLine}>
+            <img src={shoppingBagIcon} className={styles.icon} />
+            구매내역
+          </NavLink>
+        </div>
+        <div className={styles.block}>
+          <p className={styles.blockTitle}>설정</p>
+          <NavLink to="settings" className={styles.blockLine}>
+            <img src={settingsIcon} className={styles.icon} />앱 설정
+          </NavLink>
+        </div>
+      </div>
     </div>
   );
 };
