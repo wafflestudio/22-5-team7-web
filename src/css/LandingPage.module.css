@@ -49,7 +49,7 @@
   padding: 12px;
   border: transparent;
   border-radius: 6px;
-  background: var(--daangn-orange, #ff8a3d);
+  background: var(--daangn-orange);
   color: var(--Text-onBG, #fff);
   font-size: 14px;
   font-style: normal;

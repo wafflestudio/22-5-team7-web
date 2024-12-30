@@ -6,7 +6,7 @@
   - 구매내역
   - 내 프로필 / 받은 매너 평가
   - 내 프로필 / 받은 거래 후기
-  - 앱 설정정
+  - 앱 설정
   정도만 구현할 예정
 */
 import settingsIcon from '../assets/upperbar-settings.svg';
