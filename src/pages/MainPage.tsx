@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import bellIcon from '../assets/upperbar-bell.svg';
 import menuIcon from '../assets/upperbar-menu.svg';
 import searchIcon from '../assets/upperbar-search.svg';
+import Item from '../components/Item';
 import UpperBar from '../components/UpperBar';
 import styles from '../css/MainPage.module.css';
 import type { toolBarInfo } from '../typings/toolBar';
@@ -42,10 +43,19 @@ const MainPage = () => {
   return (
     <div className={styles.main}>
       <UpperBar toolBarInfo={mainPageToolBarInfo} />
-      <div>홈</div>
       <button className={styles.postbutton} onClick={handlePostClick}>
         + 글쓰기
       </button>
+      <div>
+        <Item />
+        <Item />
+        <Item />
+        <Item />
+        <Item />
+        <Item />
+        <Item />
+        <Item />
+      </div>
     </div>
   );
 };

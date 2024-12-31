@@ -6,7 +6,8 @@
   bottom: 0;
   left: 0;
   right: 0;
-  box-shadow: 0px 0px 0.5em #999999;
+  box-shadow: 0px 0px 0.5em var(--daangn-gray);
+  background-color: white;
 }
 
 .navBarLink {
