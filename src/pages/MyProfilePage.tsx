@@ -11,9 +11,10 @@ import rightArrow from '../assets/rightarrow_black.svg';
 import shareIcon from '../assets/share.svg';
 import TemperatureGauge from '../components/TemperatureGauge';
 import styles from '../css/MyProfilePage.module.css';
+import type { User } from '../typings/user';
 
 const MyProfilePage = () => {
-  const tempUser = {
+  const tempUser: User = {
     // 나중에 API 연결
     id: 'mytempid',
     nickname: '단호한 호박',
