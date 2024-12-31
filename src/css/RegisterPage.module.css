@@ -46,14 +46,3 @@
   margin-top: 5px;
   text-align: center;
 }
-
-.helpText {
-  color: gray;
-  text-decoration: underline;
-  margin: 2px;
-}
-
-.helpTextSplicer {
-  margin: 0 5px;
-  color: gray;
-}
