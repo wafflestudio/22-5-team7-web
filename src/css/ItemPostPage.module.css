@@ -1,0 +1,258 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  padding: 15px 10px;
+  gap: 20px;
+}
+
+.infotexts {
+  padding-top: 10px;
+  font-weight: bold;
+}
+
+.upperbar {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: row;
+  justify-content: space-between;
+  position: relative;
+  padding-bottom: 10px;
+  border-bottom-width: 1px;
+  border-bottom-color: rgba(153, 153, 153, 0.5); /* 투명도 50% 설정 */
+  border-bottom-style: solid;
+}
+
+.upperbar > :nth-child(2) {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.quitcross {
+  position: relative;
+  left: 0px;
+  height: 25px;
+}
+
+.upperbartext {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.imageToolbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fileInput {
+  display: none;
+}
+
+.fileInputLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background-color: transparent;
+  opacity: 50%;
+  color: white;
+  text-align: center;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 24px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #999999;
+}
+
+.imageContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.imagePreview {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 5px;
+  overflow-x: auto;
+}
+
+.imagePreview::-webkit-scrollbar {
+  display: none;
+}
+
+.previewImage {
+  width: 90px;
+  height: 90px;
+  padding: 5px;
+  border-radius: 9px;
+  object-fit: cover;
+}
+
+.firstImageLabel {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  width: 80px;
+  text-align: center;
+  background-color: black;
+  color: white;
+  padding: 2px 5px;
+  font-size: 11px;
+  border-radius: 0 0 4px 4px;
+  box-sizing: border-box;
+}
+
+.removeButton {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0px;
+  right: 0px;
+  padding-bottom: 4px;
+  padding-left: 6px;
+  background-color: gray;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mainText {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.subText {
+  font-size: 14px;
+}
+
+.inputBox {
+  border-radius: 8px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #999999;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.uploadcontainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  align-items: center;
+  justify-content: center;
+}
+
+.uploadicon {
+  height: 40px;
+  width: 40px;
+}
+
+.imagecount {
+  font-size: 14px;
+  color: #999999;
+}
+
+.selectbuttons {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.activebutton {
+  font-size: 15px;
+  color: white;
+  font-weight: bold;
+  border-radius: 16px;
+  border-width: 1px;
+  border-color: transparent;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  background-color: var(--daangn-orange);
+}
+
+.inactivebutton {
+  font-size: 15px;
+  border-radius: 16px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #999999;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  background-color: white;
+}
+
+.pricesuggestion {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+.suggestioncheckbox {
+  width: 18px;
+  height: 18px;
+  appearance: none;
+  border: 1px solid #999999;
+  border-radius: 4px;
+  position: relative;
+}
+
+.suggestioncheckbox:checked {
+  background-color: var(--daangn-orange);
+}
+
+.suggestioncheckbox:checked::before {
+  content: '✔';
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+}
+
+.articleBox {
+  border-radius: 8px;
+  border-color: #999999;
+  min-height: 180px;
+  overflow: hidden;
+  resize: none;
+  padding: 8px;
+  font-size: 18px;
+}
+
+.PostButton {
+  background: var(--daangn-orange);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  padding: 8px;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.helpBox {
+  margin-top: 5px;
+  text-align: center;
+}

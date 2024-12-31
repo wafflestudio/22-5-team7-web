@@ -15,6 +15,7 @@ import ChatRoomPage from './pages/ChatRoomPage';
 import CommunityPage from './pages/CommunityPage';
 import CommunityPostPage from './pages/CommunityPostPage';
 import ItemPage from './pages/ItemPage';
+import ItemPostPage from './pages/ItemPostPage';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import MainPage from './pages/MainPage';
@@ -61,6 +62,7 @@ export const App = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/items/:id" element={<ItemPage />} />
+          <Route path="/itempost" element={<ItemPostPage />} />
           <Route path="/main" element={<MainPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/search/:query" element={<SearchResultPage />} />
