@@ -5,6 +5,12 @@
   gap: 20px;
 }
 
+.button {
+  padding: 0;
+  border: none;
+  background: none;
+}
+
 .infotexts {
   padding-top: 10px;
   font-weight: bold;
