@@ -1,0 +1,121 @@
+.main {
+  display: flex;
+  flex-direction: column;
+}
+
+.upperBar {
+  display: flex;
+  flex: 1;
+  background-color: white;
+  padding: 20px 10px 10px;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  border-bottom: 2px solid var(--daangn-lightgray);
+}
+
+.upperIcon {
+  height: 25px;
+}
+
+.pageTitle {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.contentBox {
+  display: flex;
+  flex-direction: column;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  gap: 15px;
+}
+
+.separator {
+  width: 100%;
+  background-color: var(--daangn-lightgray);
+  height: 2px;
+}
+
+.profile {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.profilePic {
+  height: 75px;
+  border-radius: 100%;
+}
+
+.profileEditButton {
+  text-decoration: none;
+  text-align: center;
+  color: black;
+  border-radius: 5px;
+  background-color: var(--daangn-lightgray);
+  padding: 5px;
+  font-weight: bold;
+}
+
+.mannerTempTitle {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.mannerLine {
+  display: flex;
+  gap: 8px;
+  font-size: 18px;
+}
+
+.mannerLabel {
+  display: flex;
+  background-color: var(--daangn-lightgray);
+  align-items: center;
+  padding: 10px;
+  border-radius: 0 10px 10px 10px;
+}
+
+.reviewBlock {
+  display: flex;
+  border-bottom: 2px solid var(--daangn-lightgray);
+  padding: 15px;
+  gap: 15px;
+}
+
+.reviewPic {
+  height: 36px;
+  border-radius: 50%;
+}
+
+.reviewSubBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.reviewNickname {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.reviewInfo {
+  color: var(--daangn-gray);
+  font-size: 14px;
+}
