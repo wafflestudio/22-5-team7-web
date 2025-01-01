@@ -1,0 +1,99 @@
+.main {
+  display: flex;
+  flex-direction: column;
+}
+
+.upperBar {
+  display: flex;
+  flex: 1;
+  background-color: white;
+  padding: 20px 10px 10px;
+  position: sticky;
+  top: 0;
+  border-bottom: 2px solid var(--daangn-lightgray);
+}
+
+.upperIcon {
+  height: 25px;
+}
+
+.pageTitle {
+  position: absolute;
+  font-weight: bold;
+  font-size: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
+}
+
+.blockTitle {
+  font-weight: bold;
+  font-size: 14px;
+  padding: 0 15px 10px;
+}
+
+.button {
+  padding: 10px 15px;
+  background: none;
+  border: none;
+  text-align: left;
+}
+
+.popupOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 300px;
+}
+
+.popupMainText {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.popupSubText {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.popupLogoutButton {
+  padding: 10px 20px;
+  background: var(--daangn-orange);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.popupCloseButton {
+  padding: 10px 20px;
+  background: white;
+  color: black;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
