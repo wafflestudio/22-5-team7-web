@@ -1,9 +1,15 @@
+.navLink {
+  display: flex;
+  padding: 15px 15px 0;
+  width: 100vw;
+  text-decoration: none;
+}
+
 .main {
   display: flex;
-  width: 100vw;
-  padding: 15px;
   gap: 15px;
-  text-decoration: none;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--daangn-lightgray);
 }
 
 .image {
