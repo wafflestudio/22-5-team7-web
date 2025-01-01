@@ -1,0 +1,94 @@
+.main {
+  display: flex;
+  flex-direction: column;
+}
+
+.upperBar {
+  display: flex;
+  flex: 1;
+  background-color: white;
+  padding: 20px 10px 10px;
+  position: sticky;
+  top: 0;
+  border-bottom: 2px solid var(--daangn-lightgray);
+}
+
+.button {
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+.upperIcon {
+  height: 25px;
+}
+
+.pageTitle {
+  position: absolute;
+  font-weight: bold;
+  font-size: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.contentBox {
+  padding: 0 15px;
+}
+
+.mannerTitle {
+  display: flex;
+  font-weight: bold;
+  gap: 10px;
+  align-items: center;
+  padding-top: 20px;
+}
+
+.mannerEmoji {
+  font-size: 28px;
+}
+
+.mannerLine {
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  padding: 15px 0;
+  border-bottom: 2px solid var(--daangn-lightgray);
+}
+
+.mannerLineRight {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  gap: 5px;
+}
+
+.mannerInfoBox {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--daangn-lightgray);
+  padding: 20px 15px;
+  font-size: 12px;
+}
+
+.mannerInfoText {
+  white-space: pre-line;
+}
+
+.mannerGuideBox {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 20px 15px;
+  gap: 15px;
+}
+
+.mannerGuideButton {
+  text-decoration: none;
+  color: white;
+  background-color: var(--daangn-orange);
+  border-radius: 6px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 12px 0;
+}
