@@ -40,10 +40,6 @@ const MyProfilePage = () => {
         number: 42,
       },
       {
-        label: '제가 있는 곳까지 와서 거래했어요.',
-        number: 28,
-      },
-      {
         label: '물품상태가 설명한 것과 같아요.',
         number: 12,
       },
@@ -142,7 +138,7 @@ const MyProfilePage = () => {
         <div className={styles.separator} />
         <div className={styles.block}>
           <NavLink
-            to={`/profile/${tempUser.id}/manners`}
+            to={`/profile/${tempUser.id}/reviews`}
             className={styles.button}
           >
             <p>받은 거래 후기 {tempUser.reviews.length}</p>
