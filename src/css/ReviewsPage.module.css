@@ -1,0 +1,69 @@
+.main {
+  display: flex;
+  flex-direction: column;
+}
+
+.upperBar {
+  display: flex;
+  flex: 1;
+  background-color: white;
+  padding: 20px 10px 10px;
+  position: sticky;
+  top: 0;
+  border-bottom: 2px solid var(--daangn-lightgray);
+}
+
+.button {
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+.upperIcon {
+  height: 25px;
+}
+
+.pageTitle {
+  position: absolute;
+  font-weight: bold;
+  font-size: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.contentBox {
+  padding: 20px 15px;
+}
+
+.reviewNumber {
+  font-size: 18px;
+  font-weight: bold;
+  padding-bottom: 5px;
+}
+
+.reviewBlock {
+  display: flex;
+  border-bottom: 2px solid var(--daangn-lightgray);
+  padding: 15px;
+  gap: 15px;
+}
+
+.reviewPic {
+  height: 36px;
+  border-radius: 50%;
+}
+
+.reviewSubBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.reviewNickname {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.reviewInfo {
+  color: var(--daangn-gray);
+  font-size: 14px;
+}
