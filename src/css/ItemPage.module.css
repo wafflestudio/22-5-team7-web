@@ -1,0 +1,238 @@
+.upperbar {
+  position: fixed;
+  top: 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  z-index: 1000;
+}
+
+.navicons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.leftarrowicon {
+  width: 20px;
+  height: 20px;
+}
+
+.homeicon {
+  width: 28px;
+  height: 28px;
+}
+
+.etcicons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.shareicon {
+  width: 28px;
+  height: 28px;
+}
+
+.dotsicon {
+  width: 28px;
+  height: 28px;
+}
+
+.imagecontainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.imagewrapper {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  height: auto;
+}
+
+.image {
+  width: 100vw;
+  height: 400px;
+  max-width: none;
+  max-height: none;
+  object-fit: fill;
+}
+
+.dots {
+  position: absolute;
+  top: 365px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #e6e6e6;
+  margin: 0 5px;
+  transition: background-color 0.3s;
+}
+
+.dot.active {
+  background-color: white;
+}
+
+.contentBox {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.profilebar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #e6e6e6;
+  gap: 10px;
+}
+
+.profileimage {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.profiletexts {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  justify-content: space-between;
+}
+
+.profiletext {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.mannertempbox {
+  display: flex;
+  flex-direction: column;
+}
+
+.temptext {
+  font-size: 12px;
+  text-align: right;
+  color: #666666;
+}
+
+.nickname {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.address {
+  font-size: 14px;
+  color: #333333;
+}
+
+.itemInfo {
+  border-bottom: 1px solid #e6e6e6;
+  padding-bottom: 20px;
+}
+
+.titletext {
+  font-size: 20px;
+  font-weight: bold;
+  padding-top: 10px;
+  padding-bottom: 5px;
+}
+
+.categoryanddate {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #666666;
+  font-size: 13px;
+}
+
+.article {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  font-size: 15px;
+}
+
+.chatlikeview {
+  font-size: 13px;
+  color: #666666;
+  padding-bottom: 25px;
+}
+
+.reportbutton {
+  color: #666666;
+  font-size: 14px;
+}
+
+.bottombar {
+  width: 100%;
+  height: 70px;
+  position: fixed;
+  bottom: 0px;
+  display: flex;
+  align-items: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-top: 1px solid #e6e6e6;
+}
+
+.likebutton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  border-right: 1px solid #e6e6e6;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.likeicon {
+  height: 24px;
+  width: 24px;
+}
+
+.priceandchat {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  align-items: center;
+  flex: 1;
+}
+
+.price {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.offerstatus {
+  font-size: 14px;
+  font-weight: bold;
+  color: #666666;
+}
+
+.chatbutton {
+  background-color: var(--daangn-orange);
+  border: none;
+  border-radius: 6px;
+  padding: 10px 14px;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}

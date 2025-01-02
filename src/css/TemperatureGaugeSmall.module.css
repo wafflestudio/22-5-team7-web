@@ -1,0 +1,47 @@
+.gaugeContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.upperBox {
+  display: flex;
+  flex-direction: column;
+  width: 60px;
+  justify-content: right;
+}
+
+.indicator {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  color: var(--daangn-gray);
+  font-size: 12px;
+  left: 36.5%;
+  transform: translateX(-50%);
+  align-items: center;
+  justify-content: right;
+}
+
+.temperature {
+  display: flex;
+  position: relative;
+  margin-left: auto;
+  margin-right: 0;
+  font-weight: bold;
+  font-size: 18px;
+  align-items: center;
+}
+
+.gaugeBackground {
+  width: 90%;
+  height: 5px;
+  margin-left: 6px;
+  background-color: var(--daangn-lightgray);
+  border-radius: 10px;
+}
+
+.gaugeFill {
+  height: 100%;
+  border-radius: 10px;
+}

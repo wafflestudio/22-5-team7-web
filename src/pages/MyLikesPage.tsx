@@ -17,8 +17,8 @@ const MyLikesPage = () => {
         <p className={styles.pageTitle}>관심목록</p>
       </div>
       <div>
-        <Item />
-        <Item />
+        <Item id="3" />
+        <Item id="4" />
       </div>
     </div>
   );
