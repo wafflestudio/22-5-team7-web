@@ -10,7 +10,7 @@ import placeHolder from '../assets/placeholder_gray.png';
 import rightArrow from '../assets/rightarrow_black.svg';
 import shareIcon from '../assets/share.svg';
 import TemperatureGauge from '../components/TemperatureGauge';
-import styles from '../css/MyProfilePage.module.css';
+import styles from '../css/ProfilePage.module.css';
 import type { User } from '../typings/user';
 
 const MyProfilePage = () => {
