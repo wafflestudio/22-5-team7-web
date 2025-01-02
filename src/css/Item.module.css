@@ -10,6 +10,7 @@
   gap: 15px;
   padding-bottom: 15px;
   border-bottom: 1px solid var(--daangn-lightgray);
+  text-decoration: none;
 }
 
 .image {
