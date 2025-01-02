@@ -8,9 +8,13 @@ import chatIcon from '../assets/navbar/navbar-chat-gray.svg';
 import placeHolder from '../assets/placeholder_gray.png';
 import styles from '../css/Item.module.css';
 
-const Item = () => {
+interface ItemProps {
+  id: string;
+}
+
+const Item: React.FC<ItemProps> = ({ id }) => {
   return (
-    <NavLink to="/temp" className={styles.main}>
+    <NavLink to={`/item/${id}`} className={styles.main}>
       <img src={placeHolder} className={styles.image} />
       <div className={styles.contentBox}>
         <div className={styles.textBox}>
