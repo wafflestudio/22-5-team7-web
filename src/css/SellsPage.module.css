@@ -46,12 +46,26 @@
   border-radius: 50%;
 }
 
-.itemPostButton {
+.profileBlockButtons {
+  display: flex;
+  gap: 5px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.orangeButton {
   padding: 8px 15px;
   background-color: bisque;
   color: var(--daangn-orange);
   text-decoration: none;
-  font-weight: bold;
+  border-radius: 5px;
+}
+
+.buyMoreButton {
+  padding: 8px 15px;
+  background-color: var(--daangn-lightgray);
+  color: black;
+  text-decoration: none;
   border-radius: 5px;
 }
 

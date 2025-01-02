@@ -109,12 +109,12 @@
   border-radius: 50%;
 }
 
-.profiletexts {
-  flex: 1;
+.profile {
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  justify-content: space-between;
+  color: black;
+  text-decoration: none;
+  gap: 10px;
 }
 
 .profiletext {

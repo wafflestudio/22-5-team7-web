@@ -8,25 +8,22 @@ import chatIcon from '../assets/navbar/navbar-chat-gray.svg';
 import placeHolder from '../assets/placeholder_gray.png';
 import styles from '../css/Item.module.css';
 
-interface ItemProps {
+type ItemProps = {
   id: string;
-}
+};
 
-const Item: React.FC<ItemProps> = ({ id }) => {
+const Item = ({ id }: ItemProps) => {
   return (
-    <NavLink to={`/item/${id}`} className={styles.main}>
-      <img src={placeHolder} className={styles.image} />
-      <div className={styles.contentBox}>
-        <div className={styles.textBox}>
-          <p className={styles.itemName}>
-            맨체스터 유나이티드 (맨유) 홈 유니폼 저지 24/25 선수 마킹 패치
-          </p>
-          <p className={styles.itemInfo}>대학동 · 5분 전</p>
-          <p className={styles.itemPrice}>100,000원</p>
-        </div>
-        <div className={styles.subBox}>
-          <div className={styles.iconBox}>
-            <img src={chatIcon} className={styles.smallIcon} /> 7
+    <NavLink to={`/item/${id}`} className={styles.navLink}>
+      <div className={styles.main}>
+        <img src={placeHolder} className={styles.image} />
+        <div className={styles.contentBox}>
+          <div className={styles.textBox}>
+            <p className={styles.itemName}>
+              맨체스터 유나이티드 (맨유) 홈 유니폼 저지 24/25 선수 마킹 패치
+            </p>
+            <p className={styles.itemInfo}>대학동 · 5분 전</p>
+            <p className={styles.itemPrice}>100,000원</p>
           </div>
           <div className={styles.subBox}>
             <div className={styles.iconBox}>

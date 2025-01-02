@@ -14,6 +14,12 @@
   border-bottom: 2px solid var(--daangn-lightgray);
 }
 
+.button {
+  padding: 0;
+  border: none;
+  background: none;
+}
+
 .upperIcon {
   height: 25px;
 }

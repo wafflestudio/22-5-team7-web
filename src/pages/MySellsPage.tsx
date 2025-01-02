@@ -7,7 +7,7 @@ import { NavLink } from 'react-router-dom';
 
 import leftArrow from '../assets/leftarrow.svg';
 import placeHolder from '../assets/placeholder_gray.png';
-import styles from '../css/MySellsPage.module.css';
+import styles from '../css/SellsPage.module.css';
 
 const MySellsPage = () => {
   const [activeTab, setActiveTab] = useState<'selling' | 'sold'>('selling');
@@ -25,7 +25,7 @@ const MySellsPage = () => {
       <div className={styles.profileBlock}>
         <div className={styles.profileBlockLeft}>
           <p className={styles.profileBlockText}>나의 판매내역</p>
-          <NavLink to="/itempost" className={styles.itemPostButton}>
+          <NavLink to="/itempost" className={styles.orangeButton}>
             글쓰기
           </NavLink>
         </div>
