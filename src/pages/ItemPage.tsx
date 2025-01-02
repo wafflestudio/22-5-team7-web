@@ -30,6 +30,7 @@ const ItemPage = () => {
   const price = 1200000;
   const formattedPrice = new Intl.NumberFormat('ko-KR').format(price);
   const navigate = useNavigate();
+  const id = 1;
 
   const handleLikeClick = () => {
     setIsLiked(!isLiked);
@@ -109,18 +110,19 @@ const ItemPage = () => {
       </div>
       <div className={styles.contentBox}>
         <div className={styles.profilebar}>
-          <img src={profileimage} className={styles.profileimage}></img>
-          <div className={styles.profiletexts}>
+          <NavLink to={`/profile/${id}`} className={styles.profile}>
+            <img src={profileimage} className={styles.profileimage}></img>
             <div className={styles.profiletext}>
               <p className={styles.nickname}>이룸이</p>
               <p className={styles.address}>대학동</p>
             </div>
-            <div className={styles.mannertempbox}>
-              <TemperatureGaugeSmall temperature={48.6} />
-              <NavLink to={`/temp`} className={styles.temptext}>
-                매너온도
-              </NavLink>
-            </div>
+          </NavLink>
+
+          <div className={styles.mannertempbox}>
+            <TemperatureGaugeSmall temperature={48.6} />
+            <NavLink to={`/temp`} className={styles.temptext}>
+              매너온도
+            </NavLink>
           </div>
         </div>
         <div className={styles.itemInfo}>
