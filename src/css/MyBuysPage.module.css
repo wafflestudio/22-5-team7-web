@@ -1,0 +1,26 @@
+.main {
+  display: flex;
+  flex-direction: column;
+}
+
+.upperBar {
+  display: flex;
+  flex: 1;
+  background-color: white;
+  padding: 20px 10px 10px;
+  position: sticky;
+  top: 0;
+  border-bottom: 2px solid var(--daangn-lightgray);
+}
+
+.upperIcon {
+  height: 25px;
+}
+
+.pageTitle {
+  position: absolute;
+  font-weight: bold;
+  font-size: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}

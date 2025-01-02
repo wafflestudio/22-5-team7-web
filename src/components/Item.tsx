@@ -28,8 +28,13 @@ const Item: React.FC<ItemProps> = ({ id }) => {
           <div className={styles.iconBox}>
             <img src={chatIcon} className={styles.smallIcon} /> 7
           </div>
-          <div className={styles.iconBox}>
-            <img src={heartIcon} className={styles.smallIcon} /> 14
+          <div className={styles.subBox}>
+            <div className={styles.iconBox}>
+              <img src={chatIcon} className={styles.smallIcon} /> 7
+            </div>
+            <div className={styles.iconBox}>
+              <img src={heartIcon} className={styles.smallIcon} /> 14
+            </div>
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@
     물품 올리기 페이지
 */
 import { useEffect, useRef, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import uploadIcon from '../assets/cameraIcon.svg';
 import quitcross from '../assets/quitcross.svg';
@@ -67,9 +67,14 @@ const ItemPostPage = () => {
   return (
     <div className={styles.main}>
       <div className={styles.upperbar}>
-        <NavLink to="/main">
+        <button
+          onClick={() => {
+            void navigate(-1);
+          }}
+          className={styles.button}
+        >
           <img src={quitcross} className={styles.quitcross} />
-        </NavLink>
+        </button>
         <p className={styles.upperbartext}>내 물건 팔기</p>
         <p>임시저장</p>
       </div>

@@ -1,0 +1,91 @@
+.main {
+  display: flex;
+  flex-direction: column;
+}
+
+.upperBar {
+  display: flex;
+  background-color: white;
+  padding: 20px 10px 10px;
+  position: sticky;
+  top: 0;
+}
+
+.upperIcon {
+  height: 25px;
+}
+
+.pageTitle {
+  position: absolute;
+  font-weight: bold;
+  font-size: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.profileBlock {
+  display: flex;
+  padding: 15px;
+  justify-content: space-between;
+}
+
+.profileBlockLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: flex-start;
+}
+
+.profileBlockText {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.profilePic {
+  height: 75px;
+  border-radius: 50%;
+}
+
+.itemPostButton {
+  padding: 8px 15px;
+  background-color: bisque;
+  color: var(--daangn-orange);
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+.tab {
+  display: flex;
+  border-bottom: 2px solid var(--daangn-lightgray);
+}
+
+.activeTabButton {
+  width: 50%;
+  height: 40px;
+  border: none;
+  background: none;
+  font-weight: bold;
+  padding: 0;
+  border-bottom: 2px solid black;
+}
+
+.inactiveTabButton {
+  color: var(--daangn-gray);
+  width: 50%;
+  height: 40px;
+  border: none;
+  background: none;
+  font-weight: bold;
+  padding: 0;
+}
+
+.contentBox {
+  gap: 15px;
+}
+
+.noItemsText {
+  margin-top: 30vh;
+  text-align: center;
+  color: var(--daangn-gray);
+}
