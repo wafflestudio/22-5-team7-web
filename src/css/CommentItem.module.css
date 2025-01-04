@@ -1,0 +1,43 @@
+.main {
+  display: flex;
+  padding: 15px;
+  gap: 15px;
+}
+
+.profilePic {
+  height: 40px;
+  border-radius: 50%;
+}
+
+.contentBox {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.nickname {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.commentInfo {
+  color: var(--daangn-gray);
+  font-size: 14px;
+}
+
+.commentBody {
+  font-size: 16px;
+}
+
+.buttonBox {
+  display: flex;
+  color: var(--daangn-gray);
+  font-size: 14px;
+  gap: 5px;
+}
+
+.likeButton {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}

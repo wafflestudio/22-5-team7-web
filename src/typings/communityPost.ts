@@ -19,3 +19,7 @@ type Comment = {
   likes: number;
   body: string; // 댓글 내용
 };
+
+export type CommentProps = {
+  CommentInfo: Comment;
+}
