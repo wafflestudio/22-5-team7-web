@@ -24,7 +24,6 @@ const ItemPage = () => {
     'https://via.placeholder.com/400',
     'https://via.placeholder.com/500',
     'https://via.placeholder.com/600',
-    'https://via.placeholder.com/700',
   ];
   const profileimage = 'https://via.placeholder.com/100';
   const price = 1200000;
@@ -87,7 +86,7 @@ const ItemPage = () => {
         <div
           className={styles.imagewrapper}
           style={{
-            transform: `translateX(calc(-${currentImageIndex * 100}vw + 200vw))`,
+            transform: `translateX(calc(-${currentImageIndex * 100}vw + ${(images.length - 1) * 50}vw))`,
           }}
         >
           {images.map((src, index) => (
