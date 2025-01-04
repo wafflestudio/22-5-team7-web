@@ -1,0 +1,55 @@
+.main {
+  display: flex;
+  padding: 15px 15px 0;
+  text-decoration: none;
+}
+
+.contentBox {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-bottom: 15px;
+  border-bottom: 2px solid var(--daangn-lightgray);
+  gap: 5px;
+  width: 100%;
+}
+
+.postTag {
+  background-color: var(--daangn-lightgray);
+  border-radius: 2px;
+  color: black;
+  font-size: 12px;
+  padding: 3px 8px 2px;
+}
+
+.postTitle {
+  color: black;
+  font-size: 18px;
+}
+
+.postPreview {
+  color: var(--daangn-gray);
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.postInfo {
+  color: var(--daangn-gray);
+  font-size: 14px;
+}
+
+.bottomLine {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 5px;
+}
+
+.iconBox {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  color: var(--daangn-gray);
+}

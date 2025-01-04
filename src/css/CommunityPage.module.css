@@ -1,0 +1,28 @@
+.tab {
+  display: flex;
+  border-bottom: 2px solid var(--daangn-lightgray);
+  background-color: white;
+  top: 65px;
+  position: fixed;
+  width: 100vw;
+}
+
+.activeTabButton {
+  width: 50%;
+  height: 40px;
+  border: none;
+  background: none;
+  font-weight: bold;
+  padding: 0;
+  border-bottom: 2px solid black;
+}
+
+.inactiveTabButton {
+  color: var(--daangn-gray);
+  width: 50%;
+  height: 40px;
+  border: none;
+  background: none;
+  font-weight: bold;
+  padding: 0;
+}
