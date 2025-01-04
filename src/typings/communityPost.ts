@@ -22,4 +22,4 @@ type Comment = {
 
 export type CommentProps = {
   CommentInfo: Comment;
-}
+};
