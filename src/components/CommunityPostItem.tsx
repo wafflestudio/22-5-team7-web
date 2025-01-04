@@ -4,7 +4,7 @@ import commentIcon from '../assets/comment-gray.svg';
 import likeIcon from '../assets/like-gray.svg';
 import styles from '../css/CommunityPostItem.module.css';
 import type { CommunityPost } from '../typings/communityPost';
-
+import { getTimeAgo } from '../utils/utils';
 type CommunityPostItemProps = {
   CommunityPostInfo: CommunityPost;
 };
@@ -18,8 +18,8 @@ const CommunityPostItem = ({ CommunityPostInfo }: CommunityPostItemProps) => {
         <p className={styles.postPreview}>{CommunityPostInfo.body}</p>
         <div className={styles.bottomLine}>
           <p className={styles.postInfo}>
-            {CommunityPostInfo.location}· {CommunityPostInfo.time} · 조회{' '}
-            {CommunityPostInfo.views}
+            {CommunityPostInfo.location}· {getTimeAgo(CommunityPostInfo.time)} ·
+            조회 {CommunityPostInfo.views}
           </p>
           <div className={styles.iconBox}>
             <img src={likeIcon} style={{ height: '18px' }} />
