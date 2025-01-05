@@ -1,0 +1,41 @@
+.main {
+  display: flex;
+  flex-direction: column;
+}
+
+.upperBar {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  background-color: white;
+  padding: 20px 10px 10px;
+  gap: 15px;
+  position: sticky;
+  top: 0;
+}
+
+.upperIcon {
+  height: 25px;
+}
+
+.searchBar {
+  width: 100%;
+  background-color: var(--daangn-lightgray);
+  border: none;
+  border-radius: 5px;
+  padding: 8px 14px 7px;
+}
+
+.searchBar::placeholder {
+  color: var(--daangn-gray);
+}
+
+.closeButton {
+  text-decoration: none;
+  color: black;
+  white-space: nowrap;
+}
+
+.closeButton:hover {
+  color: var(--daangn-gray);
+}
