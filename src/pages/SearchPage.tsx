@@ -4,7 +4,7 @@
   필요하면 최근 검색은 localstorage에 저장해서 사용하는 방식으로
 */
 import { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import leftArrow from '../assets/leftarrow.svg';
 import styles from '../css/SearchPage.module.css';
@@ -22,9 +22,11 @@ const SearchPage = () => {
   return (
     <div className={styles.main}>
       <div className={styles.upperBar}>
-        <NavLink to="/main">
-          <img src={leftArrow} className={styles.upperIcon} />
-        </NavLink>
+        <img
+          src={leftArrow}
+          className={styles.upperIcon}
+          onClick={() => void navigate(-1)}
+        />
         <input
           type="search"
           className={styles.searchBar}
@@ -37,9 +39,9 @@ const SearchPage = () => {
             if (e.key === 'Enter') handleSearch();
           }}
         />
-        <NavLink to="/main" className={styles.closeButton}>
+        <p className={styles.closeButton} onClick={() => void navigate(-1)}>
           닫기
-        </NavLink>
+        </p>
       </div>
       <div></div>
     </div>
