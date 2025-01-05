@@ -33,13 +33,18 @@ const SearchResultPage = () => {
         <img
           src={leftArrow}
           className={styles.upperIcon}
-          onClick={() => void navigate(-1)}
+          onClick={() => void navigate(-2)}
         />
         <input
           type="search"
           className={styles.searchBar}
           placeholder={`${tempLocation} 근처에서 검색`}
           defaultValue={query}
+          onClick={() =>
+            void navigate('/search', {
+              state: { focusSearchBar: true, query },
+            })
+          }
           onKeyDown={(e) => {
             if (e.key === 'Enter' && e.currentTarget.value.trim() !== '')
               handleSearch(e.currentTarget.value);

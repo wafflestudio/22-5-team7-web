@@ -3,8 +3,8 @@
   검색창이 메인이고, 추천 검색은 필요 없음.
   필요하면 최근 검색은 localstorage에 저장해서 사용하는 방식으로
 */
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import clockIcon from '../assets/clock_gray.svg';
 import leftArrow from '../assets/leftarrow.svg';
@@ -12,16 +12,33 @@ import styles from '../css/SearchPage.module.css';
 
 const tempLocation = '대학동';
 
+type stateProps = {
+  focusSearchBar: boolean;
+  query: string;
+};
+
 const SearchPage = () => {
-  const [query, setQuery] = useState('');
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const navigate = useNavigate();
+  const location = useLocation();
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  const { focusSearchBar = false, query: initialQuery = '' } =
+    location.state === null ? {} : (location.state as stateProps);
+
+  const [query, setQuery] = useState(initialQuery);
 
   useEffect(() => {
     const storedSearches = localStorage.getItem('recentSearches');
     if (storedSearches !== null)
       setRecentSearches(JSON.parse(storedSearches) as string[]);
   }, []);
+
+  useEffect(() => {
+    if (focusSearchBar && searchInputRef.current !== null) {
+      searchInputRef.current.focus();
+    }
+  }, [focusSearchBar]);
 
   const saveRecentSearch = (searchQuery: string) => {
     const updatedSearches = [
@@ -59,6 +76,7 @@ const SearchPage = () => {
         />
         <input
           type="search"
+          ref={searchInputRef}
           className={styles.searchBar}
           placeholder={`${tempLocation} 근처에서 검색`}
           value={query}
