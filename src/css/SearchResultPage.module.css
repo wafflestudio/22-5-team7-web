@@ -1,0 +1,75 @@
+.main {
+  display: flex;
+  flex-direction: column;
+}
+
+.upperBar {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  background-color: white;
+  padding: 10px;
+  gap: 15px;
+  position: fixed;
+  width: 100%;
+  height: var(--upper-bar-height);
+  top: 0;
+}
+
+.upperIcon {
+  height: 25px;
+}
+
+.searchBar {
+  width: 100%;
+  background-color: var(--daangn-lightgray);
+  border: none;
+  border-radius: 5px;
+  padding: 8px 14px 7px;
+}
+
+.searchBar::placeholder {
+  color: var(--daangn-gray);
+}
+
+.closeButton {
+  color: black;
+  white-space: nowrap;
+}
+
+.closeButton:hover {
+  color: var(--daangn-gray);
+}
+
+.tab {
+  display: flex;
+  background-color: white;
+  position: fixed;
+  width: 100%;
+  top: 59px;
+}
+
+.activeTabButton {
+  width: 50%;
+  height: 40px;
+  border: none;
+  background: none;
+  font-weight: bold;
+  padding: 0;
+  border-bottom: 2px solid black;
+}
+
+.inactiveTabButton {
+  color: var(--daangn-gray);
+  width: 50%;
+  height: 40px;
+  border: none;
+  background: none;
+  font-weight: bold;
+  padding: 0;
+  border-bottom: 2px solid var(--daangn-lightgray);
+}
+
+.contentBox {
+  margin-top: 100px;
+}

@@ -11,7 +11,7 @@ type CommunityPostItemProps = {
 
 const CommunityPostItem = ({ CommunityPostInfo }: CommunityPostItemProps) => {
   return (
-    <NavLink to={CommunityPostInfo.id} className={styles.main}>
+    <NavLink to={`/community/${CommunityPostInfo.id}`} className={styles.main}>
       <div className={styles.contentBox}>
         <p className={styles.postTag}>{CommunityPostInfo.tag}</p>
         <p className={styles.postTitle}>{CommunityPostInfo.title}</p>

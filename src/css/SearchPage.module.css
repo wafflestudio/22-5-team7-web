@@ -1,0 +1,81 @@
+.main {
+  display: flex;
+  flex-direction: column;
+}
+
+.upperBar {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  background-color: white;
+  padding: 10px;
+  gap: 15px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: var(--upper-bar-height);
+}
+
+.upperIcon {
+  height: 25px;
+}
+
+.searchBar {
+  width: 100%;
+  background-color: var(--daangn-lightgray);
+  border: none;
+  border-radius: 5px;
+  padding: 8px 14px 7px;
+}
+
+.searchBar::placeholder {
+  color: var(--daangn-gray);
+}
+
+.closeButton {
+  text-decoration: none;
+  color: black;
+  white-space: nowrap;
+}
+
+.closeButton:hover {
+  color: var(--daangn-gray);
+}
+
+.recentSearch {
+  font-size: 14px;
+  font-weight: bold;
+  padding: 5px 14px 5px;
+}
+
+.recentSearches {
+  margin-top: var(--upper-bar-height);
+  display: flex;
+  flex-direction: column;
+}
+
+.recentSearchItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 5px;
+  gap: 15px;
+}
+
+.recentSearchItem:hover {
+  background-color: var(--daangn-lightgray);
+}
+
+.recentSearchText {
+  flex: 1;
+  cursor: pointer;
+  color: black;
+}
+
+.removeButton {
+  background: none;
+  border: none;
+  color: var(--daangn-gray);
+  cursor: pointer;
+}

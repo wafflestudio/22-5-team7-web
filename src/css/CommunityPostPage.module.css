@@ -8,10 +8,12 @@
   flex: 1;
   background-color: white;
   padding: 20px 10px 10px;
-  position: sticky;
+  position: fixed;
   top: 0;
   border-bottom: 2px solid var(--daangn-lightgray);
   justify-content: space-between;
+  width: 100%;
+  height: var(--upper-bar-height);
 }
 
 .upperBarIcons {
