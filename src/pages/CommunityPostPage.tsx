@@ -2,7 +2,7 @@
   동네생활의 각 게시글 페이지.
 */
 import { useState } from 'react';
-import { NavLink } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import eyeIcon from '../assets/eye-gray.svg';
 import leftArrow from '../assets/leftarrow.svg';
@@ -66,6 +66,7 @@ const CommunityPostPage = () => {
   const [sortComment, setSortComment] = useState<'old' | 'new'>('old');
   const [currentInput, setCurrentInput] = useState<string>('');
   const isLiked = Math.random() < 0.5; // 임시로 설정, 추후에는 user id와 게시글에 like한 아이디를 대조해서 설정
+  const navigate = useNavigate();
 
   const handleLikeClick = () => {
     console.info('like + 1');
@@ -79,9 +80,13 @@ const CommunityPostPage = () => {
   return (
     <div className={styles.main}>
       <div className={styles.upperBar}>
-        <NavLink to="/community">
-          <img src={leftArrow} className={styles.upperIcon} />
-        </NavLink>
+        <img
+          src={leftArrow}
+          className={styles.upperIcon}
+          onClick={() => {
+            void navigate(-1);
+          }}
+        />
         <div className={styles.upperBarIcons}>
           <img src={disabledBell} className={styles.upperIcon} />
           <img src={shareIcon} className={styles.upperIcon} />

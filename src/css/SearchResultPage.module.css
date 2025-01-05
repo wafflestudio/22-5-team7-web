@@ -11,9 +11,9 @@
   padding: 10px;
   gap: 15px;
   position: fixed;
-  top: 0;
   width: 100%;
   height: var(--upper-bar-height);
+  top: 0;
 }
 
 .upperIcon {
@@ -33,7 +33,6 @@
 }
 
 .closeButton {
-  text-decoration: none;
   color: black;
   white-space: nowrap;
 }
@@ -42,40 +41,35 @@
   color: var(--daangn-gray);
 }
 
-.recentSearch {
-  font-size: 14px;
-  font-weight: bold;
-  padding: 5px 14px 5px;
-}
-
-.recentSearches {
-  margin-top: var(--upper-bar-height);
+.tab {
   display: flex;
-  flex-direction: column;
+  background-color: white;
+  position: fixed;
+  width: 100%;
+  top: 59px;
 }
 
-.recentSearchItem {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 14px;
-  border-radius: 5px;
-  gap: 15px;
-}
-
-.recentSearchItem:hover {
-  background-color: var(--daangn-lightgray);
-}
-
-.recentSearchText {
-  flex: 1;
-  cursor: pointer;
-  color: black;
-}
-
-.removeButton {
-  background: none;
+.activeTabButton {
+  width: 50%;
+  height: 40px;
   border: none;
+  background: none;
+  font-weight: bold;
+  padding: 0;
+  border-bottom: 2px solid black;
+}
+
+.inactiveTabButton {
   color: var(--daangn-gray);
-  cursor: pointer;
+  width: 50%;
+  height: 40px;
+  border: none;
+  background: none;
+  font-weight: bold;
+  padding: 0;
+  border-bottom: 2px solid var(--daangn-lightgray);
+}
+
+.contentBox {
+  margin-top: 100px;
 }
