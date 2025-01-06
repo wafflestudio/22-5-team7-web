@@ -1,59 +1,59 @@
-.main{
-    display: flex;
-    flex-direction: row;
-    padding: 10px;
-    align-items: center;
-    gap: 10px;
+.main {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  align-items: center;
+  gap: 10px;
 }
 
-.chatimage{
-    position: relative;
-    width: 60px;
-    height: 60px;
+.chatimage {
+  position: relative;
+  width: 60px;
+  height: 60px;
 }
 
-.profileimage{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    z-index: 1;
+.profileimage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  z-index: 1;
 }
 
-.itemimage{
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    z-index: 2;
+.itemimage {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  z-index: 2;
 }
 
-.chatinfo{
-    display: flex;
-    flex-direction: column;
+.chatinfo {
+  display: flex;
+  flex-direction: column;
 }
 
-.basicinfo{
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-    align-items: center;
+.basicinfo {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
 }
 
-.nickname{
-    font-size: 18px;
+.nickname {
+  font-size: 18px;
 }
 
-.placeanddate{
-    font-size: 14px;
-    color: #666666;
+.placeanddate {
+  font-size: 14px;
+  color: #666666;
 }
 
-.chatmessage{
-    font-size: 14px;
-    color: #666666;
+.chatmessage {
+  font-size: 14px;
+  color: #666666;
 }
