@@ -3,10 +3,11 @@ import { NavLink } from 'react-router';
 import commentIcon from '../assets/comment-gray.svg';
 import likeIcon from '../assets/like-gray.svg';
 import styles from '../css/CommunityPostItem.module.css';
-import type { CommunityPost } from '../typings/communityPost';
+import type { CommunityPostItemType } from '../typings/communityPost';
 import { getTimeAgo } from '../utils/utils';
+
 type CommunityPostItemProps = {
-  CommunityPostInfo: CommunityPost;
+  CommunityPostInfo: CommunityPostItemType;
 };
 
 const CommunityPostItem = ({ CommunityPostInfo }: CommunityPostItemProps) => {

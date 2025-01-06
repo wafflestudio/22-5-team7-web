@@ -1,59 +1,17 @@
 /*
   '동네생활' 에 해당하는 페이지.
 */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import bellIcon from '../assets/upperbar-bell.svg';
 import profileIcon from '../assets/upperbar-profile.svg';
 import searchIcon from '../assets/upperbar-search.svg';
 import CommunityPostItem from '../components/CommunityPostItem';
+import Loader from '../components/Loader';
 import UpperBar from '../components/UpperBar';
 import styles from '../css/CommunityPage.module.css';
+import type { CommunityPostItemType } from '../typings/communityPost';
 import type { toolBarInfo } from '../typings/toolBar';
-
-const tempCommunityPostInfo = {
-  id: '1',
-  tag: '동네친구',
-  title: '저녁 같이 드실 분?',
-  body: `저는 대학동 사는데 오늘 저녁 같이 드실 분 구해요~!!!
-  햄버거 생각중이에요 ㅎㅎ`,
-  user_id: 'hobak123',
-  nickname: '단호한 호박',
-  location: '대학동',
-  time: '2024-12-21T10:00:00Z',
-  views: 9,
-  likes: 2,
-  comments: [
-    {
-      nickname: '배고픈사람',
-      location: '청룡동',
-      time: '2024-12-28T12:00:00Z',
-      likes: 2,
-      body: '저요!',
-    },
-    {
-      nickname: '댓글알바',
-      location: '대학동',
-      time: '2024-12-28T11:30:00Z',
-      likes: 0,
-      body: '전 바빠서 ㅜㅜ 아쉬워요',
-    },
-    {
-      nickname: '아령하세연',
-      location: '행운동',
-      time: '2024-12-29T12:05:00Z',
-      likes: 0,
-      body: '맛있게 드세요~',
-    },
-    {
-      nickname: '토이플젝 7조',
-      location: '신림동',
-      time: '2025-01-03T19:00:00Z',
-      likes: 3,
-      body: '이것은 테스트입니다 댓글을 길게 쓰면 어떻게 되는지 확인하려고 이렇게 쓴거에요',
-    },
-  ],
-};
 
 const communityPageToolBarInfo: toolBarInfo = {
   path: '/community',
@@ -79,6 +37,32 @@ const communityPageToolBarInfo: toolBarInfo = {
 
 const CommunityPage = () => {
   const [activeTab, setActiveTab] = useState<'feed' | 'popular'>('feed');
+  const [posts, setPosts] = useState<CommunityPostItemType[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(
+          'https://eab7f8a7-4889-4c27-8a86-0305c4e85524.mock.pstmn.io/community',
+        );
+        if (!response.ok) {
+          throw new Error(`Failed to fetch posts: ${response.statusText}`);
+        }
+        const data = (await response.json()) as CommunityPostItemType[];
+        setPosts(data);
+      } catch (err) {
+        setError((err as Error).message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    void fetchPosts();
+  }, []);
+
   return (
     <div>
       <UpperBar toolBarInfo={communityPageToolBarInfo} />
@@ -109,12 +93,15 @@ const CommunityPage = () => {
         </button>
       </div>
       <div className={styles.contentBox}>
-        <CommunityPostItem CommunityPostInfo={tempCommunityPostInfo} />
-        <CommunityPostItem CommunityPostInfo={tempCommunityPostInfo} />
-        <CommunityPostItem CommunityPostInfo={tempCommunityPostInfo} />
-        <CommunityPostItem CommunityPostInfo={tempCommunityPostInfo} />
-        <CommunityPostItem CommunityPostInfo={tempCommunityPostInfo} />
-        <CommunityPostItem CommunityPostInfo={tempCommunityPostInfo} />
+        {loading ? (
+          <Loader marginTop="40vh" />
+        ) : error !== null ? (
+          <p>Error: {error}</p>
+        ) : (
+          posts.map((post) => (
+            <CommunityPostItem key={post.id} CommunityPostInfo={post} />
+          ))
+        )}
       </div>
     </div>
   );
