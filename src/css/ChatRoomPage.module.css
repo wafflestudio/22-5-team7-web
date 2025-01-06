@@ -1,0 +1,208 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.upperbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 15px;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border-bottom: 1px solid var(--daangn-lightgray);
+}
+
+.upperbar > :nth-child(2) {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.opponentinfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+.opponentnickname {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.opponenttemp {
+  background-color: orange;
+  color: orangered;
+  justify-self: center;
+  align-self: center;
+  padding: 1px 5px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
+.upperbaricons {
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
+}
+
+.othericons {
+  width: 24px;
+  height: 24px;
+}
+
+.iteminfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+  cursor: pointer;
+}
+
+.itemimage {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.itemstatus {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.itemname {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.itemprice {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.profileImage {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin: 5px;
+  object-fit: cover;
+}
+
+.profileImagePlaceholder {
+  width: 30px; /* 프로필 이미지와 동일한 너비 */
+  height: 30px; /* 프로필 이미지와 동일한 높이 */
+  margin: 5px;
+  display: inline-block;
+}
+
+.opponentmessage {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 3px;
+}
+
+.opponentmessagetext {
+  font-size: 16px;
+  background-color: var(--daangn-lightgray);
+  padding: 8px;
+  border-radius: 10px;
+}
+
+.messagetime {
+  font-size: 10px;
+  color: var(--daangn-gray);
+  align-self: flex-end;
+}
+
+.mymessage {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 3px;
+}
+
+.mymessagetext {
+  font-size: 16px;
+  background-color: var(--daangn-orange);
+  padding: 8px 10px;
+  border-radius: 16px;
+  color: white;
+}
+
+.chatbar {
+  height: auto;
+}
+
+.inputBox {
+  display: flex;
+  position: sticky;
+  bottom: 0;
+  width: 100vw;
+  display: flex;
+  background-color: white;
+  border-top: 2px solid var(--daangn-lightgray);
+  padding: 10px;
+}
+
+.inputtext {
+  display: flex;
+  width: 100%;
+  border: none;
+  background-color: var(--daangn-lightgray);
+  border-radius: 15px;
+  font-size: 16px;
+  align-items: center;
+}
+
+.chatInput {
+  width: 100%;
+  resize: none;
+  overflow: hidden;
+  max-height: 6em;
+  background-color: var(--daangn-lightgray);
+  border-radius: 15px;
+  border: none;
+  padding: 5px 10px;
+  overflow-y: auto;
+}
+
+.chatInput::placeholder {
+  color: var(--daangn-gray);
+}
+
+.chatInput:focus {
+  outline: none;
+  background-color: var(--daangn-lightgray);
+  border-radius: 15px;
+  border: none;
+  padding: 5px 10px;
+}
+
+.sendButton {
+  border: none;
+  background: none;
+}
