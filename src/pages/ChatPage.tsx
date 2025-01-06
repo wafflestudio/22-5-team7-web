@@ -4,6 +4,7 @@
 import bellIcon from '../assets/upperbar-bell.svg';
 import filterIcon from '../assets/upperbar-filter.svg';
 import qrcodeIcon from '../assets/upperbar-qrcode.svg';
+import Chat from '../components/Chat';
 import UpperBar from '../components/UpperBar';
 import type { toolBarInfo } from '../typings/toolBar';
 
@@ -33,7 +34,10 @@ const ChatPage = () => {
   return (
     <div>
       <UpperBar toolBarInfo={chatPageToolBarInfo} />
-      <div>채팅</div>
+      <Chat id="1" />
+      <Chat id="2" />
+      <Chat id="3" />
+      <Chat id="4" />
     </div>
   );
 };
