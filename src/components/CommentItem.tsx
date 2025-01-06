@@ -4,18 +4,21 @@ import styles from '../css/CommentItem.module.css';
 import type { CommentProps } from '../typings/communityPost';
 import { getTimeAgo } from '../utils/utils';
 
-const Comment = ({ CommentInfo }: CommentProps) => {
+const Comment = ({ CommentInfo, userInfo }: CommentProps) => {
   const handleLikeClick = () => {
     console.info('comment like + 1');
   };
 
   return (
     <div className={styles.main}>
-      <img src={placeHolder} className={styles.profilePic} />
+      <img
+        src={userInfo?.profile_picture ?? placeHolder}
+        className={styles.profilePic}
+      />
       <div className={styles.contentBox}>
-        <p className={styles.nickname}>{CommentInfo.nickname}</p>
+        <p className={styles.nickname}>{userInfo?.nickname}</p>
         <p className={styles.commentInfo}>
-          {CommentInfo.location} · {getTimeAgo(CommentInfo.time)}
+          {userInfo?.location} · {getTimeAgo(CommentInfo.time)}
         </p>
         <p className={styles.commentBody}>{CommentInfo.body}</p>
         <div className={styles.buttonBox}>

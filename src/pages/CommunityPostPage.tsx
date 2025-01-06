@@ -1,8 +1,8 @@
 /*
   동네생활의 각 게시글 페이지.
 */
-import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useEffect, useMemo, useState } from 'react';
+import { useNavigate, useParams } from 'react-router';
 
 import eyeIcon from '../assets/eye-gray.svg';
 import leftArrow from '../assets/leftarrow.svg';
@@ -15,58 +15,56 @@ import shareIcon from '../assets/share.svg';
 import dotsIcon from '../assets/three_dots_black.svg';
 import disabledBell from '../assets/upperbar-bell-disabled.svg';
 import CommentItem from '../components/CommentItem';
+import Loader from '../components/Loader';
 import styles from '../css/CommunityPostPage.module.css';
+import type { CommunityPost } from '../typings/communityPost';
 import { getTimeAgo } from '../utils/utils';
 
-const tempCommunityPostInfo = {
-  id: '1',
-  tag: '동네친구',
-  title: '저녁 같이 드실 분?',
-  body: `저는 대학동 사는데 오늘 저녁 같이 드실 분 구해요~!!!
-  햄버거 생각중이에요 ㅎㅎ`,
-  user_id: 'hobak123',
-  nickname: '단호한 호박',
-  location: '대학동',
-  time: '2024-12-21T10:00:00Z',
-  views: 9,
-  likes: 2,
-  comments: [
-    {
-      nickname: '배고픈사람',
-      location: '청룡동',
-      time: '2024-12-28T12:00:00Z',
-      likes: 2,
-      body: '저요!',
-    },
-    {
-      nickname: '댓글알바',
-      location: '대학동',
-      time: '2024-12-28T11:30:00Z',
-      likes: 0,
-      body: '전 바빠서 ㅜㅜ 아쉬워요',
-    },
-    {
-      nickname: '아령하세연',
-      location: '행운동',
-      time: '2024-12-29T12:05:00Z',
-      likes: 0,
-      body: '맛있게 드세요~',
-    },
-    {
-      nickname: '토이플젝 7조',
-      location: '신림동',
-      time: '2025-01-03T19:00:00Z',
-      likes: 3,
-      body: '이것은 테스트입니다 댓글을 길게 쓰면 어떻게 되는지 확인하려고 이렇게 쓴거에요',
-    },
-  ],
-};
-
 const CommunityPostPage = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+
+  const [post, setPost] = useState<CommunityPost | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [sortComment, setSortComment] = useState<'old' | 'new'>('old');
   const [currentInput, setCurrentInput] = useState<string>('');
   const isLiked = Math.random() < 0.5; // 임시로 설정, 추후에는 user id와 게시글에 like한 아이디를 대조해서 설정
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        setLoading(true);
+        if (id === undefined) throw new Error('id is undefined!');
+        const response = await fetch(
+          `https://eab7f8a7-4889-4c27-8a86-0305c4e85524.mock.pstmn.io/community/${id}`,
+        );
+        if (!response.ok) {
+          throw new Error(`Failed to fetch post: ${response.statusText}`);
+        }
+        const data = (await response.json()) as CommunityPost;
+        setPost(data);
+      } catch (err) {
+        setError((err as Error).message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    void fetchPost();
+  }, [id]);
+
+  const postUser = useMemo(() => {
+    return post?.users[post.user_id] ?? null;
+  }, [post]);
+
+  const commentsWithUserInfo = useMemo(() => {
+    if (post === null) return [];
+    return post.comments.map((comment) => ({
+      ...comment,
+      commentUser: post.users[comment.user_id],
+    }));
+  }, [post]);
 
   const handleLikeClick = () => {
     console.info('like + 1');
@@ -93,78 +91,101 @@ const CommunityPostPage = () => {
           <img src={dotsIcon} className={styles.upperIcon} />
         </div>
       </div>
-      <div className={styles.contentBox}>
-        <div className={styles.postBox}>
-          <div className={styles.postTag}>
-            <img src={communityIcon} style={{ height: '14px' }} />
-            맛집
+      {loading ? (
+        <Loader marginTop="40vh" />
+      ) : error !== null ? (
+        <p>Error: {error}</p>
+      ) : post === null ? (
+        <p>해당 글을 찾을 수 없습니다.</p>
+      ) : (
+        <div className={styles.contentBox}>
+          <div className={styles.postBox}>
+            <div className={styles.postTag}>
+              <img src={communityIcon} style={{ height: '14px' }} />
+              맛집
+            </div>
+            <div className={styles.profileBox}>
+              <img
+                src={postUser?.profile_picture ?? placeHolder}
+                className={styles.profilePic}
+              />
+              <div>
+                <p className={styles.nickname}>{postUser?.nickname}</p>
+                <p className={styles.profileInfo}>
+                  {postUser?.location} · {getTimeAgo(post.time)}
+                </p>
+              </div>
+            </div>
+            <p className={styles.postTitle}>{post.title}</p>
+            <p className={styles.postBody}>
+              {post.body.split('\n').map((line, index) => (
+                <span key={index}>
+                  {line}
+                  <br />
+                </span>
+              ))}
+            </p>
+            <div className={styles.viewBox}>
+              <img src={eyeIcon} style={{ height: '20px' }} />
+              <p>{post.views}명이 봤어요</p>
+            </div>
+            <button
+              className={isLiked ? styles.likeButton_liked : styles.likeButton}
+              onClick={handleLikeClick}
+            >
+              <img src={likeIcon} style={{ height: '16px' }} />
+              {post.likes === 0 ? (
+                <span>공감하기</span>
+              ) : (
+                <span>{post.likes}</span>
+              )}
+            </button>
           </div>
-          <div className={styles.profileBox}>
-            <img src={placeHolder} className={styles.profilePic} />
-            <div>
-              <p className={styles.nickname}>
-                {tempCommunityPostInfo.nickname}
+          <div className={styles.separator} />
+          <div className={styles.commentBox}>
+            <p>댓글 {commentsWithUserInfo.length}</p>
+            <div className={styles.sortButtons}>
+              <p
+                className={
+                  sortComment === 'old'
+                    ? styles.activeSort
+                    : styles.inactiveSort
+                }
+                onClick={() => {
+                  setSortComment('old');
+                }}
+              >
+                등록순
               </p>
-              <p className={styles.profileInfo}>
-                {tempCommunityPostInfo.location} ·{' '}
-                {getTimeAgo(tempCommunityPostInfo.time)}
+              <p
+                className={
+                  sortComment === 'new'
+                    ? styles.activeSort
+                    : styles.inactiveSort
+                }
+                onClick={() => {
+                  setSortComment('new');
+                }}
+              >
+                최신순
               </p>
             </div>
           </div>
-          <p className={styles.postTitle}>{tempCommunityPostInfo.title}</p>
-          <p className={styles.postBody}>{tempCommunityPostInfo.body}</p>
-          <div className={styles.viewBox}>
-            <img src={eyeIcon} style={{ height: '20px' }} />
-            <p>{tempCommunityPostInfo.views}명이 봤어요</p>
-          </div>
-          <button
-            className={isLiked ? styles.likeButton_liked : styles.likeButton}
-            onClick={handleLikeClick}
-          >
-            <img src={likeIcon} style={{ height: '16px' }} />
-            {tempCommunityPostInfo.likes === 0 ? (
-              <span>공감하기</span>
-            ) : (
-              <span>{tempCommunityPostInfo.likes}</span>
-            )}
-          </button>
+          {commentsWithUserInfo
+            .sort((a, b) => {
+              if (sortComment === 'old')
+                return a.time < b.time ? -1 : a.time > b.time ? 1 : 0;
+              else return a.time > b.time ? -1 : a.time < b.time ? 1 : 0;
+            })
+            .map((Comment, index) => (
+              <CommentItem
+                key={index}
+                CommentInfo={Comment}
+                userInfo={Comment.commentUser}
+              />
+            ))}
         </div>
-        <div className={styles.separator} />
-        <div className={styles.commentBox}>
-          <p>댓글 {tempCommunityPostInfo.comments.length}</p>
-          <div className={styles.sortButtons}>
-            <p
-              className={
-                sortComment === 'old' ? styles.activeSort : styles.inactiveSort
-              }
-              onClick={() => {
-                setSortComment('old');
-              }}
-            >
-              등록순
-            </p>
-            <p
-              className={
-                sortComment === 'new' ? styles.activeSort : styles.inactiveSort
-              }
-              onClick={() => {
-                setSortComment('new');
-              }}
-            >
-              최신순
-            </p>
-          </div>
-        </div>
-        {tempCommunityPostInfo.comments
-          .sort((a, b) => {
-            if (sortComment === 'old')
-              return a.time < b.time ? -1 : a.time > b.time ? 1 : 0;
-            else return a.time > b.time ? -1 : a.time < b.time ? 1 : 0;
-          })
-          .map((Comment, index) => (
-            <CommentItem key={index} CommentInfo={Comment} />
-          ))}
-      </div>
+      )}
       <div className={styles.inputBox}>
         <input
           type="text"
