@@ -42,7 +42,7 @@ const MyPage = () => {
           <NavLink to="profile" className={styles.profile}>
             <img src={placeHolder} className={styles.profilePic} />
             <p className={styles.nickName}>닉네임</p>
-            <div className={styles.temperature}>36.5°C</div>
+            <div className={styles.temperature}>47.5°C</div>
             <img src={rightArrow} className={styles.arrow} />
           </NavLink>
         </div>
