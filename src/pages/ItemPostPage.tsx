@@ -31,11 +31,6 @@ const ItemPostPage = () => {
   };
   const navigate = useNavigate();
 
-  const handlePostClick = () => {
-    //지금은 메인으로 가는데 다음에는 아이템 상세화면으로 갈 예정
-    void navigate('/main');
-  };
-
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files !== null) {
@@ -63,6 +58,39 @@ const ItemPostPage = () => {
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
   }, [article]);
+
+  const handlePostClick = async () => {
+    const postData = {
+      title,
+      content: article,
+      price: Number(price),
+      location: place,
+    };
+
+    try {
+      const response = await fetch('http://localhost:5173/api/item/post', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postData),
+      });
+
+      if (!response.ok) {
+        throw new Error('서버에 데이터를 전송하지 못했습니다.');
+      }
+
+      const result = (await response.json()) as string;
+      console.info('성공:', result);
+      void navigate('/main');
+    } catch (error) {
+      console.error('에러 발생:', error);
+    }
+  };
+
+  const handlePostClickWrapper = () => {
+    void handlePostClick();
+  };
 
   return (
     <div className={styles.main}>
@@ -205,7 +233,7 @@ const ItemPostPage = () => {
             setPlace(e.target.value);
           }}
         ></input>
-        <button onClick={handlePostClick} className={styles.PostButton}>
+        <button onClick={handlePostClickWrapper} className={styles.PostButton}>
           작성 완료
         </button>
         <div className={styles.helpBox}></div>
