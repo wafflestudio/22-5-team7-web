@@ -8,26 +8,38 @@ import chatIcon from '../assets/navbar/navbar-chat-gray.svg';
 import placeHolder from '../assets/placeholder_gray.png';
 import styles from '../css/Item.module.css';
 
-type ItemProps = {
-  id: string;
-};
+interface ItemProps {
+  title: string;
+  price: number;
+  status: string;
+  location: string;
+  createdAt: string;
+  likeCount: number;
+}
 
-const Item = ({ id }: ItemProps) => {
+const Item: React.FC<ItemProps> = ({
+  title,
+  price,
+  status,
+  location,
+  createdAt,
+  likeCount,
+}) => {
   return (
-    <NavLink to={`/item/${id}`} className={styles.navLink}>
+    <NavLink to={`/item/2`} className={styles.navLink}>
       <div className={styles.main}>
         <img src={placeHolder} className={styles.image} />
         <div className={styles.contentBox}>
           <div className={styles.textBox}>
-            <p className={styles.itemName}>
-              맨체스터 유나이티드 (맨유) 홈 유니폼 저지 24/25 선수 마킹 패치
+            <p className={styles.itemName}>{`${status} ${title}`}</p>
+            <p className={styles.itemInfo}>{`${location} + ${createdAt}`}</p>
+            <p className={styles.itemPrice}>
+              {`${Intl.NumberFormat('ko-KR').format(price)}원`}
             </p>
-            <p className={styles.itemInfo}>대학동 · 5분 전</p>
-            <p className={styles.itemPrice}>100,000원</p>
           </div>
           <div className={styles.subBox}>
             <div className={styles.iconBox}>
-              <img src={chatIcon} className={styles.smallIcon} /> 7
+              <img src={chatIcon} className={styles.smallIcon} /> {likeCount}
             </div>
             <div className={styles.iconBox}>
               <img src={heartIcon} className={styles.smallIcon} /> 14

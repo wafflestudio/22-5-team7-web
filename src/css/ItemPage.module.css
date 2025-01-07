@@ -41,6 +41,79 @@
   height: 28px;
 }
 
+.dropdownContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.actionSheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: calc(100% - 20px);
+  margin-left: 10px;
+  margin-right: 10px;
+  box-shadow: 0 -8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  padding-bottom: 16px;
+  gap: 8px;
+}
+
+.actionSheetContent {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.editbutton {
+  width: 100%;
+  background-color: rgb(235, 235, 235);
+  border: none;
+  color: rgb(72, 114, 253);
+  font-size: 18px;
+  padding: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom: 1px solid lightgray;
+}
+
+.deletebutton {
+  width: 100%;
+  background-color: rgb(235, 235, 235);
+  border: none;
+  color: red;
+  font-size: 18px;
+  padding: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.cancelbutton {
+  background-color: white;
+  border-radius: 10px;
+  border: none;
+  padding: 10px;
+  color: rgb(72, 114, 253);
+  font-size: 18px;
+  font-weight: bold;
+}
+
 .imagecontainer {
   display: flex;
   justify-content: center;

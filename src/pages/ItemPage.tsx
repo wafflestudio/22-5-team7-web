@@ -2,7 +2,7 @@
   MainPage나 SearchResultPage에서 특정 item을 클릭했을 때 연결되는 페이지.
   아이템 정보, 판매자 정보 등 띄워야 함
 */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
@@ -16,9 +16,31 @@ import dotsicon from '../assets/three_dots_white.svg';
 import TemperatureGaugeSmall from '../components/TemperatureGaugeSmall';
 import styles from '../css/ItemPage.module.css';
 
+interface Seller {
+  id: string;
+  nickname: string;
+  location: string;
+  temperature: number;
+  email: string;
+}
+
+interface Item {
+  id: string;
+  seller: Seller;
+  title: string;
+  content: string;
+  price: number;
+  status: string;
+  location: string;
+  createdAt: string; // Instant 타입을 문자열로 처리
+  likeCount: number;
+}
+
 const ItemPage = () => {
   const [isLiked, setIsLiked] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [item, setItem] = useState<Item>();
   const images = [
     'https://via.placeholder.com/300',
     'https://via.placeholder.com/400',
@@ -43,6 +65,22 @@ const ItemPage = () => {
     void navigate('/main');
   };
 
+  const handleDotsClick = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleEditClick = () => {
+    // 수정 로직
+  };
+
+  const handleDeleteClick = () => {
+    // 삭제 로직
+  };
+
+  const handleCancelClick = () => {
+    setIsDropdownOpen(false);
+  };
+
   const handlePrevSwipe = () => {
     setCurrentImageIndex((prevIndex) =>
       prevIndex === 0 ? prevIndex : prevIndex - 1,
@@ -62,6 +100,30 @@ const ItemPage = () => {
     trackMouse: true,
   });
 
+  useEffect(() => {
+    const fetchIteminfo = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5173/api/item/get/${id}`,
+          {
+            method: 'GET',
+          },
+        );
+
+        if (!response.ok) {
+          throw new Error('서버에서 데이터를 받아오지 못했습니다.');
+        }
+
+        const data: Item = (await response.json()) as Item;
+        setItem(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    void fetchIteminfo();
+  }, []);
+
   return (
     <div className={styles.main}>
       <div className={styles.upperbar}>
@@ -79,7 +141,43 @@ const ItemPage = () => {
         </div>
         <div className={styles.etcicons}>
           <img src={shareicon} className={styles.shareicon}></img>
-          <img src={dotsicon} className={styles.dotsicon}></img>
+          <div className={styles.dropdownContainer}>
+            <img
+              src={dotsicon}
+              className={styles.dotsicon}
+              onClick={handleDotsClick}
+            />
+            {isDropdownOpen && (
+              <>
+                <div
+                  className={styles.overlay}
+                  onClick={handleCancelClick}
+                ></div>
+                <div className={styles.actionSheet}>
+                  <div className={styles.actionSheetContent}>
+                    <button
+                      onClick={handleEditClick}
+                      className={styles.editbutton}
+                    >
+                      게시글 수정
+                    </button>
+                    <button
+                      onClick={handleDeleteClick}
+                      className={styles.deletebutton}
+                    >
+                      삭제
+                    </button>
+                  </div>
+                  <button
+                    onClick={handleCancelClick}
+                    className={styles.cancelbutton}
+                  >
+                    취소
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
       <div className={styles.imagecontainer} {...handlers}>
@@ -112,8 +210,8 @@ const ItemPage = () => {
           <NavLink to={`/profile/${id}`} className={styles.profile}>
             <img src={profileimage} className={styles.profileimage}></img>
             <div className={styles.profiletext}>
-              <p className={styles.nickname}>이룸이</p>
-              <p className={styles.address}>대학동</p>
+              <p className={styles.nickname}>{item?.seller.nickname}</p>
+              <p className={styles.address}>{item?.seller.location}</p>
             </div>
           </NavLink>
 
