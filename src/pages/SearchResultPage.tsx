@@ -9,7 +9,7 @@ import { useNavigate, useParams } from 'react-router';
 
 import leftArrow from '../assets/leftarrow.svg';
 import CommunityPostItem from '../components/CommunityPostItem';
-import Item from '../components/Item';
+//import Item from '../components/Item';
 import styles from '../css/SearchResultPage.module.css';
 import { tempCommunityPostInfo } from '../utils/mocks';
 
@@ -82,16 +82,7 @@ const SearchResultPage = () => {
       </div>
       <div className={styles.contentBox}>
         {activeTab === 'items' ? (
-          <div>
-            <Item id="1" />
-            <Item id="2" />
-            <Item id="3" />
-            <Item id="4" />
-            <Item id="5" />
-            <Item id="6" />
-            <Item id="7" />
-            <Item id="8" />
-          </div>
+          <div></div>
         ) : (
           <div>
             <CommunityPostItem CommunityPostInfo={tempCommunityPostInfo} />

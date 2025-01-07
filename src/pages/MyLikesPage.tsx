@@ -4,7 +4,7 @@
 import { NavLink } from 'react-router-dom';
 
 import leftArrow from '../assets/leftarrow.svg';
-import Item from '../components/Item';
+//import Item from '../components/Item';
 import styles from '../css/MyLikesPage.module.css';
 
 const MyLikesPage = () => {
@@ -16,10 +16,7 @@ const MyLikesPage = () => {
         </NavLink>
         <p className={styles.pageTitle}>관심목록</p>
       </div>
-      <div>
-        <Item id="3" />
-        <Item id="4" />
-      </div>
+      <div></div>
     </div>
   );
 };

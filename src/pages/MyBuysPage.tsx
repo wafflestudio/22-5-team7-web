@@ -4,7 +4,7 @@
 import { NavLink } from 'react-router-dom';
 
 import leftArrow from '../assets/leftarrow.svg';
-import Item from '../components/Item';
+//import Item from '../components/Item';
 import styles from '../css/MyBuysPage.module.css';
 
 const MyBuysPage = () => {
@@ -16,10 +16,7 @@ const MyBuysPage = () => {
         </NavLink>
         <p className={styles.pageTitle}>나의 구매내역</p>
       </div>
-      <div>
-        <Item id="1" />
-        <Item id="2" />
-      </div>
+      <div></div>
     </div>
   );
 };
