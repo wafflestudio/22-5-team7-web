@@ -2,6 +2,7 @@
   '동네생활' 에 해당하는 페이지.
 */
 import { useEffect, useState } from 'react';
+import { NavLink } from 'react-router';
 
 import bellIcon from '../assets/upperbar-bell.svg';
 import profileIcon from '../assets/upperbar-profile.svg';
@@ -92,6 +93,9 @@ const CommunityPage = () => {
           인기
         </button>
       </div>
+      <NavLink to="/community/post" className={styles.postbutton}>
+        + 글쓰기
+      </NavLink>
       <div className={styles.contentBox}>
         {loading ? (
           <Loader marginTop="40vh" />

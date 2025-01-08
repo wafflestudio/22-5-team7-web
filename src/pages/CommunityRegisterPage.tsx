@@ -1,0 +1,190 @@
+/*
+  동네생활 게시글을 등록하는 페이지.
+*/
+import { useState } from 'react';
+import { NavLink, useNavigate } from 'react-router';
+
+import hashtagIcon from '../assets/hashtag-gray.svg';
+import pictureIcon from '../assets/picture-gray.svg';
+import quitIcon from '../assets/quitcross.svg';
+import rightArrow from '../assets/rightarrow_black.svg';
+import styles from '../css/CommunityRegisterPage.module.css';
+import { TagsArray } from '../typings/communityPost';
+
+const CommunityRegisterPage = () => {
+  const [isTagPopupActive, setIsTagPopupActive] = useState<boolean>(true);
+  const [tag, setTag] = useState<string>('');
+  const [title, setTitle] = useState<string>('');
+  const [article, setArticle] = useState<string>('');
+  const [images, setImages] = useState<File[]>([]);
+  const navigate = useNavigate();
+
+  const tempLocation = '대학동';
+
+  const LONG_PLACEHOLDER_TEXT = `${tempLocation} 이웃과 이야기를 나눠보세요.
+#맛집 #병원 #산책...`;
+
+  const handleRegisterClick = () => {
+    void navigate('/community');
+  };
+
+  const handleSelectTag = () => {
+    setIsTagPopupActive(true);
+  };
+
+  const handleCloseTag = () => {
+    setIsTagPopupActive(false);
+  };
+
+  const handleTextareaInput = (textarea: HTMLTextAreaElement) => {
+    if (styles.contentBox === undefined)
+      throw new Error('contentBox is undefined');
+    const contentBox = document.querySelector(
+      `.${styles.contentBox}`,
+    ) as HTMLElement;
+
+    textarea.style.height = 'auto';
+
+    const contentBoxBottom = contentBox.getBoundingClientRect().bottom;
+    const screenHeight = window.innerHeight;
+    const maxHeight = screenHeight - contentBoxBottom;
+
+    const newHeight = Math.min(textarea.scrollHeight, maxHeight);
+    textarea.style.height = `${newHeight}px`;
+  };
+
+  const handleTagButtonClick = (tagValue: string) => {
+    setTag(tagValue);
+    setIsTagPopupActive(false);
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files !== null) {
+      const newFiles = Array.from(e.target.files);
+      const totalFiles = images.length + newFiles.length;
+
+      if (totalFiles > 10) {
+        alert('이미지는 최대 10개까지 업로드할 수 있습니다.');
+        setImages((prev) => [...prev, ...newFiles.slice(0, 10 - prev.length)]);
+      } else {
+        setImages((prev) => [...prev, ...newFiles]);
+      }
+    }
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleAddHashtag = () => {
+    setArticle((prev) => `${prev}#`);
+  };
+
+  return (
+    <div className={styles.main}>
+      <div className={styles.upperBar}>
+        <NavLink to="/community">
+          <img src={quitIcon} style={{ height: '25px' }} />
+        </NavLink>
+        <p className={styles.pageTitle}>동네생활 글쓰기</p>
+        <p className={styles.registerButton} onClick={handleRegisterClick}>
+          완료
+        </p>
+      </div>
+      <div className={styles.contentBox}>
+        <div className={styles.selectTagButton} onClick={handleSelectTag}>
+          {tag !== '' ? tag : '게시글의 주제를 선택해주세요.'}
+          <img src={rightArrow} style={{ height: '18px' }} />
+        </div>
+        <input
+          className={styles.titleInput}
+          type="text"
+          placeholder="제목을 입력하세요"
+          value={title}
+          onChange={(e) => {
+            setTitle(e.target.value);
+          }}
+        />
+        <textarea
+          className={styles.articleBox}
+          placeholder={LONG_PLACEHOLDER_TEXT}
+          value={article}
+          onChange={(e) => {
+            setArticle(e.target.value);
+          }}
+          onInput={(e) => {
+            handleTextareaInput(e.target as HTMLTextAreaElement);
+          }}
+        />
+        <div className={styles.imageBox}>
+          {images.map((image, index) => (
+            <div key={index} className={styles.imageWrapper}>
+              <img
+                src={URL.createObjectURL(image)}
+                alt={`Uploaded ${index}`}
+                className={styles.uploadedImage}
+              />
+              <button
+                className={styles.removeImageButton}
+                onClick={() => {
+                  handleRemoveImage(index);
+                }}
+              >
+                X
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className={styles.bottomBar}>
+        <label className={styles.bottomButton}>
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            style={{ display: 'none' }}
+            onChange={handleImageUpload}
+          />
+          <img src={pictureIcon} height={'20px'} />
+          사진
+        </label>
+        <div className={styles.bottomButton} onClick={handleAddHashtag}>
+          <img src={hashtagIcon} height={'20px'} />
+          태그
+        </div>
+      </div>
+      {isTagPopupActive && (
+        <div className={styles.popupOverlay}>
+          <div className={styles.closeOverlay} onClick={handleCloseTag} />
+          <div className={styles.popupBox}>
+            <h3>게시글 주제를 선택해주세요.</h3>
+            {TagsArray.map((Tags) => (
+              <div key={Tags.category}>
+                <h4>{Tags.category}</h4>
+                <div className={styles.tagBox}>
+                  {Tags.tags.map((tagValue, index) => (
+                    <button
+                      key={index}
+                      className={
+                        tagValue === tag
+                          ? styles.activeTagButton
+                          : styles.tagButton
+                      }
+                      onClick={() => {
+                        handleTagButtonClick(tagValue);
+                      }}
+                    >
+                      {tagValue}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default CommunityRegisterPage;
