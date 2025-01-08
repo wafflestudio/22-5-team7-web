@@ -9,6 +9,20 @@ export type User = {
   reviews: review[];
 };
 
+export type SignupUser = {
+  user: {
+    id: string;
+    nickname: string;
+    location: string;
+    temperature: number;
+    email: string;
+  }
+};
+
+export type SigninResponse = {
+  accessToken: string;
+}
+
 type manner = {
   label: string; // 매너 글귀 (친절하고 매너가 좋아요, 시간 약속을 잘 지켜요 등등)
   number: number; // 몇 명이 해당 매너 평가를 남겼는지
@@ -22,4 +36,9 @@ type review = {
   location: string;
   time: number; //며칠전에 작성된 리뷰인지
   text: string;
+};
+
+export type ErrorResponseType = {
+  error: string;
+  errorCode: number;
 };

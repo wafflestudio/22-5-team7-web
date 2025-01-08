@@ -6,16 +6,36 @@ import { NavLink, useNavigate } from 'react-router-dom';
 
 import leftArrow from '../assets/leftarrow.svg';
 import styles from '../css/LoginPage.module.css';
+import type { ErrorResponseType, SigninResponse } from '../typings/user';
 
 const LoginPage = () => {
   const [id, setId] = useState<string>('');
   const [pw, setPw] = useState<string>('');
   const navigate = useNavigate();
 
-  const handleLoginClick = () => {
-    console.info(id); // Placeholder
-    console.info(pw); // Placeholder
-    void navigate('/main');
+  const handleLoginClick = async () => {
+    try {
+      const response = await fetch('http://localhost:5173/auth/sign/in', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: id,
+          password: pw,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = (await response.json()) as ErrorResponseType;
+        throw new Error(`로그인 실패: ${errorData.error}`);
+      }
+      const data = (await response.json()) as SigninResponse;
+      localStorage.setItem('token', data.accessToken); // Localstorage에 토큰 저장
+      console.info('로그인 성공!');
+      void navigate('/main');
+    } catch (error) {
+      if (error instanceof Error) alert(error.message);
+      console.error('error: ', error);
+    }
   };
 
   return (
@@ -52,7 +72,14 @@ const LoginPage = () => {
             setPw(e.target.value);
           }}
         ></input>
-        <button onClick={handleLoginClick} className={styles.loginButton}>
+        <button
+          onClick={() => {
+            handleLoginClick().catch(() => {
+              console.error('error');
+            });
+          }}
+          className={styles.loginButton}
+        >
           로그인
         </button>
         <div className={styles.helpBox}>
