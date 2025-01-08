@@ -6,17 +6,39 @@ import { NavLink, useNavigate } from 'react-router-dom';
 
 import leftArrow from '../assets/leftarrow.svg';
 import styles from '../css/RegisterPage.module.css';
+import type { ErrorResponseType, SignupUser } from '../typings/user';
 
 const LoginPage = () => {
   const [nickName, setNickName] = useState<string>('');
   const [id, setId] = useState<string>('');
   const [pw, setPw] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
   const navigate = useNavigate();
 
-  const handleRegisterClick = () => {
-    console.info(id); // Placeholder
-    console.info(pw); // Placeholder
-    void navigate('/');
+  const handleRegisterClick = async () => {
+    try {
+      const response = await fetch('http://localhost:5173/auth/sign/up', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nickname: nickName,
+          userId: id,
+          password: pw,
+          email: email,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = (await response.json()) as ErrorResponseType;
+        throw new Error(`회원가입 실패: ${errorData.error}`);
+      }
+      const data = (await response.json()) as SignupUser;
+      console.info('회원가입 성공!', data);
+      void navigate('/');
+    } catch (error) {
+      if (error instanceof Error) alert(error.message);
+      console.error('error: ', error);
+    }
   };
 
   return (
@@ -70,10 +92,17 @@ const LoginPage = () => {
           type="email"
           placeholder="이메일은 아이디를 찾는데 활용돼요"
           onChange={(e) => {
-            setPw(e.target.value);
+            setEmail(e.target.value);
           }}
         ></input>
-        <button onClick={handleRegisterClick} className={styles.registerButton}>
+        <button
+          onClick={() => {
+            handleRegisterClick().catch(() => {
+              console.error('error');
+            });
+          }}
+          className={styles.registerButton}
+        >
           회원가입
         </button>
         <div className={styles.helpBox}></div>
