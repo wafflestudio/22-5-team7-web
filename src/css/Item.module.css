@@ -7,6 +7,7 @@
 
 .main {
   display: flex;
+  flex: 1;
   gap: 15px;
   padding-bottom: 15px;
   border-bottom: 1px solid var(--daangn-lightgray);
@@ -42,7 +43,18 @@
   color: var(--daangn-gray);
 }
 
+.itemStatus {
+  padding: 5px;
+  font-size: 13px;
+  background-color: #444444;
+  border-radius: 2px;
+  color: white;
+}
+
 .itemPrice {
+  display: flex;
+  align-items: center;
+  gap: 5px;
   font-size: 18px;
   font-weight: bold;
   color: black;

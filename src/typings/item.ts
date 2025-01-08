@@ -17,3 +17,13 @@ export interface Item {
   createdAt: string;
   likeCount: number;
 }
+
+export type PreviewItem = {
+  id: number;
+  title: string;
+  price: number;
+  status: string;
+  location: string;
+  createdAt: string;
+  likeCount: number;
+};

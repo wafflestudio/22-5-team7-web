@@ -10,7 +10,7 @@ import searchIcon from '../assets/upperbar-search.svg';
 import Item from '../components/Item';
 import UpperBar from '../components/UpperBar';
 import styles from '../css/MainPage.module.css';
-import type { Item as ItemType } from '../typings/item'; // 인터페이스 불러오기
+import type { PreviewItem as ItemType } from '../typings/item'; // 인터페이스 불러오기
 import type { toolBarInfo } from '../typings/toolBar';
 
 const mainPageToolBarInfo: toolBarInfo = {
@@ -49,6 +49,7 @@ const MainPage = () => {
       try {
         const response = await fetch(
           `http://localhost:5173/api/home?articleId=${lastId}`,
+          //`https://eab7f8a7-4889-4c27-8a86-0305c4e85524.mock.pstmn.io/api/home?articleId=${lastId}`,
           {
             method: 'GET',
           },
@@ -93,15 +94,7 @@ const MainPage = () => {
       </button>
       <div>
         {items.map((item, index) => (
-          <Item
-            key={index}
-            title={item.title}
-            price={item.price}
-            status={item.status}
-            location={item.location}
-            createdAt={item.createdAt}
-            likeCount={item.likeCount}
-          />
+          <Item key={index} ItemInfo={item} />
         ))}
       </div>
     </div>
