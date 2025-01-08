@@ -16,12 +16,12 @@ export type SignupUser = {
     location: string;
     temperature: number;
     email: string;
-  }
+  };
 };
 
 export type SigninResponse = {
   accessToken: string;
-}
+};
 
 type manner = {
   label: string; // 매너 글귀 (친절하고 매너가 좋아요, 시간 약속을 잘 지켜요 등등)
@@ -36,6 +36,11 @@ type review = {
   location: string;
   time: number; //며칠전에 작성된 리뷰인지
   text: string;
+};
+
+export type MyPageResponse = {
+  nickname: string;
+  temperature: number;
 };
 
 export type ErrorResponseType = {
