@@ -39,3 +39,21 @@ export const tempCommunityPostInfo = {
     },
   ],
 };
+
+export const tempUser = {
+  // 나중에 API 연결
+  id: 0,
+  user: {
+    id: 'temp',
+    nickname: 'temp',
+    location: 'temp',
+    temperature: 36.5,
+    email: 'temp'
+  },
+  manners: [
+  ],
+  reviews: [
+  ],
+  mannerCount: 0,
+  reviewCount: 0
+};
