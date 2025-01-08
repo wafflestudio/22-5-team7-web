@@ -55,7 +55,9 @@ const CommunityRegisterPage = () => {
 
   const handleTagButtonClick = (tagValue: string) => {
     setTag(tagValue);
-    setIsTagPopupActive(false);
+    setTimeout(() => {
+      setIsTagPopupActive(false);
+    }, 100);
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
