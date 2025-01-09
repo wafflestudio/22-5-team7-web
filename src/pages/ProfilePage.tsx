@@ -11,12 +11,11 @@ import rightArrow from '../assets/rightarrow_black.svg';
 import shareIcon from '../assets/share.svg';
 import TemperatureGauge from '../components/TemperatureGauge';
 import styles from '../css/ProfilePage.module.css';
-import type { User } from '../typings/user';
 
 const ProfilePage = () => {
   const navigate = useNavigate();
 
-  const tempUser: User = {
+  const tempUser = {
     // 나중에 API 연결
     id: 'tempid',
     nickname: '이룸이',

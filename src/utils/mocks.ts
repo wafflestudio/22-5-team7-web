@@ -48,12 +48,10 @@ export const tempUser = {
     nickname: '',
     location: 'temp',
     temperature: 36.5,
-    email: 'temp'
+    email: 'temp',
   },
-  manners: [
-  ],
-  reviews: [
-  ],
+  manners: [],
+  reviews: [],
   mannerCount: 0,
-  reviewCount: 0
+  reviewCount: 0,
 };
