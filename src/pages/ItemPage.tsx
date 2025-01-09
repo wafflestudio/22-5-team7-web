@@ -73,8 +73,30 @@ const ItemPage = () => {
     // 수정 로직
   };
 
-  const handleDeleteClick = () => {
-    // 삭제 로직
+  const handleDeleteClick = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5173/api/item/delete/${id}`,
+        {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error('삭제 요청에 실패했습니다.');
+      }
+
+      void navigate('/main');
+    } catch (error) {
+      console.error('삭제 중 에러 발생:', error);
+    }
+  };
+
+  const handleDeleteClickWrappper = () => {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      void handleDeleteClick();
+    }
   };
 
   const handleCancelClick = () => {
@@ -107,6 +129,7 @@ const ItemPage = () => {
           `http://localhost:5173/api/item/get/${id}`,
           {
             method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
           },
         );
 
@@ -162,7 +185,7 @@ const ItemPage = () => {
                       게시글 수정
                     </button>
                     <button
-                      onClick={handleDeleteClick}
+                      onClick={handleDeleteClickWrappper}
                       className={styles.deletebutton}
                     >
                       삭제
@@ -223,12 +246,12 @@ const ItemPage = () => {
           </div>
         </div>
         <div className={styles.itemInfo}>
-          <p className={styles.titletext}>{`[미개봉 새상품] AAAA건전지`}</p>
+          <p className={styles.titletext}>{item?.title}</p>
           <p className={styles.categoryanddate}>{`디지털기기 · ~분전`}</p>
+          <p className={styles.article}>{item?.content}</p>
           <p
-            className={styles.article}
-          >{`AAAA건전지 개당 1000원에 판매합니다.`}</p>
-          <p className={styles.chatlikeview}>{`채팅3 · 관심 8 · 조회 3342`}</p>
+            className={styles.chatlikeview}
+          >{`채팅3 · 관심 ${item?.likeCount === undefined ? '' : item.likeCount} · 조회 3342`}</p>
           <NavLink to={`/reportitem`} className={styles.reportbutton}>
             이 게시글 신고하기
           </NavLink>

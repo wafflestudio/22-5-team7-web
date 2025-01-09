@@ -51,6 +51,9 @@ const MainPage = () => {
           `http://localhost:5173/api/home?articleId=${lastId}`,
           {
             method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
           },
         );
 
