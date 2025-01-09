@@ -67,10 +67,14 @@ const ItemPostPage = () => {
       location: place,
     };
 
+    const token = localStorage.getItem('token');
+
     try {
+      if (token === null) throw new Error('No token found');
       const response = await fetch('http://localhost:5173/api/item/post', {
         method: 'POST',
         headers: {
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(postData),

@@ -52,6 +52,9 @@ const MainPage = () => {
           //`https://eab7f8a7-4889-4c27-8a86-0305c4e85524.mock.pstmn.io/api/home?articleId=${lastId}`,
           {
             method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
           },
         );
 
