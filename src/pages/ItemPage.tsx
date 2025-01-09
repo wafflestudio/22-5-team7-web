@@ -4,7 +4,7 @@
 */
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
 
 import filledhearticon from '../assets/heart_filled_orange.svg';
@@ -15,28 +15,10 @@ import shareicon from '../assets/share_white.svg';
 import dotsicon from '../assets/three_dots_white.svg';
 import TemperatureGaugeSmall from '../components/TemperatureGaugeSmall';
 import styles from '../css/ItemPage.module.css';
-
-interface Seller {
-  id: string;
-  nickname: string;
-  location: string;
-  temperature: number;
-  email: string;
-}
-
-interface Item {
-  id: string;
-  seller: Seller;
-  title: string;
-  content: string;
-  price: number;
-  status: string;
-  location: string;
-  createdAt: string; // Instant 타입을 문자열로 처리
-  likeCount: number;
-}
+import type { Item } from '../typings/item';
 
 const ItemPage = () => {
+  const { id } = useParams<{ id: string }>();
   const [isLiked, setIsLiked] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -48,10 +30,7 @@ const ItemPage = () => {
     'https://via.placeholder.com/600',
   ];
   const profileimage = 'https://via.placeholder.com/100';
-  const price = 1200000;
-  const formattedPrice = new Intl.NumberFormat('ko-KR').format(price);
   const navigate = useNavigate();
-  const id = 1;
 
   const handleLikeClick = () => {
     setIsLiked(!isLiked);
@@ -69,12 +48,13 @@ const ItemPage = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const handleEditClick = () => {
-    // 수정 로직
-  };
+  const handleEditClick = () => {};
 
   const handleDeleteClick = async () => {
     try {
+      if (id === undefined) {
+        throw new Error('아이템 정보가 없습니다.');
+      }
       const response = await fetch(
         `http://localhost:5173/api/item/delete/${id}`,
         {
@@ -125,6 +105,9 @@ const ItemPage = () => {
   useEffect(() => {
     const fetchIteminfo = async () => {
       try {
+        if (id === undefined) {
+          throw new Error('아이템 정보가 없습니다.');
+        }
         const response = await fetch(
           `http://localhost:5173/api/item/get/${id}`,
           {
@@ -145,7 +128,7 @@ const ItemPage = () => {
     };
 
     void fetchIteminfo();
-  }, []);
+  }, [id]);
 
   return (
     <div className={styles.main}>
@@ -230,7 +213,10 @@ const ItemPage = () => {
       </div>
       <div className={styles.contentBox}>
         <div className={styles.profilebar}>
-          <NavLink to={`/profile/${id}`} className={styles.profile}>
+          <NavLink
+            to={`/profile/${item?.seller.id === undefined ? '' : item.seller.id}`}
+            className={styles.profile}
+          >
             <img src={profileimage} className={styles.profileimage}></img>
             <div className={styles.profiletext}>
               <p className={styles.nickname}>{item?.seller.nickname}</p>
@@ -239,7 +225,13 @@ const ItemPage = () => {
           </NavLink>
 
           <div className={styles.mannertempbox}>
-            <TemperatureGaugeSmall temperature={48.6} />
+            <TemperatureGaugeSmall
+              temperature={
+                item?.seller.temperature === undefined
+                  ? 0
+                  : item.seller.temperature
+              }
+            />
             <NavLink to={`/temp`} className={styles.temptext}>
               매너온도
             </NavLink>
@@ -268,7 +260,11 @@ const ItemPage = () => {
         </div>
         <div className={styles.priceandchat}>
           <div className={styles.pricebox}>
-            <p className={styles.price}>{`${formattedPrice}원`}</p>
+            <p className={styles.price}>
+              {item?.price !== undefined
+                ? `${Intl.NumberFormat('ko-KR').format(item.price)}원`
+                : '가격 정보 없음'}
+            </p>
             <p className={styles.offerstatus}>{`가격 제안 불가`}</p>
           </div>
           <button className={styles.chatbutton}>채팅하기</button>

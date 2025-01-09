@@ -12,6 +12,7 @@ const LoginPage = () => {
   const [nickName, setNickName] = useState<string>('');
   const [id, setId] = useState<string>('');
   const [pw, setPw] = useState<string>('');
+  const [selectedRegion, setSelectedRegion] = useState('');
   const [email, setEmail] = useState<string>('');
   const navigate = useNavigate();
 
@@ -40,6 +41,30 @@ const LoginPage = () => {
       console.error('error: ', error);
     }
   };
+
+  const regions = [
+    '보라매동',
+    '은천동',
+    '성현동',
+    '중앙동',
+    '청림동',
+    '행운동',
+    '청룡동',
+    '낙성대동',
+    '인헌동',
+    '남현동',
+    '신림동',
+    '신사동',
+    '조원동',
+    '미성동',
+    '난곡동',
+    '난향동',
+    '서원동',
+    '신원동',
+    '서림동',
+    '삼성동',
+    '대학동',
+  ];
 
   return (
     <div className={styles.main}>
@@ -95,6 +120,21 @@ const LoginPage = () => {
             setEmail(e.target.value);
           }}
         ></input>
+        <p>지역 설정</p>
+        <select
+          className={styles.inputBox}
+          value={selectedRegion}
+          onChange={(e) => {
+            setSelectedRegion(e.target.value);
+          }}
+        >
+          <option value="">지역을 선택하세요</option>
+          {regions.map((region) => (
+            <option key={region} value={region}>
+              {region}
+            </option>
+          ))}
+        </select>
         <button
           onClick={() => {
             handleRegisterClick().catch(() => {

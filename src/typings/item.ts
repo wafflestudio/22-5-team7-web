@@ -7,3 +7,23 @@ export type PreviewItem = {
   createdAt: string;
   likeCount: number;
 };
+
+interface Seller {
+  id: string;
+  nickname: string;
+  location: string;
+  temperature: number;
+  email: string;
+}
+
+export interface Item {
+  id: string;
+  seller: Seller;
+  title: string;
+  content: string;
+  price: number;
+  status: string;
+  location: string;
+  createdAt: string; // Instant 타입을 문자열로 처리
+  likeCount: number;
+}
