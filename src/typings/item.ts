@@ -27,3 +27,7 @@ export interface Item {
   createdAt: string;
   likeCount: number;
 }
+
+export type ArticleResponse = {
+  image_url: string[];
+};

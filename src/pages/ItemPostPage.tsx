@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import uploadIcon from '../assets/cameraIcon.svg';
 import quitcross from '../assets/quitcross.svg';
 import styles from '../css/ItemPostPage.module.css';
+import type { ArticleResponse } from '../typings/item';
+import { uploadImageToS3 } from '../utils/utils';
 
 const LONG_PLACEHOLDER_TEXT = `에 올릴 게시글 내용을 작성해 주세요. (판매 금지 물품은 게시가 제한될 수 있어요.)
 
@@ -71,6 +73,7 @@ const ItemPostPage = () => {
       content: article,
       price: Number(price),
       location: place,
+      image_count: images.length,
     };
 
     const token = localStorage.getItem('token');
@@ -90,8 +93,24 @@ const ItemPostPage = () => {
         throw new Error('서버에 데이터를 전송하지 못했습니다.');
       }
 
-      const result = (await response.json()) as string;
-      console.info('성공:', result);
+      const data = (await response.json()) as ArticleResponse;
+      console.info('업로드 성공, 사진 업로드 중');
+
+      const presignedUrls = data.image_url;
+      if (images.length !== presignedUrls.length)
+        throw new Error('이미지와 presigned URL 개수가 다릅니다');
+
+      // S3에 이미지 업로드
+      const uploadPromises = images.map((file, index) => {
+        const presignedUrl = presignedUrls[index];
+        if (presignedUrl === undefined)
+          throw new Error('Presigned URL is undefined');
+        return uploadImageToS3(file, presignedUrl);
+      });
+
+      const uploadedUrls = await Promise.all(uploadPromises);
+      console.info('모든 이미지 업로드 성공: ', uploadedUrls);
+
       void navigate('/main');
     } catch (error) {
       console.error('에러 발생:', error);
