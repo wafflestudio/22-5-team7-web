@@ -39,3 +39,19 @@ export const tempCommunityPostInfo = {
     },
   ],
 };
+
+export const tempUser = {
+  // MyProfilePage에 전달할 기본값
+  id: 0,
+  user: {
+    id: 'temp',
+    nickname: '',
+    location: 'temp',
+    temperature: 36.5,
+    email: 'temp',
+  },
+  manners: [],
+  reviews: [],
+  mannerCount: 0,
+  reviewCount: 0,
+};

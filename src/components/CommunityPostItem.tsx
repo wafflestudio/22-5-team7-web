@@ -19,8 +19,8 @@ const CommunityPostItem = ({ CommunityPostInfo }: CommunityPostItemProps) => {
         <p className={styles.postPreview}>{CommunityPostInfo.body}</p>
         <div className={styles.bottomLine}>
           <p className={styles.postInfo}>
-            {CommunityPostInfo.location}· {getTimeAgo(CommunityPostInfo.time)} ·
-            조회 {CommunityPostInfo.views}
+            {CommunityPostInfo.location} · {getTimeAgo(CommunityPostInfo.time)}{' '}
+            · 조회 {CommunityPostInfo.views}
           </p>
           <div className={styles.iconBox}>
             <img src={likeIcon} style={{ height: '18px' }} />

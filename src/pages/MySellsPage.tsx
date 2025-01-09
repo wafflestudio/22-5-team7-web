@@ -2,24 +2,87 @@
   나의 판매내역 페이지.
   '판매중', '거래완료' 로만 구분함
 */
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 import leftArrow from '../assets/leftarrow.svg';
 import placeHolder from '../assets/placeholder_gray.png';
+import Item from '../components/Item';
 import styles from '../css/SellsPage.module.css';
+import type { PreviewItem } from '../typings/item';
+import type { ErrorResponseType } from '../typings/user';
 
 const MySellsPage = () => {
   const [activeTab, setActiveTab] = useState<'selling' | 'sold'>('selling');
-  const sellingItems: string[] = [];
-  const soldItems = ['Item A', 'Item B'];
+  const [sellingItems, setSellingItems] = useState<PreviewItem[]>([]);
+  const [soldItems, setSoldItems] = useState<PreviewItem[]>([]);
+  const [lastId, setLastId] = useState(2100000);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchMySellsInfo = async () => {
+      const token = localStorage.getItem('token');
+      try {
+        if (token === null) throw new Error('No token found');
+        const response = await fetch(
+          `http://localhost:5173/api/mypage/sells?articleId=${lastId}`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`, // token 어떻게 전달하는지 얘기해봐야 함
+            },
+          },
+        );
+
+        if (!response.ok) {
+          const errorData = (await response.json()) as ErrorResponseType;
+          throw new Error(`데이터 불러오기 실패: ${errorData.error}`);
+        }
+
+        const data = (await response.json()) as PreviewItem[];
+        console.info(data);
+
+        const selling = data.filter(
+          (item) => item.status === '판매 중' || item.status === '예약 중',
+        );
+        const sold = data.filter((item) => item.status === '거래완료');
+
+        setSellingItems((prevItems) => [...prevItems, ...selling]); // 판매 중 or 예약 중
+        setSoldItems((prevItems) => [...prevItems, ...sold]); // 거래완료
+      } catch (error) {
+        console.error('error:', error);
+      }
+    };
+
+    void fetchMySellsInfo();
+  }, [lastId]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + window.scrollY >=
+        document.body.offsetHeight - 500
+      ) {
+        setLastId((prevLastId) => prevLastId - 10); // lastId 업데이트
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   return (
     <div className={styles.main}>
       <div className={styles.upperBar}>
-        <NavLink to="/mypage">
-          <img src={leftArrow} className={styles.upperIcon} />
-        </NavLink>
+        <img
+          src={leftArrow}
+          className={styles.upperIcon}
+          onClick={() => {
+            void navigate(-1);
+          }}
+        />
         <p className={styles.pageTitle}>나의 판매내역</p>
       </div>
       <div className={styles.profileBlock}>
@@ -63,11 +126,11 @@ const MySellsPage = () => {
             {sellingItems.length === 0 ? (
               <p className={styles.noItemsText}>판매중인 게시글이 없어요.</p>
             ) : (
-              <ul>
+              <div>
                 {sellingItems.map((item, index) => (
-                  <li key={index}>{item}</li>
+                  <Item key={index} ItemInfo={item} />
                 ))}
-              </ul>
+              </div>
             )}
           </>
         )}
@@ -76,11 +139,11 @@ const MySellsPage = () => {
             {soldItems.length === 0 ? (
               <p className={styles.noItemsText}>거래완료된 게시글이 없어요.</p>
             ) : (
-              <ul>
+              <div>
                 {soldItems.map((item, index) => (
-                  <li key={index}>{item}</li>
+                  <Item key={index} ItemInfo={item} />
                 ))}
-              </ul>
+              </div>
             )}
           </>
         )}

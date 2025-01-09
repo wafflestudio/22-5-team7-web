@@ -40,7 +40,7 @@ const MyPage = () => {
   const [temperature, setTemperature] = useState<number>(36.5);
 
   useEffect(() => {
-    const fetchLectureList = async () => {
+    const fetchMyPageInfo = async () => {
       const token = localStorage.getItem('token');
       try {
         if (token === null) throw new Error('No token found');
@@ -64,7 +64,7 @@ const MyPage = () => {
       }
     };
 
-    void fetchLectureList();
+    void fetchMyPageInfo();
   }, []);
 
   return (

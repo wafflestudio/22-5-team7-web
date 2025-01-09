@@ -7,42 +7,42 @@ import heartIcon from '../assets/heart_filled_gray.svg';
 import chatIcon from '../assets/navbar/navbar-chat-gray.svg';
 import placeHolder from '../assets/placeholder_gray.png';
 import styles from '../css/Item.module.css';
+import type { PreviewItem } from '../typings/item';
+import { getTimeAgo } from '../utils/utils';
 
-interface ItemProps {
-  title: string;
-  price: number;
-  status: string;
-  location: string;
-  createdAt: string;
-  likeCount: number;
-}
+type ItemProps = {
+  ItemInfo: PreviewItem;
+};
 
-const Item: React.FC<ItemProps> = ({
-  title,
-  price,
-  status,
-  location,
-  createdAt,
-  likeCount,
-}) => {
+const Item = ({ ItemInfo }: ItemProps) => {
   return (
-    <NavLink to={`/item/2`} className={styles.navLink}>
+    <NavLink to={`/item/${ItemInfo.id}`} className={styles.navLink}>
       <div className={styles.main}>
         <img src={placeHolder} className={styles.image} />
         <div className={styles.contentBox}>
           <div className={styles.textBox}>
-            <p className={styles.itemName}>{`${status} ${title}`}</p>
-            <p className={styles.itemInfo}>{`${location} + ${createdAt}`}</p>
+            <p className={styles.itemName}>{ItemInfo.title}</p>
+            <p
+              className={styles.itemInfo}
+            >{`${ItemInfo.location} · ${getTimeAgo(ItemInfo.createdAt)}`}</p>
             <p className={styles.itemPrice}>
-              {`${Intl.NumberFormat('ko-KR').format(price)}원`}
+              {ItemInfo.status === '판매 중' ? (
+                ''
+              ) : (
+                <span className={styles.itemStatus}>{ItemInfo.status}</span>
+              )}
+
+              {`${Intl.NumberFormat('ko-KR').format(ItemInfo.price)}원`}
             </p>
           </div>
           <div className={styles.subBox}>
             <div className={styles.iconBox}>
-              <img src={chatIcon} className={styles.smallIcon} /> {likeCount}
+              <img src={chatIcon} className={styles.smallIcon} />
+              {'14'}
             </div>
             <div className={styles.iconBox}>
-              <img src={heartIcon} className={styles.smallIcon} /> 14
+              <img src={heartIcon} className={styles.smallIcon} />
+              {ItemInfo.likeCount}
             </div>
           </div>
         </div>

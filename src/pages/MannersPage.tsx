@@ -6,81 +6,14 @@
   나의 관심목록 페이지.
 */
 
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import leftArrow from '../assets/leftarrow.svg';
 import peopleIcon from '../assets/people.svg';
+import Loader from '../components/Loader';
 import styles from '../css/MannersPage.module.css';
-
-const tempUser = {
-  // 나중에 API 연결
-  id: 'mytempid',
-  nickname: '단호한 호박',
-  userId: 'hobak123',
-  location: '대학동',
-  temperature: 40.7,
-  sellingItems: 2,
-  manners: [
-    {
-      label: '친절하고 매너가 좋아요.',
-      number: 45,
-    },
-    {
-      label: '시간 약속을 잘 지켜요.',
-      number: 42,
-    },
-    {
-      label: '제가 있는 곳까지 와서 거래했어요.',
-      number: 28,
-    },
-    {
-      label: '응답이 빨라요.',
-      number: 42,
-    },
-    {
-      label: '물품상태가 설명한 것과 같아요.',
-      number: 12,
-    },
-    {
-      label: '좋은 물품을 저렴하게 판매해요.',
-      number: 10,
-    },
-    {
-      label: '물품설명이 자세해요.',
-      number: 8,
-    },
-    {
-      label: '나눔을 해주셨어요.',
-      number: 5,
-    },
-  ],
-  reviews: [
-    {
-      profilePic: 'put_url_here',
-      nickname: '췌민킴',
-      type: '구매자',
-      location: '서울특별시 관악구',
-      time: 8,
-      text: '상품 상태가 좋네요 ^^',
-    },
-    {
-      profilePic: 'put_url_here',
-      nickname: 'ilovekimchi',
-      type: '판매자',
-      location: '서울특별시 송파구',
-      time: 27,
-      text: '잘 쓰세요~',
-    },
-    {
-      profilePic: 'put_url_here',
-      nickname: 'imwinter',
-      type: '구매자',
-      location: '서울특별시 영등포구',
-      time: 81,
-      text: '안녕하세요 에스파 윈터입니다~ 새로 나온 저희 앨범 잘 들어주세요!',
-    },
-  ],
-};
+import type { ErrorResponseType, Manner } from '../typings/user';
 
 const MANNER_INFO_TEXT = `
 - 받은 비매너 내역은 나에게만 보입니다.
@@ -95,7 +28,44 @@ const MANNER_INFO_TEXT = `
 `;
 
 const MannersPage = () => {
+  const { id } = useParams<{ id: string }>();
+  const [manners, setManners] = useState<Manner[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchMannersInfo = async () => {
+      try {
+        setLoading(true);
+        if (id === undefined) throw new Error('id is undefined!');
+        const response = await fetch(
+          `http://localhost:5173/api/profile/${id}/manners`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        );
+
+        if (!response.ok) {
+          const errorData = (await response.json()) as ErrorResponseType;
+          throw new Error(`데이터 불러오기 실패: ${errorData.error}`);
+        }
+
+        const data = (await response.json()) as Manner[];
+        console.info(data);
+        setManners(data);
+      } catch (error) {
+        console.error('error:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    void fetchMannersInfo();
+  }, [id]);
+
   return (
     <div className={styles.main}>
       <div className={styles.upperBar}>
@@ -109,35 +79,39 @@ const MannersPage = () => {
         </button>
         <p className={styles.pageTitle}>매너 상세</p>
       </div>
-      <div className={styles.contentBox}>
-        <div className={styles.mannerTitle}>
-          <span className={styles.mannerEmoji}>🙂</span>
-          <span>받은 매너 칭찬</span>
-        </div>
-        {tempUser.manners.length === 0 ? (
-          <p className={styles.mannerLine}>받은 매너가 없어요.</p>
-        ) : (
-          <>
-            {tempUser.manners
-              .sort((a, b) => b.number - a.number)
-              .map((manner, index) => (
-                <div key={index} className={styles.mannerLine}>
-                  <p>{manner.label}</p>
-                  <div className={styles.mannerLineRight}>
-                    <img src={peopleIcon} style={{ height: '20px' }} />
-                    {manner.number}
+      {loading ? (
+        <Loader marginTop="40vh" />
+      ) : (
+        <div className={styles.contentBox}>
+          <div className={styles.mannerTitle}>
+            <span className={styles.mannerEmoji}>🙂</span>
+            <span>받은 매너 칭찬</span>
+          </div>
+          {manners.length === 0 ? (
+            <p className={styles.mannerLine}>받은 매너가 없어요.</p>
+          ) : (
+            <>
+              {manners
+                .sort((a, b) => b.count - a.count)
+                .map((manner, index) => (
+                  <div key={index} className={styles.mannerLine}>
+                    <p>{manner.mannerType}</p>
+                    <div className={styles.mannerLineRight}>
+                      <img src={peopleIcon} style={{ height: '20px' }} />
+                      {manner.count}
+                    </div>
                   </div>
-                </div>
-              ))}
-          </>
-        )}
+                ))}
+            </>
+          )}
 
-        <div className={styles.mannerTitle}>
-          <span className={styles.mannerEmoji}>😞</span>
-          <span>받은 비매너</span>
+          <div className={styles.mannerTitle}>
+            <span className={styles.mannerEmoji}>😞</span>
+            <span>받은 비매너</span>
+          </div>
+          <p className={styles.mannerLine}>받은 비매너가 없어요.</p>
         </div>
-        <p className={styles.mannerLine}>받은 비매너가 없어요.</p>
-      </div>
+      )}
       <div className={styles.mannerInfoBox}>
         <p style={{ fontWeight: 'bold' }}>참고사항</p>
         <p className={styles.mannerInfoText}>{MANNER_INFO_TEXT}</p>
