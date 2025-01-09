@@ -41,11 +41,11 @@ export const tempCommunityPostInfo = {
 };
 
 export const tempUser = {
-  // 나중에 API 연결
+  // MyProfilePage에 전달할 기본값
   id: 0,
   user: {
     id: 'temp',
-    nickname: 'temp',
+    nickname: '',
     location: 'temp',
     temperature: 36.5,
     email: 'temp'

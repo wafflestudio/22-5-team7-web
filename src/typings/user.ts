@@ -14,12 +14,12 @@ export type SigninResponse = {
   accessToken: string;
 };
 
-type Manner = {
+export type Manner = {
   mannerType: string; // 매너 글귀 (친절하고 매너가 좋아요, 시간 약속을 잘 지켜요 등등)
   count: number; // 몇 명이 해당 매너 평가를 남겼는지
 };
 
-type Review = {
+export type Review = {
   id: number;
   content: string;
   seller: User;

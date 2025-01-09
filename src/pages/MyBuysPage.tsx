@@ -12,18 +12,22 @@ import type { ErrorResponseType } from '../typings/user';
 
 const MyBuysPage = () => {
   const [items, setItems] = useState<PreviewItem[]>([]);
+  const [lastId, setLastId] = useState(2100000);
 
   useEffect(() => {
     const fetchMyBuysInfo = async () => {
       const token = localStorage.getItem('token');
       try {
         if (token === null) throw new Error('No token found');
-        const response = await fetch('http://localhost:5173/api/mypage/likes', {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`, // token 어떻게 전달하는지 얘기해봐야 함
+        const response = await fetch(
+          `http://localhost:5173/api/mypage/buys?articleId=${lastId}`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`, // token 어떻게 전달하는지 얘기해봐야 함
+            },
           },
-        });
+        );
 
         if (!response.ok) {
           const errorData = (await response.json()) as ErrorResponseType;
@@ -32,14 +36,31 @@ const MyBuysPage = () => {
 
         const data = (await response.json()) as PreviewItem[];
         console.info(data);
-        setItems(data);
+        setItems((prevItems) => [...prevItems, ...data]);
       } catch (error) {
         console.error('error:', error);
       }
     };
 
     void fetchMyBuysInfo();
+  }, [lastId]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + window.scrollY >=
+        document.body.offsetHeight - 500
+      ) {
+        setLastId((prevLastId) => prevLastId - 10); // lastId 업데이트
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
+
   return (
     <div className={styles.main}>
       <div className={styles.upperBar}>
