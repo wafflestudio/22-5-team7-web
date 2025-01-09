@@ -113,8 +113,8 @@
 }
 
 .profileImagePlaceholder {
-  width: 30px; /* 프로필 이미지와 동일한 너비 */
-  height: 30px; /* 프로필 이미지와 동일한 높이 */
+  width: 30px;
+  height: 30px;
   margin: 5px;
   display: inline-block;
 }
@@ -131,6 +131,7 @@
   background-color: var(--daangn-lightgray);
   padding: 8px;
   border-radius: 10px;
+  max-width: 70vw;
 }
 
 .messagetime {
@@ -151,6 +152,7 @@
   padding: 8px 10px;
   border-radius: 16px;
   color: white;
+  max-width: 70vw;
 }
 
 .chatbar {
