@@ -47,12 +47,17 @@ const MainPage = () => {
   useEffect(() => {
     const fetchItemList = async () => {
       try {
+        const token = localStorage.getItem('token');
+        if (token === null) {
+          throw new Error('토큰이 없습니다.');
+        }
         const response = await fetch(
           `http://localhost:5173/api/home?articleId=${lastId}`,
           //`https://eab7f8a7-4889-4c27-8a86-0305c4e85524.mock.pstmn.io/api/home?articleId=${lastId}`,
           {
             method: 'GET',
             headers: {
+              Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json',
             },
           },

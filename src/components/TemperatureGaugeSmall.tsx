@@ -6,7 +6,8 @@ type TemperatureGaugeProps = {
 
 const TemperatureGaugeSmall = ({ temperature }: TemperatureGaugeProps) => {
   const getFillColor = (value: number) => {
-    if (value <= 25) return '#0000FF'; // Blue
+    if (value <= 25) return '#808080'; // Gray
+    if (value <= 35) return '#0000FF'; // Blue
     if (value <= 50) return '#00AD83'; // Green
     if (value <= 75) return '#ff8a3d'; // Orange
     return '#FF5733'; // Dark Orange

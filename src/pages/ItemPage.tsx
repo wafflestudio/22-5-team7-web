@@ -2,6 +2,7 @@
   MainPage나 SearchResultPage에서 특정 item을 클릭했을 때 연결되는 페이지.
   아이템 정보, 판매자 정보 등 띄워야 함
 */
+
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -16,6 +17,7 @@ import dotsicon from '../assets/three_dots_white.svg';
 import TemperatureGaugeSmall from '../components/TemperatureGaugeSmall';
 import styles from '../css/ItemPage.module.css';
 import type { Item } from '../typings/item';
+import { getTimeAgo } from '../utils/utils';
 
 const ItemPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -48,10 +50,19 @@ const ItemPage = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const handleEditClick = () => {};
+  const handleEditClick = () => {
+    if (id === undefined) {
+      throw new Error('아이템 정보가 없습니다.');
+    }
+    void navigate(`/itemedit/${id}`);
+  };
 
   const handleDeleteClick = async () => {
     try {
+      const token = localStorage.getItem('token');
+      if (token === null) {
+        throw new Error('토큰이 없습니다.');
+      }
       if (id === undefined) {
         throw new Error('아이템 정보가 없습니다.');
       }
@@ -59,7 +70,10 @@ const ItemPage = () => {
         `http://localhost:5173/api/item/delete/${id}`,
         {
           method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
         },
       );
 
@@ -105,6 +119,10 @@ const ItemPage = () => {
   useEffect(() => {
     const fetchIteminfo = async () => {
       try {
+        const token = localStorage.getItem('token');
+        if (token === null) {
+          throw new Error('토큰이 없습니다.');
+        }
         if (id === undefined) {
           throw new Error('아이템 정보가 없습니다.');
         }
@@ -112,7 +130,10 @@ const ItemPage = () => {
           `http://localhost:5173/api/item/get/${id}`,
           {
             method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
           },
         );
 
@@ -197,7 +218,7 @@ const ItemPage = () => {
             <img
               key={index}
               src={src}
-              className={styles.image}
+              className={`${styles.image === undefined ? '' : styles.image} ${styles.gradientOverlay === undefined ? '' : styles.gradientOverlay}`}
               alt={`item ${index}`}
             />
           ))}
@@ -239,8 +260,14 @@ const ItemPage = () => {
         </div>
         <div className={styles.itemInfo}>
           <p className={styles.titletext}>{item?.title}</p>
-          <p className={styles.categoryanddate}>{`디지털기기 · ~분전`}</p>
+          <p
+            className={styles.categoryanddate}
+          >{`디지털기기 · ${getTimeAgo(item?.createdAt === undefined ? '' : item.createdAt)}`}</p>
           <p className={styles.article}>{item?.content}</p>
+          <div className={styles.locationbox}>
+            <p className={styles.locationtitle}>거래 희망 장소</p>
+            <p className={styles.location}>{item?.location}</p>
+          </div>
           <p
             className={styles.chatlikeview}
           >{`채팅3 · 관심 ${item?.likeCount === undefined ? '' : item.likeCount} · 조회 3342`}</p>
