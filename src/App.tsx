@@ -25,6 +25,7 @@ import MannersPage from './pages/MannersPage';
 import MyBuysPage from './pages/MyBuysPage';
 import MyLikesPage from './pages/MyLikesPage';
 import MyPage from './pages/MyPage';
+import MyProfileEditPage from './pages/MyProfileEditPage';
 import MyProfilePage from './pages/MyProfilePage';
 import MySellsPage from './pages/MySellsPage';
 import ProfilePage from './pages/ProfilePage';
@@ -78,6 +79,7 @@ export const App = () => {
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/mypage/settings" element={<SettingsPage />} />
           <Route path="/mypage/profile" element={<MyProfilePage />} />
+          <Route path="/mypage/profile/edit" element={<MyProfileEditPage />} />
           <Route path="/mypage/likes" element={<MyLikesPage />} />
           <Route path="/mypage/sells" element={<MySellsPage />} />
           <Route path="/mypage/buys" element={<MyBuysPage />} />

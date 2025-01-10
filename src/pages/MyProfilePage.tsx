@@ -75,7 +75,7 @@ const MyProfilePage = () => {
               <img src={placeHolder} className={styles.profilePic} />
               {profile.user.nickname}
             </div>
-            <NavLink to="/temp" className={styles.profileEditButton}>
+            <NavLink to="edit" className={styles.profileEditButton}>
               프로필 수정
             </NavLink>
             <div style={{ display: 'flex' }}>
