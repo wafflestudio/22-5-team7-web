@@ -86,12 +86,12 @@
   display: none;
 }
 
-.nickname {
+.infoText {
   font-weight: bold;
   font-size: 15px;
 }
 
-.nicknameInput {
+.inputBox {
   border-radius: 8px;
   border: 1px solid #999999;
   padding: 8px;

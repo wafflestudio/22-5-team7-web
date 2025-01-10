@@ -94,22 +94,24 @@ const ItemPostPage = () => {
       }
 
       const data = (await response.json()) as ArticleResponse;
-      console.info('업로드 성공, 사진 업로드 중');
+      if (images.length > 0) {
+        console.info('업로드 성공, 사진 업로드 중');
 
-      const presignedUrls = data.image_url;
-      if (images.length !== presignedUrls.length)
-        throw new Error('이미지와 presigned URL 개수가 다릅니다');
+        const presignedUrls = data.image_url;
+        if (images.length !== presignedUrls.length)
+          throw new Error('이미지와 presigned URL 개수가 다릅니다');
 
-      // S3에 이미지 업로드
-      const uploadPromises = images.map((file, index) => {
-        const presignedUrl = presignedUrls[index];
-        if (presignedUrl === undefined)
-          throw new Error('Presigned URL is undefined');
-        return uploadImageToS3(file, presignedUrl);
-      });
+        // S3에 이미지 업로드
+        const uploadPromises = images.map((file, index) => {
+          const presignedUrl = presignedUrls[index];
+          if (presignedUrl === undefined)
+            throw new Error('Presigned URL is undefined');
+          return uploadImageToS3(file, presignedUrl);
+        });
 
-      const uploadedUrls = await Promise.all(uploadPromises);
-      console.info('모든 이미지 업로드 성공: ', uploadedUrls);
+        const uploadedUrls = await Promise.all(uploadPromises);
+        console.info('모든 이미지 업로드 성공: ', uploadedUrls);
+      }
 
       void navigate('/main');
     } catch (error) {
