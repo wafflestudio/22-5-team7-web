@@ -24,6 +24,6 @@ export interface Item {
   price: number;
   status: string;
   location: string;
-  createdAt: string; // Instant 타입을 문자열로 처리
+  createdAt: string;
   likeCount: number;
 }

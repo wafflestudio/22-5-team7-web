@@ -29,7 +29,9 @@ const LoginPage = () => {
         throw new Error(`로그인 실패: ${errorData.error}`);
       }
       const data = (await response.json()) as SigninResponse;
-      localStorage.setItem('token', data.accessToken); // Localstorage에 토큰 저장
+      localStorage.setItem('token', data.accessToken);
+      localStorage.setItem('userId', data.id);
+      localStorage.setItem('location', data.location);
       console.info('로그인 성공!');
       void navigate('/main');
     } catch (error) {

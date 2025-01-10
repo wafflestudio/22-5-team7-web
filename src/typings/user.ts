@@ -11,6 +11,8 @@ export type SignupUser = {
 };
 
 export type SigninResponse = {
+  id: string;
+  location: string;
   accessToken: string;
 };
 

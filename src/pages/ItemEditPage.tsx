@@ -2,17 +2,15 @@
     물품 올리기 페이지
 */
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import uploadIcon from '../assets/cameraIcon.svg';
 import quitcross from '../assets/quitcross.svg';
 import styles from '../css/ItemPostPage.module.css';
+import type { Item } from '../typings/item';
 
-const LONG_PLACEHOLDER_TEXT = `에 올릴 게시글 내용을 작성해 주세요. (판매 금지 물품은 게시가 제한될 수 있어요.)
-
-신뢰할 수 있는 거래를 위해 자세히 적어주세요. 과학기술정보통신부, 한국 인터넷진흥원과 함께 해요.`;
-
-const ItemPostPage = () => {
+const ItemEditPage = () => {
+  const { id } = useParams();
   const [title, setTitle] = useState<string>('');
   const [price, setPrice] = useState<string>('');
   const [article, setArticle] = useState<string>('');
@@ -65,26 +63,71 @@ const ItemPostPage = () => {
     }
   }, [article]);
 
-  const handlePostClick = async () => {
-    const postData = {
+  useEffect(() => {
+    const fetchIteminfo = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (token === null) {
+          throw new Error('토큰이 없습니다.');
+        }
+        if (id === undefined) {
+          throw new Error('아이템 정보가 없습니다.');
+        }
+        const response = await fetch(
+          `http://localhost:5173/api/item/get/${id}`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          },
+        );
+
+        if (!response.ok) {
+          throw new Error('서버에서 데이터를 받아오지 못했습니다.');
+        }
+
+        const data: Item = (await response.json()) as Item;
+        setPrice(data.price.toString());
+        setTitle(data.title);
+        setArticle(data.content);
+        setPlace(data.location);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    void fetchIteminfo();
+  }, [id]);
+
+  const handleEditClick = async () => {
+    const putData = {
       title,
       content: article,
       price: Number(price),
       location: place,
+      image_count: images.length,
     };
 
     const token = localStorage.getItem('token');
 
     try {
       if (token === null) throw new Error('No token found');
-      const response = await fetch('http://localhost:5173/api/item/post', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
+      if (id === undefined) {
+        throw new Error('아이템 정보가 없습니다.');
+      }
+      const response = await fetch(
+        `http://localhost:5173/api/item/edit/${id}`,
+        {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(putData),
         },
-        body: JSON.stringify(postData),
-      });
+      );
 
       if (!response.ok) {
         throw new Error('서버에 데이터를 전송하지 못했습니다.');
@@ -92,14 +135,14 @@ const ItemPostPage = () => {
 
       const result = (await response.json()) as string;
       console.info('성공:', result);
-      void navigate('/main');
+      void navigate(`/item/${id}`);
     } catch (error) {
       console.error('에러 발생:', error);
     }
   };
 
-  const handlePostClickWrapper = () => {
-    void handlePostClick();
+  const handleEditClickWrapper = () => {
+    void handleEditClick();
   };
 
   return (
@@ -113,8 +156,7 @@ const ItemPostPage = () => {
         >
           <img src={quitcross} className={styles.quitcross} />
         </button>
-        <p className={styles.upperbartext}>내 물건 팔기</p>
-        <p>임시저장</p>
+        <p className={styles.upperbartext}>중고거래 글 수정하기</p>
       </div>
       <div className={styles.imageToolbox}>
         <div className={styles.imageUpload}>
@@ -228,7 +270,7 @@ const ItemPostPage = () => {
         <p className={styles.infotexts}>자세한 설명</p>
         <textarea
           className={styles.articleBox}
-          placeholder={LONG_PLACEHOLDER_TEXT}
+          placeholder={`LONG_PLACEHOLDER_TEXT`}
           value={article}
           onChange={handleTextareaChange}
           ref={textareaRef}
@@ -243,8 +285,8 @@ const ItemPostPage = () => {
             setPlace(e.target.value);
           }}
         ></input>
-        <button onClick={handlePostClickWrapper} className={styles.PostButton}>
-          작성 완료
+        <button onClick={handleEditClickWrapper} className={styles.PostButton}>
+          수정 완료
         </button>
         <div className={styles.helpBox}></div>
       </div>
@@ -252,4 +294,4 @@ const ItemPostPage = () => {
   );
 };
 
-export default ItemPostPage;
+export default ItemEditPage;

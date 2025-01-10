@@ -38,12 +38,14 @@ const Item = ({ ItemInfo }: ItemProps) => {
           <div className={styles.subBox}>
             <div className={styles.iconBox}>
               <img src={chatIcon} className={styles.smallIcon} />
-              {'14'}
+              {14}
             </div>
-            <div className={styles.iconBox}>
-              <img src={heartIcon} className={styles.smallIcon} />
-              {ItemInfo.likeCount}
-            </div>
+            {ItemInfo.likeCount > 0 && (
+              <div className={styles.iconBox}>
+                <img src={heartIcon} className={styles.smallIcon} />
+                {ItemInfo.likeCount}
+              </div>
+            )}
           </div>
         </div>
       </div>
