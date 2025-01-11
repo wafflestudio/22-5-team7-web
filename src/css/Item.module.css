@@ -7,11 +7,18 @@
 
 .main {
   display: flex;
+  flex-direction: column;
   flex: 1;
   gap: 15px;
   padding-bottom: 15px;
   border-bottom: 1px solid var(--daangn-lightgray);
   text-decoration: none;
+}
+
+.upperBox {
+  display: flex;
+  flex: 1;
+  gap: 15px;
 }
 
 .image {

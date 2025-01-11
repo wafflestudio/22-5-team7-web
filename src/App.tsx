@@ -25,6 +25,7 @@ import MannersPage from './pages/MannersPage';
 import MyBuysPage from './pages/MyBuysPage';
 import MyLikesPage from './pages/MyLikesPage';
 import MyPage from './pages/MyPage';
+import MyProfileEditPage from './pages/MyProfileEditPage';
 import MyProfilePage from './pages/MyProfilePage';
 import MySellsPage from './pages/MySellsPage';
 import ProfilePage from './pages/ProfilePage';
@@ -34,6 +35,7 @@ import SearchPage from './pages/SearchPage';
 import SearchResultPage from './pages/SearchResultPage';
 import SellsPage from './pages/SellsPage';
 import SettingsPage from './pages/SettingsPage';
+import SocialLoginRedirectPage from './pages/SocialLoginRedirectPage';
 import TempPage from './pages/TempPage';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -63,6 +65,10 @@ export const App = () => {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route
+            path="/oauth2/redirect"
+            element={<SocialLoginRedirectPage />}
+          />
           <Route path="/item/:id" element={<ItemPage />} />
           <Route path="/itemedit/:id" element={<ItemEditPage />} />
           <Route path="/itempost" element={<ItemPostPage />} />
@@ -78,6 +84,7 @@ export const App = () => {
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/mypage/settings" element={<SettingsPage />} />
           <Route path="/mypage/profile" element={<MyProfilePage />} />
+          <Route path="/mypage/profile/edit" element={<MyProfileEditPage />} />
           <Route path="/mypage/likes" element={<MyLikesPage />} />
           <Route path="/mypage/sells" element={<MySellsPage />} />
           <Route path="/mypage/buys" element={<MyBuysPage />} />

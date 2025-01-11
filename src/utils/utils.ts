@@ -14,3 +14,30 @@ export const getTimeAgo = (isoTimestamp: string): string => {
   if (diffDays < 7) return `${diffDays}일 전`;
   return `${diffWeeks}주 전`;
 };
+
+export const uploadImageToS3 = async (
+  file: File,
+  presignedUrl: string,
+): Promise<string> => {
+  try {
+    // S3로 파일 업로드
+    const response = await fetch(presignedUrl, {
+      method: 'PUT',
+      body: file,
+      headers: {
+        'Content-Type': file.type,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to upload file: ${file.name}`);
+    }
+
+    const returnUrl = presignedUrl.split('?')[0];
+    if (returnUrl === undefined) throw new Error('returnUrl is undefined');
+    return returnUrl; // query param 없는 url
+  } catch (error) {
+    console.error(`Error uploading file ${file.name}:`, error);
+    throw error;
+  }
+};

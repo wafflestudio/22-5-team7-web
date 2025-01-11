@@ -52,7 +52,7 @@ const MyLikesPage = () => {
         window.innerHeight + window.scrollY >=
         document.body.offsetHeight - 500
       ) {
-        setLastId((prevLastId) => prevLastId - 10); // lastId 업데이트
+        setLastId(items[items.length - 1]?.id ?? 2100000);
       }
     };
 
@@ -60,7 +60,7 @@ const MyLikesPage = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [items]);
 
   return (
     <div className={styles.main}>

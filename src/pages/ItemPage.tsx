@@ -5,7 +5,7 @@
 
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
 
 import filledhearticon from '../assets/heart_filled_orange.svg';
@@ -18,6 +18,10 @@ import TemperatureGaugeSmall from '../components/TemperatureGaugeSmall';
 import styles from '../css/ItemPage.module.css';
 import type { Item } from '../typings/item';
 import { getTimeAgo } from '../utils/utils';
+
+type LocationState = {
+  from: string;
+} | null;
 
 const ItemPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -33,13 +37,20 @@ const ItemPage = () => {
   ];
   const profileimage = 'https://via.placeholder.com/100';
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLikeClick = () => {
     setIsLiked(!isLiked);
   };
 
   const handleBackClick = () => {
-    void navigate(-1);
+    const locationState = location.state as LocationState;
+
+    if (locationState !== null && locationState.from === 'itempost') {
+      void navigate(-2);
+    } else {
+      void navigate(-1);
+    }
   };
 
   const handleHomeClick = () => {
@@ -143,6 +154,7 @@ const ItemPage = () => {
 
         const data: Item = (await response.json()) as Item;
         setItem(data);
+        console.info(data.image_url);
       } catch (error) {
         console.error(error);
       }

@@ -4,6 +4,7 @@ export type PreviewItem = {
   price: number;
   status: '판매 중' | '예약 중' | '거래완료';
   location: string;
+  image_url: string | undefined;
   createdAt: string;
   likeCount: number;
 };
@@ -24,6 +25,13 @@ export interface Item {
   price: number;
   status: string;
   location: string;
+  image_url: string[];
   createdAt: string;
   likeCount: number;
+  viewCount: number;
 }
+
+export type ArticleResponse = {
+  id: number;
+  image_url: string[];
+};

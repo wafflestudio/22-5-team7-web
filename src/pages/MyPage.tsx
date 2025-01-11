@@ -47,7 +47,7 @@ const MyPage = () => {
         const response = await fetch('http://localhost:5173/api/mypage', {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${token}`, // token 어떻게 전달하는지 얘기해봐야 함
+            Authorization: `Bearer ${token}`,
           },
         });
 

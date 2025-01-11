@@ -1,0 +1,10 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 10px;
+  gap: 20px;
+}
+
+.leftArrow {
+  height: 25px;
+}

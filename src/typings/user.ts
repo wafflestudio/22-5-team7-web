@@ -1,5 +1,6 @@
 type User = {
   id: string;
+  userId: string;
   nickname: string;
   location: string;
   temperature: number;
@@ -11,8 +12,7 @@ export type SignupUser = {
 };
 
 export type SigninResponse = {
-  id: string;
-  location: string;
+  user: User;
   accessToken: string;
 };
 
