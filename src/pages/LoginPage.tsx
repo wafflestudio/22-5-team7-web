@@ -30,8 +30,8 @@ const LoginPage = () => {
       }
       const data = (await response.json()) as SigninResponse;
       localStorage.setItem('token', data.accessToken);
-      localStorage.setItem('userId', data.id);
-      localStorage.setItem('location', data.location);
+      localStorage.setItem('userId', data.user.id);
+      localStorage.setItem('location', data.user.location);
       console.info('로그인 성공!');
       void navigate('/main');
     } catch (error) {

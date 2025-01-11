@@ -48,6 +48,7 @@ const MainPage = () => {
     const fetchItemList = async () => {
       try {
         const token = localStorage.getItem('token');
+        console.info(token);
         if (token === null) {
           throw new Error('토큰이 없습니다.');
         }
@@ -70,6 +71,8 @@ const MainPage = () => {
         const data: ItemType[] = (await response.json()) as ItemType[];
         console.info(data);
         setItems((prevItems) => [...prevItems, ...data]);
+        mainPageToolBarInfo.mainText =
+          localStorage.getItem('location') === null ? '' : '대학동';
       } catch (error) {
         console.error(error);
       }

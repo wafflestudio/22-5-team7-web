@@ -25,6 +25,8 @@ const ItemPage = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [item, setItem] = useState<Item>();
+  const userId = localStorage.getItem('userId');
+  const [isMyItem, setIsMyItem] = useState(false);
   const images = [
     'https://via.placeholder.com/300',
     'https://via.placeholder.com/400',
@@ -48,6 +50,10 @@ const ItemPage = () => {
 
   const handleDotsClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleReportClick = () => {
+    void navigate('/main');
   };
 
   const handleEditClick = () => {
@@ -142,6 +148,7 @@ const ItemPage = () => {
         }
 
         const data: Item = (await response.json()) as Item;
+        setIsMyItem(data.seller.id === userId);
         setItem(data);
       } catch (error) {
         console.error(error);
@@ -149,7 +156,7 @@ const ItemPage = () => {
     };
 
     void fetchIteminfo();
-  }, [id]);
+  }, [id, isMyItem, userId]);
 
   return (
     <div className={styles.main}>
@@ -182,18 +189,29 @@ const ItemPage = () => {
                 ></div>
                 <div className={styles.actionSheet}>
                   <div className={styles.actionSheetContent}>
-                    <button
-                      onClick={handleEditClick}
-                      className={styles.editbutton}
-                    >
-                      게시글 수정
-                    </button>
-                    <button
-                      onClick={handleDeleteClickWrappper}
-                      className={styles.deletebutton}
-                    >
-                      삭제
-                    </button>
+                    {isMyItem ? (
+                      <>
+                        <button
+                          onClick={handleEditClick}
+                          className={styles.editbutton}
+                        >
+                          게시글 수정
+                        </button>
+                        <button
+                          onClick={handleDeleteClickWrappper}
+                          className={styles.deletebutton}
+                        >
+                          삭제
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        onClick={handleReportClick}
+                        className={styles.reportbutton}
+                      >
+                        신고
+                      </button>
+                    )}
                   </div>
                   <button
                     onClick={handleCancelClick}
@@ -270,8 +288,8 @@ const ItemPage = () => {
           </div>
           <p
             className={styles.chatlikeview}
-          >{`채팅3 · 관심 ${item?.likeCount === undefined ? '' : item.likeCount} · 조회 3342`}</p>
-          <NavLink to={`/reportitem`} className={styles.reportbutton}>
+          >{`채팅3 · 관심 ${item?.likeCount === undefined ? '' : item.likeCount} · 조회 ${item?.viewCount === undefined ? '' : item.viewCount}`}</p>
+          <NavLink to={`/reportitem`} className={styles.reporttext}>
             이 게시글 신고하기
           </NavLink>
         </div>

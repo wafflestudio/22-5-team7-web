@@ -71,6 +71,7 @@ const ItemPostPage = () => {
       content: article,
       price: Number(price),
       location: place,
+      image_count: images.length,
     };
 
     const token = localStorage.getItem('token');

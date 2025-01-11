@@ -26,4 +26,5 @@ export interface Item {
   location: string;
   createdAt: string;
   likeCount: number;
+  viewCount: number;
 }

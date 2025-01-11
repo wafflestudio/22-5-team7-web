@@ -114,6 +114,15 @@
   font-weight: bold;
 }
 
+.reportbutton {
+  background-color: white;
+  border-radius: 10px;
+  border: none;
+  padding: 10px;
+  color: rgb(72, 114, 253);
+  font-size: 18px;
+}
+
 .imagecontainer {
   display: flex;
   justify-content: center;
@@ -279,7 +288,7 @@
   font-weight: bold;
 }
 
-.reportbutton {
+.reporttext {
   color: #666666;
   font-size: 14px;
 }
