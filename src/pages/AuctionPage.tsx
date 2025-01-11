@@ -4,7 +4,10 @@
 import bellIcon from '../assets/upperbar-bell.svg';
 import profileIcon from '../assets/upperbar-profile.svg';
 import searchIcon from '../assets/upperbar-search.svg';
+import AuctionItem from '../components/AuctionItem';
 import UpperBar from '../components/UpperBar';
+import styles from '../css/AuctionPage.module.css';
+import type { PreviewAuctionItem } from '../typings/auctionitem';
 import type { toolBarInfo } from '../typings/toolBar';
 
 const auctionPageToolBarInfo: toolBarInfo = {
@@ -29,11 +32,27 @@ const auctionPageToolBarInfo: toolBarInfo = {
   ],
 };
 
+const mockAuctionItem: PreviewAuctionItem = {
+  id: 1,
+  title: '빈티지 시계',
+  price: 50000,
+  status: true,
+  location: '서울특별시 강남구',
+  image_url: 'https://example.com/vintage-watch.jpg',
+  createdAt: '2025-01-11T07:40:00Z',
+  likeCount: 10,
+};
+
 const AuctionPage = () => {
   return (
     <div>
       <UpperBar toolBarInfo={auctionPageToolBarInfo} />
-      <div>경매</div>
+      <button className={styles.postbutton}>+ 글쓰기</button>
+      <AuctionItem ItemInfo={mockAuctionItem}></AuctionItem>
+      <AuctionItem ItemInfo={mockAuctionItem}></AuctionItem>
+      <AuctionItem ItemInfo={mockAuctionItem}></AuctionItem>
+      <AuctionItem ItemInfo={mockAuctionItem}></AuctionItem>
+      <AuctionItem ItemInfo={mockAuctionItem}></AuctionItem>
     </div>
   );
 };
