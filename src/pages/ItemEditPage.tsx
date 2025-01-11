@@ -135,7 +135,9 @@ const ItemEditPage = () => {
 
       const result = (await response.json()) as string;
       console.info('성공:', result);
-      void navigate(`/item/${id}`);
+      void navigate(`/item/${id}`, {
+        state: { from: 'itempost' },
+      });
     } catch (error) {
       console.error('에러 발생:', error);
     }

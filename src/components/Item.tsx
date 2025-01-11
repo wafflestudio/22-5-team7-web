@@ -18,34 +18,39 @@ const Item = ({ ItemInfo }: ItemProps) => {
   return (
     <NavLink to={`/item/${ItemInfo.id}`} className={styles.navLink}>
       <div className={styles.main}>
-        <img src={placeHolder} className={styles.image} />
-        <div className={styles.contentBox}>
-          <div className={styles.textBox}>
-            <p className={styles.itemName}>{ItemInfo.title}</p>
-            <p
-              className={styles.itemInfo}
-            >{`${ItemInfo.location} · ${getTimeAgo(ItemInfo.createdAt)}`}</p>
-            <p className={styles.itemPrice}>
-              {ItemInfo.status === '판매 중' ? (
-                ''
-              ) : (
-                <span className={styles.itemStatus}>{ItemInfo.status}</span>
-              )}
+        <div className={styles.upperBox}>
+          <img
+            src={ItemInfo.image_url ?? placeHolder}
+            className={styles.image}
+          />
+          <div className={styles.contentBox}>
+            <div className={styles.textBox}>
+              <p className={styles.itemName}>{ItemInfo.title}</p>
+              <p
+                className={styles.itemInfo}
+              >{`${ItemInfo.location} · ${getTimeAgo(ItemInfo.createdAt)}`}</p>
+              <p className={styles.itemPrice}>
+                {ItemInfo.status === '판매 중' ? (
+                  ''
+                ) : (
+                  <span className={styles.itemStatus}>{ItemInfo.status}</span>
+                )}
 
-              {`${Intl.NumberFormat('ko-KR').format(ItemInfo.price)}원`}
-            </p>
-          </div>
-          <div className={styles.subBox}>
-            <div className={styles.iconBox}>
-              <img src={chatIcon} className={styles.smallIcon} />
-              {14}
+                {`${Intl.NumberFormat('ko-KR').format(ItemInfo.price)}원`}
+              </p>
             </div>
-            {ItemInfo.likeCount > 0 && (
+            <div className={styles.subBox}>
               <div className={styles.iconBox}>
-                <img src={heartIcon} className={styles.smallIcon} />
-                {ItemInfo.likeCount}
+                <img src={chatIcon} className={styles.smallIcon} />
+                {14}
               </div>
-            )}
+              {ItemInfo.likeCount > 0 && (
+                <div className={styles.iconBox}>
+                  <img src={heartIcon} className={styles.smallIcon} />
+                  {ItemInfo.likeCount}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

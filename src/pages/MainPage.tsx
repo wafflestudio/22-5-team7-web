@@ -84,7 +84,7 @@ const MainPage = () => {
         window.innerHeight + window.scrollY >=
         document.body.offsetHeight - 500
       ) {
-        setLastId((prevLastId) => prevLastId - 10); // lastId 업데이트
+        setLastId(items[items.length - 1]?.id ?? 2100000); // lastId 업데이트
       }
     };
 
@@ -92,7 +92,7 @@ const MainPage = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [items]);
 
   return (
     <div className={styles.main}>

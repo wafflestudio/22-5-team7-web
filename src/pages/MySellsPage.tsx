@@ -7,7 +7,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 
 import leftArrow from '../assets/leftarrow.svg';
 import placeHolder from '../assets/placeholder_gray.png';
-import Item from '../components/Item';
+import SellingItem from '../components/SellingItem';
 import styles from '../css/SellsPage.module.css';
 import type { PreviewItem } from '../typings/item';
 import type { ErrorResponseType } from '../typings/user';
@@ -17,6 +17,7 @@ const MySellsPage = () => {
   const [sellingItems, setSellingItems] = useState<PreviewItem[]>([]);
   const [soldItems, setSoldItems] = useState<PreviewItem[]>([]);
   const [lastId, setLastId] = useState(2100000);
+  const [nextRequestId, setNextRequestId] = useState(2100000);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,6 +43,8 @@ const MySellsPage = () => {
         const data = (await response.json()) as PreviewItem[];
         console.info(data);
 
+        setNextRequestId(data[data.length - 1]?.id ?? 0);
+
         const selling = data.filter(
           (item) => item.status === '판매 중' || item.status === '예약 중',
         );
@@ -63,7 +66,7 @@ const MySellsPage = () => {
         window.innerHeight + window.scrollY >=
         document.body.offsetHeight - 500
       ) {
-        setLastId((prevLastId) => prevLastId - 10); // lastId 업데이트
+        setLastId(nextRequestId);
       }
     };
 
@@ -71,7 +74,7 @@ const MySellsPage = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [nextRequestId]);
 
   return (
     <div className={styles.main}>
@@ -128,7 +131,7 @@ const MySellsPage = () => {
             ) : (
               <div>
                 {sellingItems.map((item, index) => (
-                  <Item key={index} ItemInfo={item} />
+                  <SellingItem key={index} ItemInfo={item} />
                 ))}
               </div>
             )}
@@ -141,7 +144,7 @@ const MySellsPage = () => {
             ) : (
               <div>
                 {soldItems.map((item, index) => (
-                  <Item key={index} ItemInfo={item} />
+                  <SellingItem key={index} ItemInfo={item} />
                 ))}
               </div>
             )}

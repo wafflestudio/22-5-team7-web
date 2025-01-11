@@ -113,7 +113,9 @@ const ItemPostPage = () => {
         console.info('모든 이미지 업로드 성공: ', uploadedUrls);
       }
 
-      void navigate('/main');
+      void navigate(`/item/${data.id}`, {
+        state: { from: 'itempost' },
+      });
     } catch (error) {
       console.error('에러 발생:', error);
     }
