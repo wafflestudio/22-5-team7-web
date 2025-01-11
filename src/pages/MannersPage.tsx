@@ -38,15 +38,12 @@ const MannersPage = () => {
       try {
         setLoading(true);
         if (id === undefined) throw new Error('id is undefined!');
-        const response = await fetch(
-          `http://localhost:5173/api/profile/${id}/manners`,
-          {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
+        const response = await fetch(`/api/profile/${id}/manners`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
           },
-        );
+        });
 
         if (!response.ok) {
           const errorData = (await response.json()) as ErrorResponseType;

@@ -29,7 +29,7 @@ const MyProfilePage = () => {
         setLoading(true);
         if (token === null) throw new Error('No token found');
         const response = await fetch(
-          'http://localhost:5173/api/mypage/profile',
+          '/api/mypage/profile',
           //'https://eab7f8a7-4889-4c27-8a86-0305c4e85524.mock.pstmn.io/api/mypage/profile',  // mock API
           {
             method: 'GET',

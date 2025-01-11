@@ -44,7 +44,7 @@ const MyPage = () => {
       const token = localStorage.getItem('token');
       try {
         if (token === null) throw new Error('No token found');
-        const response = await fetch('http://localhost:5173/api/mypage', {
+        const response = await fetch('/api/mypage', {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,

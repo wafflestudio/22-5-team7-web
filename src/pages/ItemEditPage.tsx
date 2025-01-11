@@ -73,16 +73,13 @@ const ItemEditPage = () => {
         if (id === undefined) {
           throw new Error('아이템 정보가 없습니다.');
         }
-        const response = await fetch(
-          `http://localhost:5173/api/item/get/${id}`,
-          {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
+        const response = await fetch(`/api/item/get/${id}`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
           },
-        );
+        });
 
         if (!response.ok) {
           throw new Error('서버에서 데이터를 받아오지 못했습니다.');
@@ -117,17 +114,14 @@ const ItemEditPage = () => {
       if (id === undefined) {
         throw new Error('아이템 정보가 없습니다.');
       }
-      const response = await fetch(
-        `http://localhost:5173/api/item/edit/${id}`,
-        {
-          method: 'PUT',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(putData),
+      const response = await fetch(`/api/item/edit/${id}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
-      );
+        body: JSON.stringify(putData),
+      });
 
       if (!response.ok) {
         throw new Error('서버에 데이터를 전송하지 못했습니다.');
