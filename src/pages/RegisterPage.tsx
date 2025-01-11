@@ -18,7 +18,7 @@ const LoginPage = () => {
 
   const handleRegisterClick = async () => {
     try {
-      const response = await fetch('http://localhost:5173/auth/sign/up', {
+      const response = await fetch('http://localhost:5173/api/auth/sign/up', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

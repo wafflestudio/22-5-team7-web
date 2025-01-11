@@ -10,10 +10,6 @@ export default defineConfig({
         target: 'http://52.78.132.59:8080',
         changeOrigin: true,
       },
-      '/auth': {
-        target: 'http://52.78.132.59:8080',
-        changeOrigin: true,
-      },
     },
   },
 });

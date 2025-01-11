@@ -10,8 +10,6 @@ import clockIcon from '../assets/clock_gray.svg';
 import leftArrow from '../assets/leftarrow.svg';
 import styles from '../css/SearchPage.module.css';
 
-const tempLocation = '대학동';
-
 type stateProps = {
   focusSearchBar: boolean;
   query: string;
@@ -78,7 +76,7 @@ const SearchPage = () => {
           type="search"
           ref={searchInputRef}
           className={styles.searchBar}
-          placeholder={`${tempLocation} 근처에서 검색`}
+          placeholder={`${localStorage.getItem('location') ?? ''} 근처에서 검색`}
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
