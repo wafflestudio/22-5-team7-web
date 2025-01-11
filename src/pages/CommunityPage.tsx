@@ -16,7 +16,7 @@ import type { toolBarInfo } from '../typings/toolBar';
 
 const communityPageToolBarInfo: toolBarInfo = {
   path: '/community',
-  mainText: '대학동',
+  mainText: localStorage.getItem('location') ?? '',
   toolBarItems: [
     {
       pathTo: '/temp',

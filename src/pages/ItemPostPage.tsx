@@ -96,6 +96,7 @@ const ItemPostPage = () => {
       const data = (await response.json()) as ArticleResponse;
       if (images.length > 0) {
         console.info('업로드 성공, 사진 업로드 중');
+        console.info(data.image_url);
 
         const presignedUrls = data.image_url;
         if (images.length !== presignedUrls.length)

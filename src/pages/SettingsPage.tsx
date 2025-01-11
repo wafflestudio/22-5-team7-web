@@ -18,7 +18,7 @@ const SettingsPage = () => {
 
   const handleConfirmLogout = () => {
     setIsLogoutPopupVisible(false);
-    localStorage.removeItem('token');
+    localStorage.clear();
     void navigate('/');
     console.info('로그아웃 성공!');
   };

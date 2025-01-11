@@ -35,11 +35,6 @@ const SellingItem = ({ ItemInfo }: SellingItemProps) => {
     setIsDropdownOpen(false);
   };
 
-  const handleEditClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    void navigate(`/itemedit/${ItemInfo.id}`);
-  };
-
   const handleReserveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     // 로직 추가
@@ -50,6 +45,46 @@ const SellingItem = ({ ItemInfo }: SellingItemProps) => {
     e.preventDefault();
     // 로직 추가
     setIsDropdownOpen(false);
+  };
+
+  const handleEditClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    void navigate(`/itemedit/${ItemInfo.id}`);
+  };
+
+  const handleDeleteClick = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (token === null) {
+        throw new Error('토큰이 없습니다.');
+      }
+      const response = await fetch(
+        `http://localhost:5173/api/item/delete/${ItemInfo.id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error('삭제 요청에 실패했습니다.');
+      }
+
+      void navigate('/main');
+    } catch (error) {
+      console.error('삭제 중 에러 발생:', error);
+    }
+  };
+
+  const handleDeleteClickWrapper = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setIsDropdownOpen(false);
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      void handleDeleteClick();
+    }
   };
 
   return (
@@ -122,7 +157,12 @@ const SellingItem = ({ ItemInfo }: SellingItemProps) => {
               <button className={styles.bluebutton} onClick={handleEditClick}>
                 게시글 수정
               </button>
-              <button className={styles.redbutton}>삭제</button>
+              <button
+                className={styles.redbutton}
+                onClick={handleDeleteClickWrapper}
+              >
+                삭제
+              </button>
             </div>
             <button onClick={handleCancelClick} className={styles.cancelbutton}>
               취소
