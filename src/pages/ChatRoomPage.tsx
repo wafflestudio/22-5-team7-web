@@ -1,7 +1,7 @@
 /*
   각 채팅방에 해당하는 페이지.
 */
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import callIcon from '../assets/callicon.svg';
 import leftarrow from '../assets/leftarrow.svg';
@@ -24,6 +24,44 @@ const ChatRoomPage = () => {
   const profileImage = 'https://via.placeholder.com/100';
   const price = 1200000;
   const formattedPrice = new Intl.NumberFormat('ko-KR').format(price);
+  //const [inputMessage, setInputMessage] = useState<string>('');
+  const socketRef = useRef<WebSocket | null>(null);
+
+  useEffect(() => {
+    // WebSocket 연결 설정
+    socketRef.current = new WebSocket('ws://your-websocket-url'); // 실제 WebSocket URL로 변경하세요
+
+    socketRef.current.onopen = () => {
+      console.info('WebSocket 연결이 열렸습니다.');
+    };
+
+    socketRef.current.onmessage = (event) => {
+      const data: message = JSON.parse(event.data as string) as message;
+      const newMessage: message = {
+        sender: data.sender,
+        text: data.text,
+        time: data.time,
+      };
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+    };
+
+    socketRef.current.onclose = () => {
+      console.info('WebSocket 연결이 닫혔습니다.');
+    };
+
+    return () => {
+      if (socketRef.current !== null) {
+        socketRef.current.close();
+      }
+    };
+  }, []);
+
+  /*const sendMessage = () => {
+    if (socketRef.current !== null && inputMessage.trim() !== '') {
+      socketRef.current.send(inputMessage);
+      setInputMessage('');
+    }
+  };*/
 
   const handleSendClick = () => {
     if (currentInput.trim() !== '') {
