@@ -41,7 +41,64 @@ const ItemPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleLikeClick = () => {
+  const handleLikeClick = async () => {
+    if (!isLiked) {
+      try {
+        const token = localStorage.getItem('token');
+        if (token === null) {
+          throw new Error('토큰이 없습니다.');
+        }
+        if (id === undefined) {
+          throw new Error('아이템 정보가 없습니다.');
+        }
+        const response = await fetch(
+          `http://localhost:5173/api/item/like/${id}`,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          },
+        );
+
+        if (!response.ok) {
+          throw new Error('관심 요청에 실패했습니다.');
+        }
+
+        void navigate('/main');
+      } catch (error) {
+        console.error('관심 중 에러 발생:', error);
+      }
+    } else {
+      try {
+        const token = localStorage.getItem('token');
+        if (token === null) {
+          throw new Error('토큰이 없습니다.');
+        }
+        if (id === undefined) {
+          throw new Error('아이템 정보가 없습니다.');
+        }
+        const response = await fetch(
+          `http://localhost:5173/api/item/unlike/${id}`,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          },
+        );
+
+        if (!response.ok) {
+          throw new Error('관심 요청에 실패했습니다.');
+        }
+
+        void navigate('/main');
+      } catch (error) {
+        console.error('관심 중 에러 발생:', error);
+      }
+    }
     setIsLiked(!isLiked);
   };
 
@@ -102,6 +159,10 @@ const ItemPage = () => {
     } catch (error) {
       console.error('삭제 중 에러 발생:', error);
     }
+  };
+
+  const handleLikeClickWrappper = () => {
+    void handleLikeClick();
   };
 
   const handleDeleteClickWrappper = () => {
@@ -312,7 +373,7 @@ const ItemPage = () => {
             src={isLiked ? filledhearticon : emptyhearticon}
             className={styles.likeicon}
             alt="like"
-            onClick={handleLikeClick}
+            onClick={handleLikeClickWrappper}
           />
         </div>
         <div className={styles.priceandchat}>

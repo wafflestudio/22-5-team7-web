@@ -2,6 +2,7 @@
   각 채팅방에 해당하는 페이지.
 */
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import callIcon from '../assets/callicon.svg';
 import leftarrow from '../assets/leftarrow.svg';
@@ -26,6 +27,7 @@ const ChatRoomPage = () => {
   const formattedPrice = new Intl.NumberFormat('ko-KR').format(price);
   //const [inputMessage, setInputMessage] = useState<string>('');
   const socketRef = useRef<WebSocket | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // WebSocket 연결 설정
@@ -63,6 +65,10 @@ const ChatRoomPage = () => {
     }
   };*/
 
+  const handleBackClick = () => {
+    void navigate(-1);
+  };
+
   const handleSendClick = () => {
     if (currentInput.trim() !== '') {
       const newMessage: message = {
@@ -97,7 +103,11 @@ const ChatRoomPage = () => {
   return (
     <div className={styles.main}>
       <div className={styles.upperbar}>
-        <img src={leftarrow} className={styles.icon}></img>
+        <img
+          src={leftarrow}
+          className={styles.icon}
+          onClick={handleBackClick}
+        ></img>
         <div className={styles.opponentinfo}>
           <p className={styles.opponentnickname}>이룸이</p>
           <p className={styles.opponenttemp}>47.9°C</p>
