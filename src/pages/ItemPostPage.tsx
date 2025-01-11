@@ -80,7 +80,7 @@ const ItemPostPage = () => {
 
     try {
       if (token === null) throw new Error('No token found');
-      const response = await fetch('http://localhost:5173/api/item/post', {
+      const response = await fetch('/api/item/post', {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,

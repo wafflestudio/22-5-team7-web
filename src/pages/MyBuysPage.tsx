@@ -19,15 +19,12 @@ const MyBuysPage = () => {
       const token = localStorage.getItem('token');
       try {
         if (token === null) throw new Error('No token found');
-        const response = await fetch(
-          `http://localhost:5173/api/mypage/buys?articleId=${lastId}`,
-          {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${token}`, // token 어떻게 전달하는지 얘기해봐야 함
-            },
+        const response = await fetch(`/api/mypage/buys?articleId=${lastId}`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`, // token 어떻게 전달하는지 얘기해봐야 함
           },
-        );
+        });
 
         if (!response.ok) {
           const errorData = (await response.json()) as ErrorResponseType;

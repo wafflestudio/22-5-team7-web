@@ -58,16 +58,13 @@ const SellingItem = ({ ItemInfo }: SellingItemProps) => {
       if (token === null) {
         throw new Error('토큰이 없습니다.');
       }
-      const response = await fetch(
-        `http://localhost:5173/api/item/delete/${ItemInfo.id}`,
-        {
-          method: 'DELETE',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
+      const response = await fetch(`/api/item/delete/${ItemInfo.id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
-      );
+      });
 
       if (!response.ok) {
         throw new Error('삭제 요청에 실패했습니다.');

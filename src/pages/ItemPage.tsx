@@ -32,12 +32,12 @@ const ItemPage = () => {
   const userId = localStorage.getItem('userId');
   const [isMyItem, setIsMyItem] = useState(false);
   const images = [
-    'https://via.placeholder.com/300',
-    'https://via.placeholder.com/400',
-    'https://via.placeholder.com/500',
-    'https://via.placeholder.com/600',
+    'https://placehold.co/300',
+    'https://placehold.co/400',
+    'https://placehold.co/500',
+    'https://placehold.co/600',
   ];
-  const profileimage = 'https://via.placeholder.com/100';
+  const profileimage = 'https://placehold.co/100';
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -51,16 +51,13 @@ const ItemPage = () => {
         if (id === undefined) {
           throw new Error('아이템 정보가 없습니다.');
         }
-        const response = await fetch(
-          `http://localhost:5173/api/item/like/${id}`,
-          {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
+        const response = await fetch(`/api/item/like/${id}`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
           },
-        );
+        });
 
         if (!response.ok) {
           throw new Error('관심 요청에 실패했습니다.');
@@ -79,16 +76,13 @@ const ItemPage = () => {
         if (id === undefined) {
           throw new Error('아이템 정보가 없습니다.');
         }
-        const response = await fetch(
-          `http://localhost:5173/api/item/unlike/${id}`,
-          {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
+        const response = await fetch(`api/item/unlike/${id}`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
           },
-        );
+        });
 
         if (!response.ok) {
           throw new Error('관심 요청에 실패했습니다.');
@@ -140,16 +134,13 @@ const ItemPage = () => {
       if (id === undefined) {
         throw new Error('아이템 정보가 없습니다.');
       }
-      const response = await fetch(
-        `http://localhost:5173/api/item/delete/${id}`,
-        {
-          method: 'DELETE',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
+      const response = await fetch(`/api/item/delete/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
-      );
+      });
 
       if (!response.ok) {
         throw new Error('삭제 요청에 실패했습니다.');
@@ -204,16 +195,13 @@ const ItemPage = () => {
         if (id === undefined) {
           throw new Error('아이템 정보가 없습니다.');
         }
-        const response = await fetch(
-          `http://localhost:5173/api/item/get/${id}`,
-          {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
+        const response = await fetch(`/api/item/get/${id}`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
           },
-        );
+        });
 
         if (!response.ok) {
           throw new Error('서버에서 데이터를 받아오지 못했습니다.');
