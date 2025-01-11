@@ -15,7 +15,7 @@ import type { toolBarInfo } from '../typings/toolBar';
 
 const mainPageToolBarInfo: toolBarInfo = {
   path: '/main',
-  mainText: '대학동',
+  mainText: localStorage.getItem('location') ?? '',
   toolBarItems: [
     {
       pathTo: '/temp',
@@ -52,7 +52,7 @@ const MainPage = () => {
           throw new Error('토큰이 없습니다.');
         }
         const response = await fetch(
-          `http://localhost:5173/api/home?articleId=${lastId}`,
+          `/api/home?articleId=${lastId}`,
           //`https://eab7f8a7-4889-4c27-8a86-0305c4e85524.mock.pstmn.io/api/home?articleId=${lastId}`,
           {
             method: 'GET',
