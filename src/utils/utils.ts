@@ -15,7 +15,10 @@ export const getTimeAgo = (isoTimestamp: string): string => {
   return `${diffWeeks}주 전`;
 };
 
-export const uploadImageToS3 = async (file: File, presignedUrl: string): Promise<string> => {
+export const uploadImageToS3 = async (
+  file: File,
+  presignedUrl: string,
+): Promise<string> => {
   try {
     // S3로 파일 업로드
     const response = await fetch(presignedUrl, {
@@ -31,7 +34,7 @@ export const uploadImageToS3 = async (file: File, presignedUrl: string): Promise
     }
 
     const returnUrl = presignedUrl.split('?')[0];
-    if (returnUrl === undefined) throw new Error ('returnUrl is undefined');
+    if (returnUrl === undefined) throw new Error('returnUrl is undefined');
     return returnUrl; // query param 없는 url
   } catch (error) {
     console.error(`Error uploading file ${file.name}:`, error);

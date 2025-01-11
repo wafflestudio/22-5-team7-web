@@ -45,6 +45,7 @@ export const tempUser = {
   id: 0,
   user: {
     id: 'temp',
+    userId: 'temp',
     nickname: '',
     location: 'temp',
     temperature: 36.5,
