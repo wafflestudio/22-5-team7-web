@@ -154,6 +154,7 @@ const ItemPage = () => {
 
         const data: Item = (await response.json()) as Item;
         setItem(data);
+        console.info(data.image_url);
       } catch (error) {
         console.error(error);
       }

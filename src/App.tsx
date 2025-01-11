@@ -35,6 +35,7 @@ import SearchPage from './pages/SearchPage';
 import SearchResultPage from './pages/SearchResultPage';
 import SellsPage from './pages/SellsPage';
 import SettingsPage from './pages/SettingsPage';
+import SocialLoginRedirectPage from './pages/SocialLoginRedirectPage';
 import TempPage from './pages/TempPage';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -64,6 +65,10 @@ export const App = () => {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route
+            path="/oauth2/redirect"
+            element={<SocialLoginRedirectPage />}
+          />
           <Route path="/item/:id" element={<ItemPage />} />
           <Route path="/itemedit/:id" element={<ItemEditPage />} />
           <Route path="/itempost" element={<ItemPostPage />} />

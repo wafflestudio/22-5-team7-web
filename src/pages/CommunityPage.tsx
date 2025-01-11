@@ -47,7 +47,7 @@ const CommunityPage = () => {
       try {
         setLoading(true);
         const response = await fetch(
-          'https://eab7f8a7-4889-4c27-8a86-0305c4e85524.mock.pstmn.io/community',
+          'https://b866fe16-c4c5-4989-bdc9-5a783448ec03.mock.pstmn.io/community',
         );
         if (!response.ok) {
           throw new Error(`Failed to fetch posts: ${response.statusText}`);
