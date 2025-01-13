@@ -20,7 +20,11 @@ const Item = ({ ItemInfo }: ItemProps) => {
       <div className={styles.main}>
         <div className={styles.upperBox}>
           <img
-            src={ItemInfo.image_url ?? placeHolder}
+            src={
+              ItemInfo.imagePresignedUrl === ''
+                ? placeHolder
+                : ItemInfo.imagePresignedUrl
+            }
             className={styles.image}
           />
           <div className={styles.contentBox}>

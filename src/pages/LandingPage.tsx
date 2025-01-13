@@ -7,6 +7,7 @@ import { NavLink } from 'react-router-dom';
 import DaangnLogo from '../assets/Daangn_logo.png';
 import GoogleLogo from '../assets/GoogleLogo.png';
 import KakaoLogo from '../assets/Kakaosmall.png';
+import NaverLogo from '../assets/NaverLogo.svg';
 import styles from '../css/LandingPage.module.css';
 
 const LandingPage = () => {
@@ -40,6 +41,7 @@ const LandingPage = () => {
             <div className={styles.Googlelogobox}>
               <img className={styles.Googlelogo} src={GoogleLogo}></img>
             </div>
+            <img className={styles.Naverlogo} src={NaverLogo}></img>
           </div>
         </div>
       </div>

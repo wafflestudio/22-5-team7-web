@@ -1,5 +1,5 @@
 /*
-    물품 올리기 페이지
+    경매 물품 올리기 페이지
 */
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +10,7 @@ import styles from '../css/ItemPostPage.module.css';
 import type { ArticleResponse } from '../typings/item';
 import { uploadImageToS3 } from '../utils/utils';
 
-const LONG_PLACEHOLDER_TEXT = `에 올릴 게시글 내용을 작성해 주세요. (판매 금지 물품은 게시가 제한될 수 있어요.)
+const LONG_PLACEHOLDER_TEXT = `경매는 24시간 동안 진행돼요. 시작가는 1원부터 설정할 수 있어요. 경매가 종료되면 가장 높은 가격을 제시한 분께 물품이 판매돼요.
 
 신뢰할 수 있는 거래를 위해 자세히 적어주세요. 과학기술정보통신부, 한국 인터넷진흥원과 함께 해요.`;
 
@@ -19,18 +19,10 @@ const ItemPostPage = () => {
   const [price, setPrice] = useState<string>('');
   const [article, setArticle] = useState<string>('');
   const [place, setPlace] = useState<string>('');
-  const [isChecked, setIsChecked] = useState(false);
-  const [selectedButton, setSelectedButton] = useState('sell'); // 상태 추가
+  //const [isChecked, setIsChecked] = useState(false);
+  //const [selectedButton, setSelectedButton] = useState('sell'); // 상태 추가
   const [images, setImages] = useState<File[]>([]);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  const handleButtonClick = (buttonType: string) => {
-    if (buttonType === 'sell') {
-      setPrice('');
-      setIsChecked(false);
-    }
-    setSelectedButton(buttonType);
-  };
   const navigate = useNavigate();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -138,7 +130,7 @@ const ItemPostPage = () => {
         >
           <img src={quitcross} className={styles.quitcross} />
         </button>
-        <p className={styles.upperbartext}>내 물건 팔기</p>
+        <p className={styles.upperbartext}>내 물건 경매하기</p>
         <p>임시저장</p>
       </div>
       <div className={styles.imageToolbox}>
@@ -196,60 +188,17 @@ const ItemPostPage = () => {
             setTitle(e.target.value);
           }}
         ></input>
-        <p className={styles.infotexts}>거래 방식</p>
-        <div className={styles.selectbuttons}>
-          <button
-            onClick={() => {
-              handleButtonClick('sell');
-            }}
-            className={
-              selectedButton === 'sell'
-                ? styles.activebutton
-                : styles.inactivebutton
-            }
-          >
-            판매하기
-          </button>
-          <button
-            onClick={() => {
-              handleButtonClick('free');
-            }}
-            className={
-              selectedButton === 'free'
-                ? styles.activebutton
-                : styles.inactivebutton
-            }
-          >
-            나눔하기
-          </button>
-        </div>
+        <p className={styles.infotexts}>시작 가격</p>
         <input
           className={styles.inputBox}
           type="text"
-          placeholder="₩ 가격을 입력해주세요"
-          value={
-            selectedButton === 'free' ? '₩ 0' : price === '' ? '' : `₩ ${price}`
-          }
+          placeholder="₩ 시작 가격을 입력해주세요"
+          value={price === '' ? '' : `₩ ${price}`}
           onChange={(e) => {
             const value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 남기기
             setPrice(value);
           }}
-          disabled={selectedButton === 'free'}
         ></input>
-        <div className={styles.pricesuggestion}>
-          <input
-            className={styles.suggestioncheckbox}
-            type="checkbox"
-            id="priceSuggestion"
-            checked={isChecked}
-            onChange={(e) => {
-              setIsChecked(e.target.checked);
-            }}
-          />
-          <p>
-            {selectedButton === 'free' ? '나눔 신청 받기' : '가격 제안 받기'}
-          </p>
-        </div>
         <p className={styles.infotexts}>자세한 설명</p>
         <textarea
           className={styles.articleBox}
