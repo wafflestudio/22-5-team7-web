@@ -73,7 +73,7 @@ const ItemPostPage = () => {
       content: article,
       price: Number(price),
       location: place,
-      image_count: images.length,
+      imageCount: images.length,
     };
 
     const token = localStorage.getItem('token');
@@ -96,9 +96,9 @@ const ItemPostPage = () => {
       const data = (await response.json()) as ArticleResponse;
       if (images.length > 0) {
         console.info('업로드 성공, 사진 업로드 중');
-        console.info(data.image_url);
+        console.info(data.imagePresignedUrl);
 
-        const presignedUrls = data.image_url;
+        const presignedUrls = data.imagePresignedUrl;
         if (images.length !== presignedUrls.length)
           throw new Error('이미지와 presigned URL 개수가 다릅니다');
 

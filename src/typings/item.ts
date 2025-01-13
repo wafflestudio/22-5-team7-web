@@ -33,5 +33,5 @@ export interface Item {
 
 export type ArticleResponse = {
   id: number;
-  image_url: string[];
+  imagePresignedUrl: string[];
 };
