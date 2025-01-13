@@ -10,6 +10,7 @@ import {
 
 import BottomNavBar from './components/BottomNavBar';
 import AuctionPage from './pages/AuctionPage';
+import AuctionPostPage from './pages/AuctionPostPage';
 import ChatPage from './pages/ChatPage';
 import ChatRoomPage from './pages/ChatRoomPage';
 import CommunityPage from './pages/CommunityPage';
@@ -81,6 +82,8 @@ export const App = () => {
           <Route path="/community/post" element={<CommunityRegisterPage />} />
           <Route path="/community/:id" element={<CommunityPostPage />} />
           <Route path="/auctions" element={<AuctionPage />} />
+          <Route path="/auctions/:id" element={<ItemPage />} />
+          <Route path="/auctions/post" element={<AuctionPostPage />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/chat/:id" element={<ChatRoomPage />} />
           <Route path="/mypage" element={<MyPage />} />

@@ -31,12 +31,7 @@ const ItemPage = () => {
   const [item, setItem] = useState<Item>();
   const userId = localStorage.getItem('userId');
   const [isMyItem, setIsMyItem] = useState(false);
-  const images = [
-    'https://placehold.co/300',
-    'https://placehold.co/400',
-    'https://placehold.co/500',
-    'https://placehold.co/600',
-  ];
+  const [images, setImages] = useState<string[]>([]);
   const profileimage = 'https://placehold.co/100';
   const navigate = useNavigate();
   const location = useLocation();
@@ -206,7 +201,18 @@ const ItemPage = () => {
         const data: Item = (await response.json()) as Item;
         setIsMyItem(data.seller.id === userId);
         setItem(data);
-        console.info(data.image_url);
+        //setImages(data.imagePresignedUrl);
+        //console.info(data.imagePresignedUrl);
+        const imageUrls = data.imagePresignedUrl.map((url: string) => url);
+        // 홀수 인덱스의 원소만 저장
+        const oddIndexImageUrls = imageUrls.filter(
+          (_, index) => index % 2 !== 0,
+        );
+        if (oddIndexImageUrls.length === 0) {
+          oddIndexImageUrls.push('https://placehold.co/300'); // 기본 이미지 경로 설정
+        }
+        setImages(oddIndexImageUrls); // 짝수 인덱스의 원소만 저장
+        console.info(oddIndexImageUrls);
       } catch (error) {
         console.error(error);
       }
@@ -290,12 +296,14 @@ const ItemPage = () => {
           }}
         >
           {images.map((src, index) => (
-            <img
-              key={index}
-              src={src}
-              className={`${styles.image === undefined ? '' : styles.image} ${styles.gradientOverlay === undefined ? '' : styles.gradientOverlay}`}
-              alt={`item ${index}`}
-            />
+            <div key={index} className={styles.imageOverlayContainer}>
+              <img
+                src={src}
+                className={styles.image === undefined ? '' : styles.image}
+                alt={`item ${index}`}
+              />
+              <div className={styles.gradientOverlay}></div>
+            </div>
           ))}
         </div>
       </div>

@@ -89,7 +89,7 @@ const SellingItem = ({ ItemInfo }: SellingItemProps) => {
       <div className={styles.main}>
         <div className={styles.upperBox}>
           <img
-            src={ItemInfo.image_url ?? placeHolder}
+            src={ItemInfo.imagePresignedUrl ?? placeHolder}
             className={styles.image}
           />
           <div className={styles.contentBox}>

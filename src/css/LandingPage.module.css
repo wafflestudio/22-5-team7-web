@@ -147,6 +147,13 @@
   border-radius: 24.4px;
 }
 
+.Naverlogo {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 .Facebooklogo {
   width: 44px;
   height: 44px;

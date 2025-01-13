@@ -30,7 +30,11 @@ export const uploadImageToS3 = async (
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to upload file: ${file.name}`);
+      const errorText = await response.text();
+      throw new Error(
+        `Failed to upload file: ${file.name}. Response: ${errorText}`,
+      );
+      //throw new Error(`Failed to upload file: ${file.name}`);
     }
 
     const returnUrl = presignedUrl.split('?')[0];
