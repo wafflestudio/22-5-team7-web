@@ -56,3 +56,17 @@
   margin: 0 5px;
   color: gray;
 }
+
+.alertText {
+  font-size: 14px;
+  color: red;
+}
+
+.loadingBox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+}

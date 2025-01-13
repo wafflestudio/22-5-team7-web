@@ -5,12 +5,16 @@ import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 import leftArrow from '../assets/leftarrow.svg';
+import Loader from '../components/Loader';
 import styles from '../css/LoginPage.module.css';
 import type { ErrorResponseType, SigninResponse } from '../typings/user';
 
 const LoginPage = () => {
   const [id, setId] = useState<string>('');
   const [pw, setPw] = useState<string>('');
+  const [isIdError, setIsIdError] = useState(false);
+  const [isPwError, setIsPwError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLoginClick = async () => {
@@ -29,14 +33,25 @@ const LoginPage = () => {
         throw new Error(`로그인 실패: ${errorData.error}`);
       }
       const data = (await response.json()) as SigninResponse;
+      console.info('로그인 성공!');
       localStorage.setItem('token', data.accessToken);
       localStorage.setItem('userId', data.user.id);
-      localStorage.setItem('location', data.user.location);
-      console.info('로그인 성공!');
-      void navigate('/main');
+
+      if (data.user.location === 'void') {
+        void navigate('/location');
+      } else {
+        localStorage.setItem('location', data.user.location);
+        void navigate('/main');
+      }
     } catch (error) {
-      if (error instanceof Error) alert(error.message);
+      if (error instanceof Error) {
+        if (error.message === '로그인 실패: User not found') setIsIdError(true);
+        if (error.message === '로그인 실패: Invalid password')
+          setIsPwError(true);
+      }
       console.error('error: ', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -63,8 +78,12 @@ const LoginPage = () => {
           value={id}
           onChange={(e) => {
             setId(e.target.value);
+            setIsIdError(false);
           }}
         ></input>
+        {isIdError && (
+          <p className={styles.alertText}>사용자를 찾을 수 없습니다.</p>
+        )}
         <input
           className={styles.inputBox}
           type="password"
@@ -72,8 +91,12 @@ const LoginPage = () => {
           value={pw}
           onChange={(e) => {
             setPw(e.target.value);
+            setIsPwError(false);
           }}
         ></input>
+        {isPwError && (
+          <p className={styles.alertText}>잘못된 비밀번호입니다.</p>
+        )}
         <button
           onClick={() => {
             handleLoginClick().catch(() => {
@@ -90,6 +113,11 @@ const LoginPage = () => {
           <span className={styles.helpText}>비밀번호 재설정</span>
         </div>
       </div>
+      {isLoading && (
+        <div className={styles.loadingBox}>
+          <Loader marginTop="45vh" />
+        </div>
+      )}
     </div>
   );
 };
