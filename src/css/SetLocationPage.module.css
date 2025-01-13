@@ -31,32 +31,22 @@
   font-size: 18px;
 }
 
-.registerButton {
+.activeButton {
   background: var(--daangn-orange);
   border: none;
   border-radius: 8px;
   color: white;
   padding: 8px;
-  margin-top: 10px;
   font-weight: bold;
   font-size: 18px;
 }
 
-.helpBox {
-  margin-top: 5px;
-  text-align: center;
-}
-
-.alertText {
-  font-size: 14px;
-  color: red;
-}
-
-.loadingBox {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 999;
+.disabledButton {
+  background: var(--daangn-lightgray);
+  border: none;
+  border-radius: 8px;
+  color: black;
+  padding: 8px;
+  font-weight: bold;
+  font-size: 18px;
 }

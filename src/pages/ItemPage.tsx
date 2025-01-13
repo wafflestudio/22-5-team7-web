@@ -62,8 +62,6 @@ const ItemPage = () => {
         if (!response.ok) {
           throw new Error('관심 요청에 실패했습니다.');
         }
-
-        void navigate('/main');
       } catch (error) {
         console.error('관심 중 에러 발생:', error);
       }
@@ -87,8 +85,6 @@ const ItemPage = () => {
         if (!response.ok) {
           throw new Error('관심 요청에 실패했습니다.');
         }
-
-        void navigate('/main');
       } catch (error) {
         console.error('관심 중 에러 발생:', error);
       }
