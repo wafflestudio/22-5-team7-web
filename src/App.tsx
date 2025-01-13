@@ -34,6 +34,7 @@ import ReviewsPage from './pages/ReviewsPage';
 import SearchPage from './pages/SearchPage';
 import SearchResultPage from './pages/SearchResultPage';
 import SellsPage from './pages/SellsPage';
+import SetLocationPage from './pages/SetLocationPage';
 import SettingsPage from './pages/SettingsPage';
 import SocialLoginRedirectPage from './pages/SocialLoginRedirectPage';
 import TempPage from './pages/TempPage';
@@ -69,6 +70,7 @@ export const App = () => {
             path="/oauth2/redirect"
             element={<SocialLoginRedirectPage />}
           />
+          <Route path="/location" element={<SetLocationPage />} />
           <Route path="/item/:id" element={<ItemPage />} />
           <Route path="/itemedit/:id" element={<ItemEditPage />} />
           <Route path="/itempost" element={<ItemPostPage />} />

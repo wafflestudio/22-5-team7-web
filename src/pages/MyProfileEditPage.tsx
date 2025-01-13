@@ -8,35 +8,12 @@ import cameraIcon from '../assets/cameraIcon.svg';
 import placeHolder from '../assets/placeholder_gray.png';
 import quitIcon from '../assets/quitcross.svg';
 import styles from '../css/MyProfileEditPage.module.css';
+import { Regions } from '../typings/user';
 
 // temp 정보, 추후에 변경
 const PrevNickname = '바꾸기 전 닉네임';
 const PrevLocation = '대학동';
 const PrevProfileImage = placeHolder;
-
-const regions = [
-  '보라매동',
-  '은천동',
-  '성현동',
-  '중앙동',
-  '청림동',
-  '행운동',
-  '청룡동',
-  '낙성대동',
-  '인헌동',
-  '남현동',
-  '신림동',
-  '신사동',
-  '조원동',
-  '미성동',
-  '난곡동',
-  '난향동',
-  '서원동',
-  '신원동',
-  '서림동',
-  '삼성동',
-  '대학동',
-];
 
 const MyProfileEditPage = () => {
   const [nickname, setNickname] = useState<string>(PrevNickname);
@@ -119,7 +96,7 @@ const MyProfileEditPage = () => {
             setLocation(e.target.value);
           }}
         >
-          {regions.map((region) => (
+          {Regions.map((region) => (
             <option key={region} value={region}>
               {region}
             </option>

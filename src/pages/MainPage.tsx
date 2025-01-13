@@ -53,7 +53,7 @@ const MainPage = () => {
         }
         const response = await fetch(
           `/api/home?articleId=${lastId}`,
-          //`https://eab7f8a7-4889-4c27-8a86-0305c4e85524.mock.pstmn.io/api/home?articleId=${lastId}`,
+          //`https://b866fe16-c4c5-4989-bdc9-5a783448ec03.mock.pstmn.io/api/home?articleId=${lastId}`,
           {
             method: 'GET',
             headers: {
@@ -69,8 +69,6 @@ const MainPage = () => {
 
         const data: ItemType[] = (await response.json()) as ItemType[];
         setItems((prevItems) => [...prevItems, ...data]);
-        mainPageToolBarInfo.mainText =
-          localStorage.getItem('location') === null ? '' : '대학동';
       } catch (error) {
         console.error(error);
       }
