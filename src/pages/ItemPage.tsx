@@ -75,7 +75,7 @@ const ItemPage = () => {
           throw new Error('아이템 정보가 없습니다.');
         }
         const response = await fetch(`api/item/unlike/${id}`, {
-          method: 'POST',
+          method: 'DELETE',
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
