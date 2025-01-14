@@ -24,6 +24,7 @@ import LoginPage from './pages/LoginPage';
 import MainPage from './pages/MainPage';
 import MannersPage from './pages/MannersPage';
 import MyBuysPage from './pages/MyBuysPage';
+import MyCommunityPosts from './pages/MyCommunityPosts';
 import MyLikesPage from './pages/MyLikesPage';
 import MyPage from './pages/MyPage';
 import MyProfileEditPage from './pages/MyProfileEditPage';
@@ -93,6 +94,7 @@ export const App = () => {
           <Route path="/mypage/likes" element={<MyLikesPage />} />
           <Route path="/mypage/sells" element={<MySellsPage />} />
           <Route path="/mypage/buys" element={<MyBuysPage />} />
+          <Route path="/mypage/posts" element={<MyCommunityPosts />} />
           <Route path="/profile/:id" element={<ProfilePage />} />
           <Route path="/profile/:id/sells" element={<SellsPage />} />
           <Route path="/profile/:id/manners" element={<MannersPage />} />

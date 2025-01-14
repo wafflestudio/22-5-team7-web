@@ -14,6 +14,7 @@ import type { ErrorResponseType } from '../typings/user';
 
 const MySellsPage = () => {
   const [activeTab, setActiveTab] = useState<'selling' | 'sold'>('selling');
+  const [underlineLeft, setUnderlineLeft] = useState(0);
   const [sellingItems, setSellingItems] = useState<PreviewItem[]>([]);
   const [soldItems, setSoldItems] = useState<PreviewItem[]>([]);
   const [lastId, setLastId] = useState(2100000);
@@ -103,6 +104,7 @@ const MySellsPage = () => {
           }
           onClick={() => {
             setActiveTab('selling');
+            setUnderlineLeft(0);
           }}
         >
           판매중 {sellingItems.length}
@@ -115,10 +117,15 @@ const MySellsPage = () => {
           }
           onClick={() => {
             setActiveTab('sold');
+            setUnderlineLeft(50);
           }}
         >
           거래완료 {soldItems.length}
         </button>
+        <div
+          className={styles.underline}
+          style={{ left: `${underlineLeft}%` }}
+        />
       </div>
       <div className={styles.contentBox}>
         {activeTab === 'selling' && (

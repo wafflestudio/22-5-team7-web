@@ -5,8 +5,9 @@
 
 .upperBar {
   display: flex;
+  flex: 1;
   background-color: white;
-  padding: 20px 10px 10px;
+  padding: 20px 10px 20px;
   position: sticky;
   top: 0;
 }
@@ -23,53 +24,6 @@
   transform: translateX(-50%);
 }
 
-.profileBlock {
-  display: flex;
-  padding: 15px;
-  justify-content: space-between;
-}
-
-.profileBlockLeft {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  align-items: flex-start;
-}
-
-.profileBlockText {
-  font-weight: bold;
-  font-size: 20px;
-}
-
-.profilePic {
-  height: 75px;
-  border-radius: 50%;
-}
-
-.profileBlockButtons {
-  display: flex;
-  gap: 5px;
-  font-size: 14px;
-}
-
-.orangeButton {
-  padding: 8px 15px;
-  background-color: bisque;
-  color: var(--daangn-orange);
-  text-decoration: none;
-  font-weight: bold;
-  border-radius: 5px;
-}
-
-.buyMoreButton {
-  padding: 8px 15px;
-  background-color: var(--daangn-lightgray);
-  color: black;
-  text-decoration: none;
-  font-weight: bold;
-  border-radius: 5px;
-}
-
 .tab {
   position: relative;
   display: flex;
@@ -83,6 +37,7 @@
   background: none;
   font-weight: bold;
   padding: 0;
+  /*border-bottom: 2px solid black;*/
 }
 
 .inactiveTabButton {
@@ -98,7 +53,7 @@
 .underline {
   position: absolute;
   bottom: 0;
-  width: 50vw;
+  width: 33.3vw;
   height: 2px;
   background-color: black;
   transition: left 0.3s ease;
@@ -108,8 +63,21 @@
   gap: 15px;
 }
 
-.noItemsText {
-  margin-top: 30vh;
-  text-align: center;
+.noContentBox {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20vh;
+  align-items: center;
   color: var(--daangn-gray);
+  gap: 30px;
+}
+
+.navButton {
+  flex: 0;
+  padding: 10px 15px;
+  border-radius: 5px;
+  background-color: var(--daangn-lightgray);
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
 }
