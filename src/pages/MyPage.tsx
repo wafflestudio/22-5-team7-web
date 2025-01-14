@@ -18,6 +18,7 @@ import receiptIcon from '../assets/receipt.svg';
 import rightArrow from '../assets/rightarrow_gray.svg';
 import shoppingBagIcon from '../assets/shoppingbag.svg';
 import settingsIcon from '../assets/upperbar-settings.svg';
+import writingIcon from '../assets/writing-black.svg';
 import UpperBar from '../components/UpperBar';
 import styles from '../css/MyPage.module.css';
 import type { toolBarInfo } from '../typings/toolBar';
@@ -94,6 +95,13 @@ const MyPage = () => {
           <NavLink to="buys" className={styles.blockLine}>
             <img src={shoppingBagIcon} className={styles.icon} />
             구매내역
+            <img src={rightArrow} className={styles.arrow} />
+          </NavLink>
+        </div>
+        <div className={styles.block}>
+          <p className={styles.blockTitle}>나의 동네생활 글</p>
+          <NavLink to="posts" className={styles.blockLine}>
+            <img src={writingIcon} className={styles.icon} />내 동네생활 글
             <img src={rightArrow} className={styles.arrow} />
           </NavLink>
         </div>

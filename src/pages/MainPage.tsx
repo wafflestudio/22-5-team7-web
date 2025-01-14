@@ -69,6 +69,7 @@ const MainPage = () => {
 
         const data: ItemType[] = (await response.json()) as ItemType[];
         setItems((prevItems) => [...prevItems, ...data]);
+        console.info(data);
       } catch (error) {
         console.error(error);
       }

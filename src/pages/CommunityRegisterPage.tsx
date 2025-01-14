@@ -2,7 +2,7 @@
   동네생활 게시글을 등록하는 페이지.
 */
 import { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import hashtagIcon from '../assets/hashtag-gray.svg';
 import pictureIcon from '../assets/picture-gray.svg';
@@ -85,9 +85,13 @@ const CommunityRegisterPage = () => {
   return (
     <div className={styles.main}>
       <div className={styles.upperBar}>
-        <NavLink to="/community">
-          <img src={quitIcon} style={{ height: '25px' }} />
-        </NavLink>
+        <img
+          src={quitIcon}
+          style={{ height: '25px' }}
+          onClick={() => {
+            void navigate(-1);
+          }}
+        />
         <p className={styles.pageTitle}>동네생활 글쓰기</p>
         <p className={styles.registerButton} onClick={handleRegisterClick}>
           완료
