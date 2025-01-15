@@ -32,6 +32,7 @@ const ItemPage = () => {
   const userId = localStorage.getItem('userId');
   const [isMyItem, setIsMyItem] = useState(false);
   const [images, setImages] = useState<string[]>([]);
+  //const [imagesLoaded, setImagesLoaded] = useState(false);
   const profileimage = 'https://placehold.co/100';
   const navigate = useNavigate();
   const location = useLocation();
@@ -293,6 +294,7 @@ const ItemPage = () => {
           className={styles.imagewrapper}
           style={{
             transform: `translateX(calc(-${currentImageIndex * 100}vw + ${(images.length - 1) * 50}vw))`,
+            display: images.length > 0 ? 'flex' : 'none',
           }}
         >
           {images.map((src, index) => (
