@@ -1,4 +1,4 @@
-export type overlayInfo = {
+type overlayInfo = {
   isOpen: boolean;
   closeOverlayFunction: () => void;
   overlayButtons: overlayButton[];
@@ -12,4 +12,4 @@ type overlayButton = {
 
 export type overlayProps = {
   overlayInfo: overlayInfo;
-}
+};

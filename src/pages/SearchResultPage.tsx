@@ -8,10 +8,8 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
 import leftArrow from '../assets/leftarrow.svg';
-import CommunityPostItem from '../components/CommunityPostItem';
 //import Item from '../components/Item';
 import styles from '../css/SearchResultPage.module.css';
-import { tempCommunityPostInfo } from '../utils/mocks';
 
 const tempLocation = '대학동';
 
@@ -81,19 +79,7 @@ const SearchResultPage = () => {
         </button>
       </div>
       <div className={styles.contentBox}>
-        {activeTab === 'items' ? (
-          <div></div>
-        ) : (
-          <div>
-            <CommunityPostItem CommunityPostInfo={tempCommunityPostInfo} />
-            <CommunityPostItem CommunityPostInfo={tempCommunityPostInfo} />
-            <CommunityPostItem CommunityPostInfo={tempCommunityPostInfo} />
-            <CommunityPostItem CommunityPostInfo={tempCommunityPostInfo} />
-            <CommunityPostItem CommunityPostInfo={tempCommunityPostInfo} />
-            <CommunityPostItem CommunityPostInfo={tempCommunityPostInfo} />
-            <CommunityPostItem CommunityPostInfo={tempCommunityPostInfo} />
-          </div>
-        )}
+        {activeTab === 'items' ? <div></div> : <div></div>}
       </div>
     </div>
   );

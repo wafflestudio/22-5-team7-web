@@ -41,19 +41,27 @@ const CommunityPage = () => {
   const [posts, setPosts] = useState<CommunityPostItemType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [lastId, setLastId] = useState(2100000);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         setLoading(true);
-        const response = await fetch(
-          'https://b866fe16-c4c5-4989-bdc9-5a783448ec03.mock.pstmn.io/community',
-        );
+        const token = localStorage.getItem('token');
+        if (token === null) throw new Error('토큰이 없습니다.');
+
+        const response = await fetch(`/api/feed?feedId=${lastId}`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
         if (!response.ok) {
           throw new Error(`Failed to fetch posts: ${response.statusText}`);
         }
         const data = (await response.json()) as CommunityPostItemType[];
-        setPosts(data);
+        setPosts((prevPosts) => [...prevPosts, ...data]);
       } catch (err) {
         setError((err as Error).message);
       } finally {
@@ -62,7 +70,23 @@ const CommunityPage = () => {
     };
 
     void fetchPosts();
-  }, []);
+  }, [lastId]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + window.scrollY >=
+        document.body.offsetHeight - 500
+      ) {
+        setLastId(posts[posts.length - 1]?.id ?? 2100000);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [posts]);
 
   return (
     <div>
@@ -97,15 +121,14 @@ const CommunityPage = () => {
         + 글쓰기
       </NavLink>
       <div className={styles.contentBox}>
-        {loading ? (
-          <Loader marginTop="40vh" />
-        ) : error !== null ? (
+        {error !== null ? (
           <p>Error: {error}</p>
         ) : (
           posts.map((post) => (
             <CommunityPostItem key={post.id} CommunityPostInfo={post} />
           ))
         )}
+        {loading && <Loader marginTop="0" />}
       </div>
     </div>
   );

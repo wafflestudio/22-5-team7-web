@@ -17,11 +17,8 @@ import dotsicon from '../assets/three_dots_white.svg';
 import TemperatureGaugeSmall from '../components/TemperatureGaugeSmall';
 import styles from '../css/ItemPage.module.css';
 import type { Item } from '../typings/item';
+import type { LocationState } from '../typings/toolBar';
 import { getTimeAgo } from '../utils/utils';
-
-type LocationState = {
-  from: string;
-} | null;
 
 const ItemPage = () => {
   const { id } = useParams<{ id: string }>();
