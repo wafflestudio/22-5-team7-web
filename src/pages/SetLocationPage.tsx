@@ -26,6 +26,7 @@ const SetLocationPage = () => {
         body: JSON.stringify({
           nickname: nickname,
           location: location,
+          imageCount: 0,
         }),
       });
 

@@ -19,9 +19,9 @@ import { uploadImageToS3 } from '../utils/utils';
 const MyProfileEditPage = () => {
   const [nickname, setNickname] = useState<string>();
   const [location, setLocation] = useState<string>();
-  const [profileImage, setProfileImage] = useState<string | ArrayBuffer | null>(
-    placeHolder,
-  );
+  const [profileImage, setProfileImage] = useState<
+    string | ArrayBuffer | null
+  >();
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
@@ -43,6 +43,7 @@ const MyProfileEditPage = () => {
       const editedData = {
         nickname: nickname,
         location: location,
+        imageCount: 1,
       };
 
       try {
@@ -140,7 +141,9 @@ const MyProfileEditPage = () => {
           <div className={styles.profilePicBox}>
             <label htmlFor="profilePicInput" className={styles.profilePicLabel}>
               <img
-                src={profileImage as string}
+                src={
+                  profileImage === '' ? placeHolder : (profileImage as string)
+                }
                 className={styles.profilePic}
                 alt="Profile"
               />
