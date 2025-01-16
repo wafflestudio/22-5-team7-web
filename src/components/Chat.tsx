@@ -17,13 +17,10 @@ const Chat: React.FC<ChatProps> = ({ id }) => {
     <div className={styles.main} onClick={handleClick}>
       <div className={styles.chatimage}>
         <img
-          src="https://via.placeholder.com/100"
+          src="https://placehold.co/100"
           className={styles.profileimage}
         ></img>
-        <img
-          src="https://via.placeholder.com/100"
-          className={styles.itemimage}
-        ></img>
+        <img src="https://placehold.co/100" className={styles.itemimage}></img>
       </div>
       <div className={styles.chatinfo}>
         <div className={styles.basicinfo}>

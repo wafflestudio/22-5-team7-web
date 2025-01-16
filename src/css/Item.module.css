@@ -27,6 +27,7 @@
   border-radius: 5px;
   object-fit: cover;
   overflow: hidden;
+  border: 0.5px solid var(--daangn-lightgray);
 }
 
 .contentBox {

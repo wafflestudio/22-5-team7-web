@@ -15,6 +15,7 @@ import TemperatureGauge from '../components/TemperatureGauge';
 import styles from '../css/ProfilePage.module.css';
 import type { ProfileResponse } from '../typings/user';
 import type { ErrorResponseType } from '../typings/user';
+import { handleShareClick } from '../utils/eventhandlers';
 import { tempUser } from '../utils/mocks';
 import { getTimeAgo } from '../utils/utils';
 
@@ -64,7 +65,11 @@ const MyProfilePage = () => {
           <img src={leftArrow} className={styles.upperIcon} />
         </NavLink>
         <p className={styles.pageTitle}>프로필</p>
-        <img src={shareIcon} className={styles.upperIcon} />
+        <img
+          src={shareIcon}
+          className={styles.upperIcon}
+          onClick={handleShareClick}
+        />
       </div>
       {loading ? (
         <Loader marginTop="40vh" />

@@ -5,6 +5,7 @@ type User = {
   location: string;
   temperature: number;
   email: string;
+  imagePresignedUrl: string;
 };
 
 export type SignupUser = {

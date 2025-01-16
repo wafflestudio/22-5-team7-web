@@ -43,7 +43,7 @@ const AuctionItem = ({ ItemInfo }: ItemProps) => {
   }, [ItemInfo.createdAt]);
 
   return (
-    <NavLink to={`/item/${ItemInfo.id}`} className={styles.navLink}>
+    <NavLink to={`${ItemInfo.id}`} className={styles.navLink}>
       <div className={styles.main}>
         <div className={styles.upperBox}>
           <img

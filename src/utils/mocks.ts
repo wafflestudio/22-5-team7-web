@@ -50,6 +50,7 @@ export const tempUser = {
     location: 'temp',
     temperature: 36.5,
     email: 'temp',
+    imagePresignedUrl: 'temp',
   },
   manners: [],
   reviews: [],

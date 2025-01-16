@@ -15,7 +15,7 @@ import leftarrowicon from '../assets/leftarrow_white.svg';
 import shareicon from '../assets/share_white.svg';
 import dotsicon from '../assets/three_dots_white.svg';
 import TemperatureGaugeSmall from '../components/TemperatureGaugeSmall';
-import styles from '../css/ItemPage.module.css';
+import styles from '../css/AuctionItemPage.module.css';
 import type { Item } from '../typings/item';
 import { handleShareClick } from '../utils/eventhandlers';
 import { getTimeAgo } from '../utils/utils';
@@ -34,10 +34,7 @@ const ItemPage = () => {
   const [isMyItem, setIsMyItem] = useState(false);
   const [images, setImages] = useState<string[]>([]);
   //const [imagesLoaded, setImagesLoaded] = useState(false);
-  const [profileimage, setProfileimage] = useState<string>(
-    'https://placehold.co/100',
-  );
-  const baseimage = 'https://placehold.co/300';
+  const profileimage = 'https://placehold.co/100';
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -207,8 +204,7 @@ const ItemPage = () => {
         setIsMyItem(data.seller.id === userId);
         setItem(data);
         setImages(data.imagePresignedUrl);
-        setIsLiked(data.isLiked);
-        setProfileimage(data.seller.imagePresignedUrl);
+        console.info(data.imagePresignedUrl);
         //const imageUrls = data.imagePresignedUrl.map((url: string) => url);
         // 홀수 인덱스의 원소만 저장
         //const oddIndexImageUrls = imageUrls.filter(
@@ -332,10 +328,7 @@ const ItemPage = () => {
             to={`/profile/${item?.seller.id === undefined ? '' : item.seller.id}`}
             className={styles.profile}
           >
-            <img
-              src={profileimage === '' ? baseimage : profileimage}
-              className={styles.profileimage}
-            ></img>
+            <img src={profileimage} className={styles.profileimage}></img>
             <div className={styles.profiletext}>
               <p className={styles.nickname}>{item?.seller.nickname}</p>
               <p className={styles.address}>{item?.seller.location}</p>
@@ -359,7 +352,7 @@ const ItemPage = () => {
           <p className={styles.titletext}>{item?.title}</p>
           <p
             className={styles.categoryanddate}
-          >{`${item?.tag === undefined ? '' : item.tag} · ${getTimeAgo(item?.createdAt === undefined ? '' : item.createdAt)}`}</p>
+          >{`디지털기기 · ${getTimeAgo(item?.createdAt === undefined ? '' : item.createdAt)}`}</p>
           <p className={styles.article}>{item?.content}</p>
           <div className={styles.locationbox}>
             <p className={styles.locationtitle}>거래 희망 장소</p>
@@ -367,7 +360,7 @@ const ItemPage = () => {
           </div>
           <p
             className={styles.chatlikeview}
-          >{`채팅3 · 관심 ${item?.likeCount === undefined ? '' : item.likeCount} · 조회 ${item?.viewCount === undefined ? '' : item.viewCount}`}</p>
+          >{`참가자 ${item?.likeCount === undefined ? '' : item.likeCount}명 · 조회 ${item?.viewCount === undefined ? '' : item.viewCount}`}</p>
           <NavLink to={`/reportitem`} className={styles.reporttext}>
             이 게시글 신고하기
           </NavLink>
@@ -384,14 +377,20 @@ const ItemPage = () => {
         </div>
         <div className={styles.priceandchat}>
           <div className={styles.pricebox}>
-            <p className={styles.price}>
-              {item?.price !== undefined
-                ? `${Intl.NumberFormat('ko-KR').format(item.price)}원`
-                : '가격 정보 없음'}
-            </p>
-            <p className={styles.offerstatus}>{`가격 제안 불가`}</p>
+            <div className={styles.currentPrice}>
+              <p>현재 가격: </p>
+              <p className={styles.price}>
+                {item?.price !== undefined
+                  ? `${Intl.NumberFormat('ko-KR').format(item.price)}원`
+                  : '가격 정보 없음'}
+              </p>
+            </div>
+            <div className={styles.bidbox}>
+              <p className={styles.bidtext}>새 가격:</p>
+              <input className={styles.bidinput}></input>
+            </div>
           </div>
-          <button className={styles.chatbutton}>채팅하기</button>
+          <button className={styles.chatbutton}>입찰하기</button>
         </div>
       </div>
     </div>
