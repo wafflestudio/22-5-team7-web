@@ -22,7 +22,7 @@ const ChatRoomPage = () => {
   const [currentInput, setCurrentInput] = useState<string>('');
   const [messages, setMessages] = useState<message[]>([]);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-  const profileImage = 'https://via.placeholder.com/100';
+  const profileImage = 'https://placehold.co/100';
   const price = 1200000;
   const formattedPrice = new Intl.NumberFormat('ko-KR').format(price);
   //const [inputMessage, setInputMessage] = useState<string>('');
@@ -118,10 +118,7 @@ const ChatRoomPage = () => {
         </div>
       </div>
       <div className={styles.iteminfo}>
-        <img
-          src="https://via.placeholder.com/100"
-          className={styles.itemimage}
-        ></img>
+        <img src="https://placehold.co/100" className={styles.itemimage}></img>
         <div className={styles.itemnameandprice}>
           <div className={styles.itemname}>
             <p className={styles.itemstatus}>예약중</p>

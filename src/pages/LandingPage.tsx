@@ -11,6 +11,10 @@ import NaverLogo from '../assets/NaverLogo.svg';
 import styles from '../css/LandingPage.module.css';
 
 const LandingPage = () => {
+  const handleSocialLoginClick = (url: string) => {
+    window.location.href = url;
+  };
+
   return (
     <div className={styles.main}>
       <div className={styles.logobox}>
@@ -37,11 +41,34 @@ const LandingPage = () => {
             <hr className={styles.snstextline}></hr>
           </div>
           <div className={styles.snslogobox}>
-            <img className={styles.Kakaologo} src={KakaoLogo}></img>
-            <div className={styles.Googlelogobox}>
+            <img
+              className={styles.Kakaologo}
+              src={KakaoLogo}
+              onClick={() => {
+                handleSocialLoginClick(
+                  'http://toykarrot.shop/oauth2/authorization/kakao',
+                );
+              }}
+            ></img>
+            <div
+              className={styles.Googlelogobox}
+              onClick={() => {
+                handleSocialLoginClick(
+                  'http://toykarrot.shop/oauth2/authorization/google',
+                );
+              }}
+            >
               <img className={styles.Googlelogo} src={GoogleLogo}></img>
             </div>
-            <img className={styles.Naverlogo} src={NaverLogo}></img>
+            <img
+              className={styles.Naverlogo}
+              src={NaverLogo}
+              onClick={() => {
+                handleSocialLoginClick(
+                  'http://toykarrot.shop/oauth2/authorization/naver',
+                );
+              }}
+            ></img>
           </div>
         </div>
       </div>

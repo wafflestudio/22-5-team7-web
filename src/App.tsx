@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom';
 
 import BottomNavBar from './components/BottomNavBar';
+import AuctionItemPage from './pages/AuctionItemPage';
 import AuctionPage from './pages/AuctionPage';
 import AuctionPostPage from './pages/AuctionPostPage';
 import ChatPage from './pages/ChatPage';
@@ -83,7 +84,7 @@ export const App = () => {
           <Route path="/community/post" element={<CommunityRegisterPage />} />
           <Route path="/community/:id" element={<CommunityPostPage />} />
           <Route path="/auctions" element={<AuctionPage />} />
-          <Route path="/auctions/:id" element={<ItemPage />} />
+          <Route path="/auctions/:id" element={<AuctionItemPage />} />
           <Route path="/auctions/post" element={<AuctionPostPage />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/chat/:id" element={<ChatRoomPage />} />

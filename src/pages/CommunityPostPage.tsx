@@ -20,6 +20,7 @@ import Overlay from '../components/Overlay';
 import styles from '../css/CommunityPostPage.module.css';
 import type { CommunityPost } from '../typings/communityPost';
 import type { LocationState } from '../typings/toolBar';
+import { handleShareClick } from '../utils/eventhandlers';
 import { getTimeAgo } from '../utils/utils';
 
 const CommunityPostPage = () => {
@@ -201,7 +202,11 @@ const CommunityPostPage = () => {
         />
         <div className={styles.upperBarIcons}>
           <img src={disabledBell} className={styles.upperIcon} />
-          <img src={shareIcon} className={styles.upperIcon} />
+          <img
+            src={shareIcon}
+            className={styles.upperIcon}
+            onClick={handleShareClick}
+          />
           <img
             src={dotsIcon}
             className={styles.upperIcon}

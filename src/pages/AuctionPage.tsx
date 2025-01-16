@@ -38,7 +38,7 @@ const mockAuctionItem: PreviewAuctionItem = {
   price: 50000,
   status: true,
   location: '서울특별시 강남구',
-  image_url: 'https://example.com/vintage-watch.jpg',
+  image_url: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30',
   createdAt: '2025-01-11T07:40:00Z',
   likeCount: 10,
 };

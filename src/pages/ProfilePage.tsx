@@ -11,6 +11,7 @@ import rightArrow from '../assets/rightarrow_black.svg';
 import shareIcon from '../assets/share.svg';
 import TemperatureGauge from '../components/TemperatureGauge';
 import styles from '../css/ProfilePage.module.css';
+import { handleShareClick } from '../utils/eventhandlers';
 
 const ProfilePage = () => {
   const navigate = useNavigate();
@@ -97,7 +98,11 @@ const ProfilePage = () => {
           <img src={leftArrow} className={styles.upperIcon} />
         </button>
         <p className={styles.pageTitle}>프로필</p>
-        <img src={shareIcon} className={styles.upperIcon} />
+        <img
+          src={shareIcon}
+          className={styles.upperIcon}
+          onClick={handleShareClick}
+        />
       </div>
       <div className={styles.contentBox}>
         <div className={styles.block}>

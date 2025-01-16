@@ -295,14 +295,14 @@
 
 .bottombar {
   width: 100%;
-  height: 70px;
+  height: 80px;
   position: fixed;
   bottom: 0px;
+  background-color: white;
   display: flex;
   align-items: center;
   padding-top: 10px;
   padding-bottom: 10px;
-  background-color: white;
   border-top: 1px solid #e6e6e6;
 }
 
@@ -329,15 +329,37 @@
   flex: 1;
 }
 
-.price {
-  font-size: 18px;
+.pricebox {
+  display: flex;
+  flex-direction: column;
+}
+
+.currentPrice {
+  display: flex;
+  color: #333333;
+  font-size: 14px;
+  font-weight: bold;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.bidbox {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+  font-size: 16px;
   font-weight: bold;
 }
 
-.offerstatus {
-  font-size: 14px;
+.bidtext {
   font-weight: bold;
-  color: #666666;
+}
+
+.bidinput {
+  border: none;
+  border-bottom: 1px solid #333333;
+  outline: none;
 }
 
 .chatbutton {
