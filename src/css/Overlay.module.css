@@ -1,0 +1,58 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.actionSheet {
+  position: fixed;
+  padding: 15px 15px 50px;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  background-color: var(--daangn-lightgray);
+  border-radius: 15px 15px 0 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.actionSheetContent {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.actionSheetContent > :first-child {
+  border-radius: 10px 10px 0 0;
+}
+
+.actionSheetContent > :last-child {
+  border-radius: 0 0 10px 10px;
+}
+
+.overlayButton {
+  width: 100%;
+  background-color: white;
+  border: none;
+  color: black;
+  font-size: 18px;
+  padding: 10px;
+}
+
+.cancelbutton {
+  background-color: white;
+  border-radius: 10px;
+  border: none;
+  padding: 10px;
+  color: black;
+  font-size: 18px;
+}
