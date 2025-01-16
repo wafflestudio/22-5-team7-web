@@ -9,7 +9,8 @@ import pictureIcon from '../assets/picture-gray.svg';
 import quitIcon from '../assets/quitcross.svg';
 import rightArrow from '../assets/rightarrow_black.svg';
 import styles from '../css/CommunityRegisterPage.module.css';
-import { TagsArray } from '../typings/communityPost';
+import { type FeedResponse, TagsArray } from '../typings/communityPost';
+import { uploadImageToS3 } from '../utils/utils';
 
 const CommunityRegisterPage = () => {
   const [isTagPopupActive, setIsTagPopupActive] = useState<boolean>(true);
@@ -24,8 +25,62 @@ const CommunityRegisterPage = () => {
   const LONG_PLACEHOLDER_TEXT = `${tempLocation} 이웃과 이야기를 나눠보세요.
 #맛집 #병원 #산책...`;
 
-  const handleRegisterClick = () => {
-    void navigate('/community');
+  const handlePostClick = async () => {
+    const postData = {
+      title,
+      content: article,
+      imageCount: images.length,
+    };
+
+    const token = localStorage.getItem('token');
+
+    try {
+      if (token === null) throw new Error('No token found');
+      const response = await fetch('/api/feed/post', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postData),
+      });
+
+      if (!response.ok) {
+        throw new Error('서버에 데이터를 전송하지 못했습니다.');
+      }
+
+      const data = (await response.json()) as FeedResponse;
+      if (images.length > 0) {
+        console.info('업로드 성공, 사진 업로드 중');
+        console.info(data.imagePresignedUrl);
+
+        const presignedUrls = data.imagePresignedUrl;
+        console.info('Presigned URL: ', presignedUrls);
+        if (images.length !== presignedUrls.length)
+          throw new Error('이미지와 presigned URL 개수가 다릅니다');
+
+        // S3에 이미지 업로드
+        const uploadPromises = images.map((file, index) => {
+          const presignedUrl = presignedUrls[index];
+          if (presignedUrl === undefined)
+            throw new Error('Presigned URL is undefined');
+          return uploadImageToS3(file, presignedUrl);
+        });
+
+        const uploadedUrls = await Promise.all(uploadPromises);
+        console.info('모든 이미지 업로드 성공: ', uploadedUrls);
+      }
+
+      void navigate(`/community/${data.id}`, {
+        state: { from: 'communitypost' },
+      });
+    } catch (error) {
+      console.error('에러 발생:', error);
+    }
+  };
+
+  const handlePostClickWrapper = () => {
+    void handlePostClick();
   };
 
   const handleSelectTag = () => {
@@ -93,7 +148,7 @@ const CommunityRegisterPage = () => {
           }}
         />
         <p className={styles.pageTitle}>동네생활 글쓰기</p>
-        <p className={styles.registerButton} onClick={handleRegisterClick}>
+        <p className={styles.registerButton} onClick={handlePostClickWrapper}>
           완료
         </p>
       </div>

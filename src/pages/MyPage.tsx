@@ -19,6 +19,7 @@ import rightArrow from '../assets/rightarrow_gray.svg';
 import shoppingBagIcon from '../assets/shoppingbag.svg';
 import settingsIcon from '../assets/upperbar-settings.svg';
 import writingIcon from '../assets/writing-black.svg';
+import Loader from '../components/Loader';
 import UpperBar from '../components/UpperBar';
 import styles from '../css/MyPage.module.css';
 import type { toolBarInfo } from '../typings/toolBar';
@@ -37,13 +38,14 @@ const myPageToolBarInfo: toolBarInfo = {
 };
 
 const MyPage = () => {
-  const [nickname, setNickname] = useState<string>('');
-  const [temperature, setTemperature] = useState<number>(36.5);
+  const [myPageInfo, setMyPageInfo] = useState<MyPageResponse>();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchMyPageInfo = async () => {
       const token = localStorage.getItem('token');
       try {
+        setIsLoading(true);
         if (token === null) throw new Error('No token found');
         const response = await fetch('/api/mypage', {
           method: 'GET',
@@ -58,10 +60,12 @@ const MyPage = () => {
         }
 
         const data = (await response.json()) as MyPageResponse;
-        setNickname(data.nickname);
-        setTemperature(data.temperature);
+        setMyPageInfo(data);
+        console.info('url:', data.imagePresignedUrl);
       } catch (error) {
         console.error('error:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -72,14 +76,27 @@ const MyPage = () => {
     <div className={styles.main}>
       <UpperBar toolBarInfo={myPageToolBarInfo} />
       <div className={styles.contentBox}>
-        <div className={styles.block}>
-          <NavLink to="profile" className={styles.profile}>
-            <img src={placeHolder} className={styles.profilePic} />
-            <p className={styles.nickName}>{nickname}</p>
-            <div className={styles.temperature}>{temperature}°C</div>
-            <img src={rightArrow} className={styles.arrow} />
-          </NavLink>
-        </div>
+        {isLoading || myPageInfo === undefined ? (
+          <Loader marginTop="0" />
+        ) : (
+          <div className={styles.block}>
+            <NavLink to="profile" className={styles.profile}>
+              <img
+                src={
+                  myPageInfo.imagePresignedUrl === ''
+                    ? placeHolder
+                    : myPageInfo.imagePresignedUrl
+                }
+                className={styles.profilePic}
+              />
+              <p className={styles.nickName}>{myPageInfo.nickname}</p>
+              <div className={styles.temperature}>
+                {myPageInfo.temperature}°C
+              </div>
+              <img src={rightArrow} className={styles.arrow} />
+            </NavLink>
+          </div>
+        )}
         <div className={styles.block}>
           <p className={styles.blockTitle}>나의 거래</p>
           <NavLink to="likes" className={styles.blockLine}>

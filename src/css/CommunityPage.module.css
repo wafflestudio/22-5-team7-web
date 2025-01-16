@@ -3,7 +3,7 @@
   border-bottom: 2px solid var(--daangn-lightgray);
   background-color: white;
   top: 65px;
-  position: fixed;
+  position: sticky;
   width: 100vw;
 }
 

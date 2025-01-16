@@ -1,54 +1,42 @@
+import type { User } from './user';
+
 export type CommunityPostItemType = {
-  id: string;
-  tag: string;
+  id: number;
+  authorLocation: string;
   title: string;
-  body: string;
-  location: string;
-  time: string;
-  views: number;
-  likes: number;
-  comments: Comment[];
+  content: string;
+  imagePresignedUrl: string;
+  likeCount: number;
+  commentCount: number;
+  createdAt: string;
+  viewCount: number;
 };
 
 export type CommunityPost = {
-  id: string; // 게시글 id
-  user_id: string; // 게시자 id
+  id: number;
+  author: User;
   tag: string;
   title: string;
-  body: string;
-  time: string; // 2025-01-02T13:05:26:00z (ISO 8601 형식식)
-  views: number; // 조회수
-  likes: number;
-  comments: Comment[]; // 댓글에 답글은 없는걸로
-  users: {
-    // user_id가 key인 dictionary
-    [key: string]: {
-      id: number;
-      nickname: string;
-      location: string;
-      profile_picture: string;
-    };
-  };
+  content: string;
+  imagePresignedUrl: string[];
+  likeCount: number;
+  commentList: Comment[];
+  createdAt: string;
+  updatedAt: string;
+  viewCount: number;
 };
 
 type Comment = {
   id: number;
-  user_id: string;
-  time: string;
-  likes: number;
-  body: string; // 댓글 내용
+  user: User;
+  content: string;
+  commentLikesCount: number;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type CommentProps = {
   CommentInfo: Comment;
-  userInfo:
-    | {
-        id: number;
-        nickname: string;
-        location: string;
-        profile_picture: string;
-      }
-    | undefined;
 };
 
 export const TagsArray = [
@@ -85,3 +73,8 @@ export const TagsArray = [
     tags: ['일반'],
   },
 ];
+
+export type FeedResponse = {
+  id: number;
+  imagePresignedUrl: string[];
+};

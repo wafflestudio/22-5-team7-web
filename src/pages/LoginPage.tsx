@@ -36,6 +36,7 @@ const LoginPage = () => {
       console.info('로그인 성공!');
       localStorage.setItem('token', data.accessToken);
       localStorage.setItem('userId', data.user.id);
+      localStorage.setItem('nickname', data.user.nickname);
 
       if (data.user.location === 'void') {
         void navigate('/location');

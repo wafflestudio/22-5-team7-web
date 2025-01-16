@@ -12,35 +12,36 @@ const SetLocationPage = () => {
   const [location, setLocation] = useState<string>('');
   const navigate = useNavigate();
 
-  /*
   const handleNextClick = async () => {
-      try {
-        const response = await fetch('/api/auth/sign/in', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: location,
-          }),
-        });
-  
-        if (!response.ok) {
-          const errorData = (await response.json()) as ErrorResponseType;
-          throw new Error(`로그인 실패: ${errorData.error}`);
-        }
-        const data = (await response.json()) as SigninResponse;
-        localStorage.setItem('location', data.user.location);
-        console.info('지역 정보 설정 완료!');
-        void navigate('/main');
-      } catch (error) {
-        if (error instanceof Error) alert(error.message);
-        console.error('error: ', error);
+    try {
+      const token = localStorage.getItem('token');
+      const nickname = localStorage.getItem('nickname');
+      if (token === null) throw new Error('No token found');
+      const response = await fetch('/api/mypage/profile/edit', {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nickname: nickname,
+          location: location,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('지역 정보 업데이트 실패');
       }
-    };
-  */
+      localStorage.setItem('location', location);
+      console.info('지역 정보 설정 완료!');
+      void navigate('/main');
+    } catch (error) {
+      console.error('error: ', error);
+    }
+  };
 
   const handleNextClickWrapper = () => {
-    // void handleNextClick;
-    void navigate('/main');
+    void handleNextClick();
   };
 
   return (
