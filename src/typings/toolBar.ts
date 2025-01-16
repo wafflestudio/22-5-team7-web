@@ -13,3 +13,7 @@ type toolBarItem = {
 export type UpperBarProps = {
   toolBarInfo: toolBarInfo;
 };
+
+export type LocationState = {
+  from: string;
+} | null;

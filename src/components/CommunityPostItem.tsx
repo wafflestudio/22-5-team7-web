@@ -14,19 +14,20 @@ const CommunityPostItem = ({ CommunityPostInfo }: CommunityPostItemProps) => {
   return (
     <NavLink to={`/community/${CommunityPostInfo.id}`} className={styles.main}>
       <div className={styles.contentBox}>
-        <p className={styles.postTag}>{CommunityPostInfo.tag}</p>
+        <p className={styles.postTag}>{'태그'}</p>
         <p className={styles.postTitle}>{CommunityPostInfo.title}</p>
-        <p className={styles.postPreview}>{CommunityPostInfo.body}</p>
+        <p className={styles.postPreview}>{CommunityPostInfo.content}</p>
         <div className={styles.bottomLine}>
           <p className={styles.postInfo}>
-            {CommunityPostInfo.location} · {getTimeAgo(CommunityPostInfo.time)}{' '}
-            · 조회 {CommunityPostInfo.views}
+            {CommunityPostInfo.authorLocation} ·{' '}
+            {getTimeAgo(CommunityPostInfo.createdAt)} · 조회{' '}
+            {CommunityPostInfo.viewCount}
           </p>
           <div className={styles.iconBox}>
             <img src={likeIcon} style={{ height: '18px' }} />
-            <span>{CommunityPostInfo.likes}</span>
+            <span>{CommunityPostInfo.likeCount}</span>
             <img src={commentIcon} style={{ height: '18px' }} />
-            <span>{CommunityPostInfo.comments.length}</span>
+            <span>{CommunityPostInfo.commentCount}</span>
           </div>
         </div>
       </div>

@@ -16,11 +16,10 @@ import styles from '../css/ProfilePage.module.css';
 import type { ProfileResponse } from '../typings/user';
 import type { ErrorResponseType } from '../typings/user';
 import { handleShareClick } from '../utils/eventhandlers';
-import { tempUser } from '../utils/mocks';
 import { getTimeAgo } from '../utils/utils';
 
 const MyProfilePage = () => {
-  const [profile, setProfile] = useState<ProfileResponse>(tempUser);
+  const [profile, setProfile] = useState<ProfileResponse>();
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -71,13 +70,20 @@ const MyProfilePage = () => {
           onClick={handleShareClick}
         />
       </div>
-      {loading ? (
+      {loading || profile === undefined ? (
         <Loader marginTop="40vh" />
       ) : (
         <div className={styles.contentBox}>
           <div className={styles.block}>
             <div className={styles.profile}>
-              <img src={placeHolder} className={styles.profilePic} />
+              <img
+                src={
+                  profile.user.imagePresignedUrl === ''
+                    ? placeHolder
+                    : profile.user.imagePresignedUrl
+                }
+                className={styles.profilePic}
+              />
               {profile.user.nickname}
             </div>
             <NavLink to="edit" className={styles.profileEditButton}>
@@ -92,7 +98,7 @@ const MyProfilePage = () => {
           <div className={styles.separator} />
           <div className={styles.block}>
             <NavLink to="/mypage/sells" className={styles.button}>
-              <p>판매물품 0 개</p>
+              <p>판매물품 {profile.itemCount} 개</p>
               <img src={rightArrow} style={{ height: '20px' }} />
             </NavLink>
           </div>

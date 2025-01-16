@@ -76,6 +76,11 @@
   font-size: 16px;
 }
 
+.postImage {
+  border-radius: 10px;
+  border: 2px solid var(--daangn-lightgray);
+}
+
 .viewBox {
   display: flex;
   align-items: center;

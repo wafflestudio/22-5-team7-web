@@ -1,4 +1,4 @@
-type User = {
+export type User = {
   id: string;
   userId: string;
   nickname: string;
@@ -35,6 +35,7 @@ export type Review = {
 export type MyPageResponse = {
   nickname: string;
   temperature: number;
+  imagePresignedUrl: string;
 };
 
 export type ErrorResponseType = {
@@ -45,9 +46,9 @@ export type ErrorResponseType = {
 export type ProfileResponse = {
   id: number;
   user: User;
+  itemCount: number;
   manners: Manner[];
   reviews: Review[];
-  mannerCount: number;
   reviewCount: number;
 };
 
