@@ -71,7 +71,7 @@ const ItemPage = () => {
         if (id === undefined) {
           throw new Error('아이템 정보가 없습니다.');
         }
-        const response = await fetch(`api/item/unlike/${id}`, {
+        const response = await fetch(`/api/item/unlike/${id}`, {
           method: 'DELETE',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -201,7 +201,6 @@ const ItemPage = () => {
         }
 
         const data: Item = (await response.json()) as Item;
-        setIsMyItem(data.seller.id === userId);
         setItem(data);
         setImages(data.imagePresignedUrl);
         setIsLiked(data.isLiked);
@@ -222,7 +221,11 @@ const ItemPage = () => {
     };
 
     void fetchIteminfo();
-  }, [id, isMyItem, userId]);
+  }, [id]);
+
+  useEffect(() => {
+    setIsMyItem(item?.seller.userId === userId);
+  }, [item, userId]);
 
   return (
     <div className={styles.main}>

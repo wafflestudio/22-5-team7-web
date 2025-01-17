@@ -7,11 +7,24 @@
 .contentBox {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   padding-bottom: 15px;
   border-bottom: 2px solid var(--daangn-lightgray);
   gap: 5px;
   width: 100%;
+}
+
+.upperBox {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.upperBoxLeft {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: calc(100% - 90px);
 }
 
 .postTag {
@@ -25,6 +38,10 @@
 .postTitle {
   color: black;
   font-size: 18px;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .postPreview {
@@ -33,6 +50,13 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.previewImage {
+  width: 75px;
+  height: 75px;
+  object-fit: cover;
+  border-radius: 5px;
 }
 
 .postInfo {
