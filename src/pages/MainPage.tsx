@@ -100,7 +100,7 @@ const MainPage = () => {
       <button className={styles.postbutton} onClick={handlePostClick}>
         + 글쓰기
       </button>
-      <div>
+      <div className={styles.contentBox}>
         {items.map((item, index) => (
           <Item key={index} ItemInfo={item} />
         ))}

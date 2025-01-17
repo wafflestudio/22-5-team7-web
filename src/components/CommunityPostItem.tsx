@@ -14,9 +14,19 @@ const CommunityPostItem = ({ CommunityPostInfo }: CommunityPostItemProps) => {
   return (
     <NavLink to={`/community/${CommunityPostInfo.id}`} className={styles.main}>
       <div className={styles.contentBox}>
-        <p className={styles.postTag}>{'태그'}</p>
-        <p className={styles.postTitle}>{CommunityPostInfo.title}</p>
-        <p className={styles.postPreview}>{CommunityPostInfo.content}</p>
+        <div className={styles.upperBox}>
+          <div className={styles.upperBoxLeft}>
+            <p className={styles.postTag}>{'태그'}</p>
+            <p className={styles.postTitle}>{CommunityPostInfo.title}</p>
+            <p className={styles.postPreview}>{CommunityPostInfo.content}</p>
+          </div>
+          {CommunityPostInfo.imagePresignedUrl !== '' && (
+            <img
+              src={CommunityPostInfo.imagePresignedUrl}
+              className={styles.previewImage}
+            />
+          )}
+        </div>
         <div className={styles.bottomLine}>
           <p className={styles.postInfo}>
             {CommunityPostInfo.authorLocation} ·{' '}
