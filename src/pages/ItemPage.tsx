@@ -224,7 +224,7 @@ const ItemPage = () => {
   }, [id]);
 
   useEffect(() => {
-    setIsMyItem(item?.seller.userId === userId);
+    setIsMyItem(item?.seller.id === userId);
   }, [item, userId]);
 
   return (
@@ -329,7 +329,7 @@ const ItemPage = () => {
       <div className={styles.contentBox}>
         <div className={styles.profilebar}>
           <NavLink
-            to={`/profile/${item?.seller.id === undefined ? '' : item.seller.id}`}
+            to={`/profile/${item?.seller.nickname === undefined ? '' : item.seller.nickname}`}
             className={styles.profile}
           >
             <img
@@ -360,7 +360,14 @@ const ItemPage = () => {
           <p
             className={styles.categoryanddate}
           >{`${item?.tag === undefined ? '' : item.tag} · ${getTimeAgo(item?.createdAt === undefined ? '' : item.createdAt)}`}</p>
-          <p className={styles.article}>{item?.content}</p>
+          <p className={styles.article}>
+            {item?.content.split('\n').map((line, index) => (
+              <span key={index}>
+                {line}
+                <br />
+              </span>
+            ))}
+          </p>
           <div className={styles.locationbox}>
             <p className={styles.locationtitle}>거래 희망 장소</p>
             <p className={styles.location}>{item?.location}</p>

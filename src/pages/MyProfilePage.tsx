@@ -28,16 +28,12 @@ const MyProfilePage = () => {
       try {
         setLoading(true);
         if (token === null) throw new Error('No token found');
-        const response = await fetch(
-          '/api/mypage/profile',
-          //'https://eab7f8a7-4889-4c27-8a86-0305c4e85524.mock.pstmn.io/api/mypage/profile',  // mock API
-          {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${token}`, // token 어떻게 전달하는지 얘기해봐야 함
-            },
+        const response = await fetch('/api/mypage/profile', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
-        );
+        });
 
         if (!response.ok) {
           const errorData = (await response.json()) as ErrorResponseType;
@@ -105,7 +101,7 @@ const MyProfilePage = () => {
           <div className={styles.separator} />
           <div className={styles.block}>
             <NavLink
-              to={`/profile/${profile.user.id}/manners`}
+              to={`/profile/${profile.user.nickname}/manners`}
               className={styles.button}
             >
               <p>받은 매너 평가</p>
@@ -125,7 +121,7 @@ const MyProfilePage = () => {
           <div className={styles.separator} />
           <div className={styles.block}>
             <NavLink
-              to={`/profile/${profile.user.id}/reviews`}
+              to={`/profile/${profile.user.nickname}/reviews`}
               className={styles.button}
             >
               <p>받은 거래 후기 {profile.reviewCount}</p>
