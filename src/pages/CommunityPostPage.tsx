@@ -1,7 +1,7 @@
 /*
   동네생활의 각 게시글 페이지.
 */
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router';
 
 import eyeIcon from '../assets/eye-gray.svg';
@@ -34,39 +34,46 @@ const CommunityPostPage = () => {
   const [sortComment, setSortComment] = useState<'old' | 'new'>('old');
   const [currentInput, setCurrentInput] = useState<string>('');
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
-  const isLiked = Math.random() < 0.5; // 임시로 설정, 추후에는 user id와 게시글에 like한 아이디를 대조해서 설정
+  const [isLiked, setIsLiked] = useState<boolean>(false);
 
-  useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        setLoading(true);
-        const token = localStorage.getItem('token');
-        if (token === null) throw new Error('토큰이 없습니다.');
-        if (id === undefined) throw new Error('id is undefined!');
+  const fetchPost = useCallback(async () => {
+    try {
+      setLoading(true);
+      const token = 'mockToken';
+      //const token = localStorage.getItem('token');
+      //if (token === null) throw new Error('토큰이 없습니다.');
+      if (id === undefined) throw new Error('id is undefined!');
 
-        const response = await fetch(`/api/feed/get/${id}`, {
+      const response = await fetch(
+        `/api/feed/get/${id}`,
+        //`https://b866fe16-c4c5-4989-bdc9-5a783448ec03.mock.pstmn.io/community/${id}`,
+        {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
-        });
+        },
+      );
 
-        if (!response.ok) {
-          throw new Error(`Failed to fetch post: ${response.statusText}`);
-        }
-
-        const data = (await response.json()) as CommunityPost;
-        setPost(data);
-      } catch (err) {
-        setError((err as Error).message);
-      } finally {
-        setLoading(false);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch post: ${response.statusText}`);
       }
-    };
 
-    void fetchPost();
+      const data = (await response.json()) as CommunityPost;
+      setPost(data);
+      setIsLiked(data.isLiked);
+    } catch (err) {
+      console.error(err);
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
   }, [id]);
+
+  useEffect(() => {
+    void fetchPost();
+  }, [fetchPost]);
 
   const handleBackClick = () => {
     const locationState = location.state as LocationState;
@@ -113,7 +120,8 @@ const CommunityPostPage = () => {
         color: 'black',
         text: '수정',
         function: () => {
-          console.info('수정하기');
+          setIsOverlayOpen(false);
+          if (id !== undefined) void navigate(`/community/edit/${id}`);
         },
       },
       {
@@ -134,32 +142,43 @@ const CommunityPostPage = () => {
   };
 
   const handleLikeClick = () => {
-    const likeComment = async () => {
+    const likePost = async () => {
       try {
         const token = localStorage.getItem('token');
         if (token === null) throw new Error('No token found');
         if (id === undefined) throw new Error('게시글 정보가 없습니다.');
 
-        const response = await fetch(
-          isLiked ? `/api/feed/like/${id}` : `/api/feed/unlike/${id}`,
-          {
+        if (isLiked) {
+          const response = await fetch(`/api/feed/unlike/${id}`, {
+            method: 'DELETE',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error('좋아요 취소 요청에 실패하였습니다.');
+          }
+        } else {
+          const response = await fetch(`/api/feed/like/${id}`, {
             method: 'POST',
             headers: {
               Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json',
             },
-          },
-        );
+          });
 
-        if (!response.ok) {
-          throw new Error('댓글 좋아요/싫어요에 실패하였습니다.');
+          if (!response.ok) {
+            throw new Error('좋아요 요청에 실패하였습니다.');
+          }
         }
       } catch (err) {
         console.error('에러 발생:', err);
       }
     };
 
-    void likeComment();
+    void likePost();
   };
 
   const handleSendClick = () => {
@@ -183,13 +202,15 @@ const CommunityPostPage = () => {
         if (!response.ok) {
           throw new Error('댓글 작성 중 오류가 발생했습니다.');
         }
+
+        await fetchPost();
+        setCurrentInput('');
       } catch (err) {
         console.error('에러 발생:', err);
       }
     };
 
     void postComment();
-    setCurrentInput('');
   };
 
   return (
@@ -217,7 +238,7 @@ const CommunityPostPage = () => {
       {loading ? (
         <Loader marginTop="40vh" />
       ) : error !== null ? (
-        <p>Error: {error}</p>
+        <p style={{ marginTop: '40vh' }}>Error: {error}</p>
       ) : post === null ? (
         <p>해당 글을 찾을 수 없습니다.</p>
       ) : (
@@ -225,9 +246,12 @@ const CommunityPostPage = () => {
           <div className={styles.postBox}>
             <div className={styles.postTag}>
               <img src={communityIcon} style={{ height: '14px' }} />
-              맛집
+              태그
             </div>
-            <div className={styles.profileBox}>
+            <div
+              className={styles.profileBox}
+              onClick={() => void navigate(`/profile/${post.author.nickname}`)}
+            >
               <img
                 src={
                   post.author.imagePresignedUrl === ''

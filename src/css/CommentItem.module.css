@@ -13,8 +13,25 @@
 
 .contentBox {
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: 5px;
+}
+
+.upperBox {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.profileBox {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.dotsIcon {
+  height: 20px;
 }
 
 .nickname {
