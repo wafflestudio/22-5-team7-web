@@ -7,10 +7,11 @@ import { NavLink, useNavigate } from 'react-router-dom';
 
 import leftArrow from '../assets/leftarrow.svg';
 import placeHolder from '../assets/placeholder_gray.png';
+import Loader from '../components/Loader';
 import SellingItem from '../components/SellingItem';
 import styles from '../css/SellsPage.module.css';
 import type { PreviewItem } from '../typings/item';
-import type { ErrorResponseType } from '../typings/user';
+import type { ErrorResponseType, MyPageResponse } from '../typings/user';
 
 const MySellsPage = () => {
   const [activeTab, setActiveTab] = useState<'selling' | 'sold'>('selling');
@@ -19,6 +20,8 @@ const MySellsPage = () => {
   const [soldItems, setSoldItems] = useState<PreviewItem[]>([]);
   const [lastId, setLastId] = useState(2100000);
   const [nextRequestId, setNextRequestId] = useState(2100000);
+  const [myPageInfo, setMyPageInfo] = useState<MyPageResponse>();
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,7 +32,7 @@ const MySellsPage = () => {
         const response = await fetch(`/api/mypage/sells?articleId=${lastId}`, {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${token}`, // token 어떻게 전달하는지 얘기해봐야 함
+            Authorization: `Bearer ${token}`,
           },
         });
 
@@ -44,9 +47,9 @@ const MySellsPage = () => {
         setNextRequestId(data[data.length - 1]?.id ?? 0);
 
         const selling = data.filter(
-          (item) => item.status === '판매 중' || item.status === '예약 중',
+          (item) => item.status === 0 || item.status === 1,
         );
-        const sold = data.filter((item) => item.status === '거래완료');
+        const sold = data.filter((item) => item.status === 2);
 
         setSellingItems((prevItems) => [...prevItems, ...selling]); // 판매 중 or 예약 중
         setSoldItems((prevItems) => [...prevItems, ...sold]); // 거래완료
@@ -57,6 +60,37 @@ const MySellsPage = () => {
 
     void fetchMySellsInfo();
   }, [lastId]);
+
+  useEffect(() => {
+    const fetchMyPageInfo = async () => {
+      const token = localStorage.getItem('token');
+      try {
+        setIsLoading(true);
+        if (token === null) throw new Error('No token found');
+        const response = await fetch('/api/mypage', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          const errorData = (await response.json()) as ErrorResponseType;
+          throw new Error(`데이터 불러오기 실패: ${errorData.error}`);
+        }
+
+        const data = (await response.json()) as MyPageResponse;
+        setMyPageInfo(data);
+        console.info('url:', data.imagePresignedUrl);
+      } catch (error) {
+        console.error('error:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    void fetchMyPageInfo();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -93,7 +127,14 @@ const MySellsPage = () => {
             글쓰기
           </NavLink>
         </div>
-        <img src={placeHolder} className={styles.profilePic} />
+        <img
+          src={
+            myPageInfo?.imagePresignedUrl === ''
+              ? placeHolder
+              : myPageInfo?.imagePresignedUrl
+          }
+          className={styles.profilePic}
+        />
       </div>
       <div className={styles.tab}>
         <button
@@ -128,7 +169,8 @@ const MySellsPage = () => {
         />
       </div>
       <div className={styles.contentBox}>
-        {activeTab === 'selling' && (
+        {isLoading && <Loader marginTop="30vh" />}
+        {!isLoading && activeTab === 'selling' && (
           <>
             {sellingItems.length === 0 ? (
               <p className={styles.noItemsText}>판매중인 게시글이 없어요.</p>
@@ -141,7 +183,7 @@ const MySellsPage = () => {
             )}
           </>
         )}
-        {activeTab === 'sold' && (
+        {!isLoading && activeTab === 'sold' && (
           <>
             {soldItems.length === 0 ? (
               <p className={styles.noItemsText}>거래완료된 게시글이 없어요.</p>

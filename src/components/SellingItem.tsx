@@ -35,16 +35,38 @@ const SellingItem = ({ ItemInfo }: SellingItemProps) => {
     setIsDropdownOpen(false);
   };
 
-  const handleReserveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleChangeStatus = (
+    status: number,
+    e: React.MouseEvent<HTMLButtonElement>,
+  ) => {
     e.preventDefault();
-    // 로직 추가
-    setIsDropdownOpen(false);
-  };
+    const changeStatus = async () => {
+      e.preventDefault();
+      try {
+        const token = localStorage.getItem('token');
+        if (token === null) {
+          throw new Error('토큰이 없습니다.');
+        }
+        const response = await fetch(`/api/item/status/${ItemInfo.id}`, {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ status }),
+        });
 
-  const handleSoldClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    // 로직 추가
-    setIsDropdownOpen(false);
+        if (!response.ok) {
+          throw new Error('상태 변경 요청에 실패했습니다.');
+        }
+      } catch (error) {
+        console.error('에러 발생:', error);
+      } finally {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    void changeStatus();
   };
 
   const handleEditClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -69,8 +91,6 @@ const SellingItem = ({ ItemInfo }: SellingItemProps) => {
       if (!response.ok) {
         throw new Error('삭제 요청에 실패했습니다.');
       }
-
-      void navigate('/main');
     } catch (error) {
       console.error('삭제 중 에러 발생:', error);
     }
@@ -82,6 +102,68 @@ const SellingItem = ({ ItemInfo }: SellingItemProps) => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
       void handleDeleteClick();
     }
+  };
+
+  const statusButtons = {
+    0: [
+      { label: '예약중', status: 1, style: styles.bluebutton },
+      { label: '거래완료', status: 2, style: styles.bluebutton },
+      {
+        label: '게시글 수정',
+        action: handleEditClick,
+        style: styles.bluebutton,
+      },
+      {
+        label: '삭제',
+        action: handleDeleteClickWrapper,
+        style: styles.redbutton,
+      },
+    ],
+    1: [
+      { label: '판매중', status: 0, style: styles.bluebutton },
+      {
+        label: '게시글 수정',
+        action: handleEditClick,
+        style: styles.bluebutton,
+      },
+      {
+        label: '삭제',
+        action: handleDeleteClickWrapper,
+        style: styles.redbutton,
+      },
+    ],
+    2: [
+      { label: '판매중', status: 0, style: styles.bluebutton },
+      {
+        label: '게시글 수정',
+        action: handleEditClick,
+        style: styles.bluebutton,
+      },
+      {
+        label: '삭제',
+        action: handleDeleteClickWrapper,
+        style: styles.redbutton,
+      },
+    ],
+  };
+
+  const renderButtons = () => {
+    const buttons = statusButtons[ItemInfo.status];
+    return buttons.map((action, index) => (
+      <button
+        key={index}
+        className={action.style}
+        onClick={
+          action.status !== undefined
+            ? (e) => {
+                handleChangeStatus(0, e);
+              }
+            : action.action
+        }
+      >
+        {action.label}
+      </button>
+    ));
   };
 
   return (
@@ -103,7 +185,7 @@ const SellingItem = ({ ItemInfo }: SellingItemProps) => {
                 className={styles.itemInfo}
               >{`${ItemInfo.location} · ${getTimeAgo(ItemInfo.createdAt)}`}</p>
               <p className={styles.itemPrice}>
-                {ItemInfo.status === '판매 중' ? (
+                {ItemInfo.status === 0 ? (
                   ''
                 ) : (
                   <span className={styles.itemStatus}>{ItemInfo.status}</span>
@@ -132,7 +214,7 @@ const SellingItem = ({ ItemInfo }: SellingItemProps) => {
             style={{ flex: '1' }}
             onClick={handleLeftButtonClick}
           >
-            {ItemInfo.status !== '거래완료' ? '끌어올리기' : '보낸 후기 보기'}
+            {ItemInfo.status !== 2 ? '끌어올리기' : '보낸 후기 보기'}
           </button>
           <div className={styles.dropdownContainer}>
             <button className={styles.button} onClick={handleDotsButtonClick}>
@@ -145,26 +227,7 @@ const SellingItem = ({ ItemInfo }: SellingItemProps) => {
         <>
           <div className={styles.overlay} onClick={handleCancelClick}></div>
           <div className={styles.actionSheet}>
-            <div className={styles.actionSheetContent}>
-              <button
-                className={styles.bluebutton}
-                onClick={handleReserveClick}
-              >
-                예약중
-              </button>
-              <button className={styles.bluebutton} onClick={handleSoldClick}>
-                거래완료
-              </button>
-              <button className={styles.bluebutton} onClick={handleEditClick}>
-                게시글 수정
-              </button>
-              <button
-                className={styles.redbutton}
-                onClick={handleDeleteClickWrapper}
-              >
-                삭제
-              </button>
-            </div>
+            <div className={styles.actionSheetContent}>{renderButtons()}</div>
             <button onClick={handleCancelClick} className={styles.cancelbutton}>
               취소
             </button>
