@@ -34,10 +34,18 @@ const Item = ({ ItemInfo }: ItemProps) => {
                 className={styles.itemInfo}
               >{`${ItemInfo.location} · ${getTimeAgo(ItemInfo.createdAt)}`}</p>
               <p className={styles.itemPrice}>
-                {ItemInfo.status === '판매 중' ? (
+                {ItemInfo.status === 0 ? (
                   ''
                 ) : (
-                  <span className={styles.itemStatus}>{ItemInfo.status}</span>
+                  <span
+                    className={
+                      ItemInfo.status === 1
+                        ? styles.reserveStatus
+                        : styles.soldStatus
+                    }
+                  >
+                    {ItemInfo.status === 1 ? '예약중' : '거래완료'}
+                  </span>
                 )}
 
                 {`${Intl.NumberFormat('ko-KR').format(ItemInfo.price)}원`}

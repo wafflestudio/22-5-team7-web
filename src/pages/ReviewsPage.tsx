@@ -11,22 +11,31 @@ import styles from '../css/ReviewsPage.module.css';
 import type { ErrorResponseType, Review } from '../typings/user';
 
 const ReviewsPage = () => {
-  const { id } = useParams<{ id: string }>();
+  const { nickname } = useParams<{ nickname: string }>();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [lastId, setLastId] = useState(2100000);
+  const [nextRequestId, setNextRequestId] = useState(2100000);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchReviewsInfo = async () => {
       try {
         setLoading(true);
-        if (id === undefined) throw new Error('id is undefined!');
-        const response = await fetch(`/api/profile/${id}/reviews`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
+        const token = localStorage.getItem('token');
+        if (token === null) throw new Error('No token found');
+        if (nickname === undefined) throw new Error('id is undefined!');
+
+        const response = await fetch(
+          `/api/profile/${nickname}/reviews?reviewId=${lastId}`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
           },
-        });
+        );
 
         if (!response.ok) {
           const errorData = (await response.json()) as ErrorResponseType;
@@ -34,6 +43,8 @@ const ReviewsPage = () => {
         }
 
         const data = (await response.json()) as Review[];
+
+        setNextRequestId(data[data.length - 1]?.id ?? 0);
         console.info(data);
         setReviews(data);
       } catch (error) {
@@ -44,7 +55,23 @@ const ReviewsPage = () => {
     };
 
     void fetchReviewsInfo();
-  }, [id]);
+  }, [nickname, lastId]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + window.scrollY >=
+        document.body.offsetHeight - 500
+      ) {
+        setLastId(nextRequestId);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [nextRequestId]);
 
   return (
     <div className={styles.main}>
@@ -69,12 +96,12 @@ const ReviewsPage = () => {
               <img src={placeHolder} className={styles.reviewPic} />
               <div className={styles.reviewSubBlock}>
                 <p className={styles.reviewNickname}>
-                  {review.seller.id === id
+                  {review.seller.nickname === nickname
                     ? review.buyer.nickname
                     : review.seller.nickname}
                 </p>
                 <p className={styles.reviewInfo}>
-                  {review.seller.id === id ? '구매자' : '판매자'} ·{' '}
+                  {review.seller.nickname === nickname ? '구매자' : '판매자'} ·{' '}
                   {review.location}
                 </p>
                 <p>{review.content}</p>

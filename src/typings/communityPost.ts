@@ -24,6 +24,7 @@ export type CommunityPost = {
   createdAt: string;
   updatedAt: string;
   viewCount: number;
+  isLiked: boolean;
 };
 
 type Comment = {
@@ -37,6 +38,11 @@ type Comment = {
 
 export type CommentProps = {
   CommentInfo: Comment;
+};
+
+export type CommentEditWindowProps = {
+  CommentInfo: Comment;
+  closeWindow: () => void;
 };
 
 export const TagsArray = [

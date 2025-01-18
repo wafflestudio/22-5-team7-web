@@ -14,6 +14,7 @@ import AuctionPage from './pages/AuctionPage';
 import AuctionPostPage from './pages/AuctionPostPage';
 import ChatPage from './pages/ChatPage';
 import ChatRoomPage from './pages/ChatRoomPage';
+import CommunityEditPage from './pages/CommunityEditPage';
 import CommunityPage from './pages/CommunityPage';
 import CommunityPostPage from './pages/CommunityPostPage';
 import CommunityRegisterPage from './pages/CommunityRegisterPage';
@@ -82,6 +83,7 @@ export const App = () => {
           <Route path="/search/:query" element={<SearchResultPage />} />
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/community/post" element={<CommunityRegisterPage />} />
+          <Route path="/community/edit/:id" element={<CommunityEditPage />} />
           <Route path="/community/:id" element={<CommunityPostPage />} />
           <Route path="/auctions" element={<AuctionPage />} />
           <Route path="/auctions/:id" element={<AuctionItemPage />} />
@@ -96,10 +98,10 @@ export const App = () => {
           <Route path="/mypage/sells" element={<MySellsPage />} />
           <Route path="/mypage/buys" element={<MyBuysPage />} />
           <Route path="/mypage/posts" element={<MyCommunityPosts />} />
-          <Route path="/profile/:id" element={<ProfilePage />} />
-          <Route path="/profile/:id/sells" element={<SellsPage />} />
-          <Route path="/profile/:id/manners" element={<MannersPage />} />
-          <Route path="/profile/:id/reviews" element={<ReviewsPage />} />
+          <Route path="/profile/:nickname" element={<ProfilePage />} />
+          <Route path="/profile/:nickname/sells" element={<SellsPage />} />
+          <Route path="/profile/:nickname/manners" element={<MannersPage />} />
+          <Route path="/profile/:nickname/reviews" element={<ReviewsPage />} />
           <Route path="/temp" element={<TempPage />} />
         </Routes>
       </Layout>
