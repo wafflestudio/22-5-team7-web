@@ -6,53 +6,56 @@ import { NavLink, useNavigate } from 'react-router-dom';
 
 import leftArrow from '../assets/leftarrow.svg';
 import styles from '../css/SocialLoginRedirectPage.module.css';
-import type { ErrorResponseType, ProfileResponse } from '../typings/user';
+import type { ProfileResponse } from '../typings/user';
 
 const SocialLoginRedirectPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const hash = window.location.hash;
-    const token = new URLSearchParams(hash.replace('#', '?')).get('token');
+    const fetchUserData = async (token: string) => {
+      try {
+        const response = await fetch('/api/mypage/profile', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
 
-    console.info(token);
-    if (token !== null) {
-      localStorage.setItem('token', token);
-
-      const fetchMyProfileInfo = async () => {
-        try {
-          const response = await fetch('/api/mypage/profile', {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-
-          if (!response.ok) {
-            const errorData = (await response.json()) as ErrorResponseType;
-            throw new Error(`데이터 불러오기 실패: ${errorData.error}`);
-          }
-
-          const data = (await response.json()) as ProfileResponse;
-          console.info('프로필 데이터: ', data);
-
-          if (data.user.location === '') {
-            console.info('회원가입 성공! 지역 설정 페이지로 이동 중...');
-            void navigate('/location');
-          } else {
-            console.info('로그인 성공!');
-            void navigate('/main');
-          }
-        } catch (error) {
-          console.error('error:', error);
+        if (!response.ok) {
+          throw new Error('사용자 정보를 가져오는 데 실패했습니다.');
         }
-      };
 
-      void fetchMyProfileInfo();
-    } else {
-      console.info('token not found!');
-      void navigate('/');
-    }
+        const data = (await response.json()) as ProfileResponse;
+        console.info('사용자 정보:', data);
+
+        if (data.user.location === '') {
+          void navigate('/location');
+        } else {
+          void navigate('/main');
+        }
+      } catch (error) {
+        console.error('사용자 정보를 가져오는 데 실패했습니다:', error);
+        void navigate('/');
+      }
+    };
+
+    const getTokenAndFetchUserData = async () => {
+      const hash = window.location.hash;
+      const token = new URLSearchParams(hash.replace('#', '?')).get('token');
+
+      console.info(token);
+      if (token !== null) {
+        localStorage.setItem('token', token);
+        console.info('로그인 성공!');
+        await fetchUserData(token);
+      } else {
+        console.info('token not found!');
+        void navigate('/');
+      }
+    };
+
+    void getTokenAndFetchUserData();
   }, [navigate]);
 
   return (
