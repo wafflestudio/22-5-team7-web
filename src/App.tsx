@@ -23,6 +23,7 @@ import ItemPostPage from './pages/ItemPostPage';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import MainPage from './pages/MainPage';
+import MannerPraisePage from './pages/MannerPraisePage';
 import MannersPage from './pages/MannersPage';
 import MyBuysPage from './pages/MyBuysPage';
 import MyCommunityPosts from './pages/MyCommunityPosts';
@@ -88,6 +89,7 @@ export const App = () => {
           <Route path="/auctions/post" element={<AuctionPostPage />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/chat/:id" element={<ChatRoomPage />} />
+          <Route path="/mannerpraise" element={<MannerPraisePage />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/mypage/settings" element={<SettingsPage />} />
           <Route path="/mypage/profile" element={<MyProfilePage />} />

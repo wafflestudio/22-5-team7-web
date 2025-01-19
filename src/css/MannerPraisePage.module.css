@@ -1,0 +1,158 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  padding: 15px 10px;
+  gap: 20px;
+  width: 100vw;
+}
+
+.button {
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+.infotexts {
+  padding-top: 10px;
+  font-weight: bold;
+}
+
+.upperbar {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: row;
+  justify-content: space-between;
+  position: relative;
+  padding-bottom: 10px;
+  border-bottom-width: 1px;
+  border-bottom-color: rgba(153, 153, 153, 0.5); /* 투명도 50% 설정 */
+  border-bottom-style: solid;
+}
+
+.upperbar > :nth-child(2) {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.quitcross {
+  position: relative;
+  left: 0px;
+  height: 25px;
+}
+
+.upperbartext {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.profile {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.profileImage {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.nicknameText {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.temp {
+  color: var(--daangn-gray);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  padding: 15px;
+  background-color: var(--daangn-lightgray);
+}
+
+.checkboxContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mainText {
+  font-size: 18px;
+  font-weight: bold;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  padding: 10px;
+  gap: 12px;
+  width: 100%;
+  background-color: white;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px; /* 아래쪽에 공간 추가 */
+}
+
+.checkboxLabel input {
+  margin-right: 8px;
+}
+
+.checkbox {
+  transform: scale(1.2);
+  margin-right: 8px;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #444444;
+  border-radius: 3px;
+  position: relative;
+  appearance: none;
+}
+
+.checkbox:checked {
+  background-color: orange;
+  border-color: orange;
+}
+
+.checkbox:checked::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 6px;
+  width: 6px;
+  height: 12px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.PostButton {
+  background: var(--daangn-orange);
+  border: none;
+  border-radius: 8px;
+  width: 100%;
+  color: white;
+  padding: 8px;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.cancelBox {
+  margin-top: 5px;
+  text-align: center;
+}
