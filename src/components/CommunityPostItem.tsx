@@ -34,10 +34,18 @@ const CommunityPostItem = ({ CommunityPostInfo }: CommunityPostItemProps) => {
             {CommunityPostInfo.viewCount}
           </p>
           <div className={styles.iconBox}>
-            <img src={likeIcon} style={{ height: '18px' }} />
-            <span>{CommunityPostInfo.likeCount}</span>
-            <img src={commentIcon} style={{ height: '18px' }} />
-            <span>{CommunityPostInfo.commentCount}</span>
+            {CommunityPostInfo.likeCount !== 0 && (
+              <>
+                <img src={likeIcon} style={{ height: '18px' }} />
+                <span>{CommunityPostInfo.likeCount}</span>
+              </>
+            )}
+            {CommunityPostInfo.commentCount !== 0 && (
+              <>
+                <img src={commentIcon} style={{ height: '18px' }} />
+                <span>{CommunityPostInfo.commentCount}</span>
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -39,9 +39,8 @@ const CommunityPostPage = () => {
   const fetchPost = useCallback(async () => {
     try {
       setLoading(true);
-      const token = 'mockToken';
-      //const token = localStorage.getItem('token');
-      //if (token === null) throw new Error('토큰이 없습니다.');
+      const token = localStorage.getItem('token');
+      if (token === null) throw new Error('토큰이 없습니다.');
       if (id === undefined) throw new Error('id is undefined!');
 
       const response = await fetch(
@@ -160,6 +159,8 @@ const CommunityPostPage = () => {
           if (!response.ok) {
             throw new Error('좋아요 취소 요청에 실패하였습니다.');
           }
+
+          setIsLiked(false);
         } else {
           const response = await fetch(`/api/feed/like/${id}`, {
             method: 'POST',
@@ -172,6 +173,8 @@ const CommunityPostPage = () => {
           if (!response.ok) {
             throw new Error('좋아요 요청에 실패하였습니다.');
           }
+
+          setIsLiked(true);
         }
       } catch (err) {
         console.error('에러 발생:', err);
