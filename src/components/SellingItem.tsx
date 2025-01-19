@@ -36,12 +36,11 @@ const SellingItem = ({ ItemInfo }: SellingItemProps) => {
   };
 
   const handleChangeStatus = (
-    status: number,
+    Status: number,
     e: React.MouseEvent<HTMLButtonElement>,
   ) => {
     e.preventDefault();
     const changeStatus = async () => {
-      e.preventDefault();
       try {
         const token = localStorage.getItem('token');
         if (token === null) {
@@ -53,7 +52,7 @@ const SellingItem = ({ ItemInfo }: SellingItemProps) => {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ status }),
+          body: JSON.stringify({ status: Status }),
         });
 
         if (!response.ok) {
@@ -156,7 +155,7 @@ const SellingItem = ({ ItemInfo }: SellingItemProps) => {
         onClick={
           action.status !== undefined
             ? (e) => {
-                handleChangeStatus(0, e);
+                handleChangeStatus(action.status, e);
               }
             : action.action
         }
@@ -188,7 +187,15 @@ const SellingItem = ({ ItemInfo }: SellingItemProps) => {
                 {ItemInfo.status === 0 ? (
                   ''
                 ) : (
-                  <span className={styles.itemStatus}>{ItemInfo.status}</span>
+                  <span
+                    className={
+                      ItemInfo.status === 1
+                        ? styles.reserveStatus
+                        : styles.soldStatus
+                    }
+                  >
+                    {ItemInfo.status === 1 ? '예약중' : '거래완료'}
+                  </span>
                 )}
 
                 {`${Intl.NumberFormat('ko-KR').format(ItemInfo.price)}원`}
