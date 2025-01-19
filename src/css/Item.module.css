@@ -53,7 +53,15 @@
   color: var(--daangn-gray);
 }
 
-.itemStatus {
+.reserveStatus {
+  padding: 5px;
+  font-size: 13px;
+  background-color: green;
+  border-radius: 2px;
+  color: white;
+}
+
+.soldStatus {
   padding: 5px;
   font-size: 13px;
   background-color: #444444;

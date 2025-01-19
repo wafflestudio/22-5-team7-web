@@ -28,7 +28,7 @@ const MANNER_INFO_TEXT = `
 `;
 
 const MannersPage = () => {
-  const { id } = useParams<{ id: string }>();
+  const { nickname } = useParams<{ nickname: string }>();
   const [manners, setManners] = useState<Manner[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
@@ -37,10 +37,14 @@ const MannersPage = () => {
     const fetchMannersInfo = async () => {
       try {
         setLoading(true);
-        if (id === undefined) throw new Error('id is undefined!');
-        const response = await fetch(`/api/profile/${id}/manners`, {
+        const token = localStorage.getItem('token');
+        if (token === null) throw new Error('No token found');
+        if (nickname === undefined) throw new Error('nickname is undefined!');
+
+        const response = await fetch(`/api/profile/${nickname}/manners`, {
           method: 'GET',
           headers: {
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
         });
@@ -61,7 +65,7 @@ const MannersPage = () => {
     };
 
     void fetchMannersInfo();
-  }, [id]);
+  }, [nickname]);
 
   return (
     <div className={styles.main}>

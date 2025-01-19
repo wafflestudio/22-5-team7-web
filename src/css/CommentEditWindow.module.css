@@ -1,0 +1,40 @@
+.main {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  z-index: 999;
+}
+
+.upperBar {
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  padding: 20px 15px 10px;
+  top: 0;
+  width: 100vw;
+  height: var(--upper-bar-height);
+  background-color: white;
+  border-bottom: 2px solid var(--daangn-lightgray);
+}
+
+.pageTitle {
+  position: absolute;
+  font-weight: bold;
+  font-size: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.registerButton {
+  font-size: 18px;
+}
+
+.commentContentBox {
+  padding: 75px 15px;
+  border: none;
+  font-size: 16px;
+  height: auto;
+}

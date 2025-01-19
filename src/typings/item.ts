@@ -2,7 +2,7 @@ export type PreviewItem = {
   id: number;
   title: string;
   price: number;
-  status: '판매 중' | '예약 중' | '거래완료';
+  status: 0 | 1 | 2;
   location: string;
   imagePresignedUrl: string | undefined;
   createdAt: string;

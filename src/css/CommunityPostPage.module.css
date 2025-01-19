@@ -37,6 +37,7 @@
   align-items: flex-start;
   padding: 15px;
   gap: 15px;
+  margin-top: var(--upper-bar-height);
 }
 
 .postTag {

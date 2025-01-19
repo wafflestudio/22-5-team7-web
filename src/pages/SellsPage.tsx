@@ -13,11 +13,11 @@ const SellsPage = () => {
   const [activeTab, setActiveTab] = useState<'selling' | 'sold'>('selling');
   const sellingItems: string[] = [];
   const soldItems = ['Item A', 'Item B'];
-  const { id } = useParams();
+  const { nickname } = useParams<{ nickname: string }>();
   const navigate = useNavigate();
 
-  if (id === undefined) {
-    throw new Error('id is undefined');
+  if (nickname === undefined) {
+    throw new Error('nickname is undefined');
   }
 
   return (
