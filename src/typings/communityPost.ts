@@ -5,6 +5,7 @@ export type CommunityPostItemType = {
   authorLocation: string;
   title: string;
   content: string;
+  tag: string;
   imagePresignedUrl: string;
   likeCount: number;
   commentCount: number;

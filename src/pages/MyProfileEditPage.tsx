@@ -19,9 +19,9 @@ import { uploadImageToS3 } from '../utils/utils';
 const MyProfileEditPage = () => {
   const [nickname, setNickname] = useState<string>();
   const [location, setLocation] = useState<string>();
-  const [profileImage, setProfileImage] = useState<
-    string | ArrayBuffer | null
-  >();
+  const [profileImage, setProfileImage] = useState<string | ArrayBuffer | null>(
+    null,
+  );
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ const MyProfileEditPage = () => {
       const editedData = {
         nickname: nickname,
         location: location,
-        imageCount: 1,
+        imageCount: profileImage === null || profileImage === '' ? 0 : 1,
       };
 
       try {
@@ -75,11 +75,13 @@ const MyProfileEditPage = () => {
           await uploadImageToS3(profileImageFile, presignedUrl);
           console.info('프로필 이미지 업로드 성공');
         }
-        void navigate(-1);
+        if (nickname !== undefined) localStorage.setItem('nickname', nickname);
+        if (location !== undefined) localStorage.setItem('location', location);
       } catch (error) {
         console.error('에러 발생:', error);
       } finally {
         setIsLoading(false);
+        void navigate(-1);
       }
     };
 

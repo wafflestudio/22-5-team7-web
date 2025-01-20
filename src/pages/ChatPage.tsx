@@ -34,10 +34,12 @@ const ChatPage = () => {
   return (
     <div>
       <UpperBar toolBarInfo={chatPageToolBarInfo} />
-      <Chat id="1" />
-      <Chat id="2" />
-      <Chat id="3" />
-      <Chat id="4" />
+      <div style={{ margin: '66px 0 75px' }}>
+        <Chat id="1" />
+        <Chat id="2" />
+        <Chat id="3" />
+        <Chat id="4" />
+      </div>
     </div>
   );
 };

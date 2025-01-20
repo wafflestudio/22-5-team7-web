@@ -52,6 +52,17 @@ export type ProfileResponse = {
   reviewCount: number;
 };
 
+export const mannerTypeLabels = {
+  KINDNESS: '친절하고 매너가 좋아요.',
+  PUNCTUALITY: '시간 약속을 잘 지켜요.',
+  QUICK_RESPONSE: '응답이 빨라요.',
+  DELIVERY: '제가 있는 곳까지 와서 거래했어요.',
+  ACCURATE_DESCRIPTION: '물품상태가 설명한 것과 같아요.',
+  AFFORDABLE_PRICE: '좋은 물품을 저렴하게 판매해요.',
+  DETAILED_DESCRIPTION: '물품설명이 자세해요.',
+  SHARING: '나눔을 해주셨어요.',
+};
+
 export const Regions = [
   '보라매동',
   '은천동',

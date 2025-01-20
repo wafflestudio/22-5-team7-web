@@ -80,7 +80,10 @@ const MyPage = () => {
           <Loader marginTop="0" />
         ) : (
           <div className={styles.block}>
-            <NavLink to="profile" className={styles.profile}>
+            <NavLink
+              to={`/profile/${myPageInfo.nickname}`}
+              className={styles.profile}
+            >
               <img
                 src={
                   myPageInfo.imagePresignedUrl === ''

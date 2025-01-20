@@ -16,7 +16,7 @@ const CommunityPostItem = ({ CommunityPostInfo }: CommunityPostItemProps) => {
       <div className={styles.contentBox}>
         <div className={styles.upperBox}>
           <div className={styles.upperBoxLeft}>
-            <p className={styles.postTag}>{'태그'}</p>
+            <p className={styles.postTag}>{CommunityPostInfo.tag}</p>
             <p className={styles.postTitle}>{CommunityPostInfo.title}</p>
             <p className={styles.postPreview}>{CommunityPostInfo.content}</p>
           </div>
@@ -34,10 +34,18 @@ const CommunityPostItem = ({ CommunityPostInfo }: CommunityPostItemProps) => {
             {CommunityPostInfo.viewCount}
           </p>
           <div className={styles.iconBox}>
-            <img src={likeIcon} style={{ height: '18px' }} />
-            <span>{CommunityPostInfo.likeCount}</span>
-            <img src={commentIcon} style={{ height: '18px' }} />
-            <span>{CommunityPostInfo.commentCount}</span>
+            {CommunityPostInfo.likeCount !== 0 && (
+              <>
+                <img src={likeIcon} style={{ height: '18px' }} />
+                <span>{CommunityPostInfo.likeCount}</span>
+              </>
+            )}
+            {CommunityPostInfo.commentCount !== 0 && (
+              <>
+                <img src={commentIcon} style={{ height: '18px' }} />
+                <span>{CommunityPostInfo.commentCount}</span>
+              </>
+            )}
           </div>
         </div>
       </div>
