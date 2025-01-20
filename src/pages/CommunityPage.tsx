@@ -14,9 +14,9 @@ import styles from '../css/CommunityPage.module.css';
 import type { CommunityPostItemType } from '../typings/communityPost';
 import type { toolBarInfo } from '../typings/toolBar';
 
-const communityPageToolBarInfo: toolBarInfo = {
+const communityPageToolBarInfoTemplate: toolBarInfo = {
   path: '/community',
-  mainText: localStorage.getItem('location') ?? '',
+  mainText: '',
   toolBarItems: [
     {
       pathTo: '/temp',
@@ -41,7 +41,17 @@ const CommunityPage = () => {
   const [posts, setPosts] = useState<CommunityPostItemType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [communityPageToolBarInfo, setCommunityPageToolBarInfo] =
+    useState<toolBarInfo>(communityPageToolBarInfoTemplate);
   const [lastId, setLastId] = useState(2100000);
+
+  useEffect(() => {
+    const location = localStorage.getItem('location') ?? 'error';
+    setCommunityPageToolBarInfo((prevInfo) => ({
+      ...prevInfo,
+      mainText: location,
+    }));
+  }, []);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -61,6 +71,7 @@ const CommunityPage = () => {
           throw new Error(`Failed to fetch posts: ${response.statusText}`);
         }
         const data = (await response.json()) as CommunityPostItemType[];
+        console.info(data);
         setPosts((prevPosts) => [...prevPosts, ...data]);
       } catch (err) {
         setError((err as Error).message);
@@ -76,7 +87,7 @@ const CommunityPage = () => {
     const handleScroll = () => {
       if (
         window.innerHeight + window.scrollY >=
-        document.body.offsetHeight - 500
+        document.body.offsetHeight - 100
       ) {
         setLastId(posts[posts.length - 1]?.id ?? 2100000);
       }

@@ -8,14 +8,15 @@ import bellIcon from '../assets/upperbar-bell.svg';
 import menuIcon from '../assets/upperbar-menu.svg';
 import searchIcon from '../assets/upperbar-search.svg';
 import Item from '../components/Item';
+import Loader from '../components/Loader';
 import UpperBar from '../components/UpperBar';
 import styles from '../css/MainPage.module.css';
 import type { PreviewItem as ItemType } from '../typings/item'; // 인터페이스 불러오기
 import type { toolBarInfo } from '../typings/toolBar';
 
-const mainPageToolBarInfo: toolBarInfo = {
+const mainPageToolBarInfoTemplate: toolBarInfo = {
   path: '/main',
-  mainText: localStorage.getItem('location') ?? '',
+  mainText: '',
   toolBarItems: [
     {
       pathTo: '/temp',
@@ -38,6 +39,10 @@ const mainPageToolBarInfo: toolBarInfo = {
 const MainPage = () => {
   const navigate = useNavigate();
   const [items, setItems] = useState<ItemType[]>([]);
+  const [mainPageToolBarInfo, setMainPageToolBarInfo] = useState<toolBarInfo>(
+    mainPageToolBarInfoTemplate,
+  );
+  const [loading, setLoading] = useState<boolean>(true);
   const [lastId, setLastId] = useState(2100000);
 
   const handlePostClick = () => {
@@ -45,8 +50,17 @@ const MainPage = () => {
   };
 
   useEffect(() => {
+    const location = localStorage.getItem('location') ?? 'error';
+    setMainPageToolBarInfo((prevInfo) => ({
+      ...prevInfo,
+      mainText: location,
+    }));
+  }, []);
+
+  useEffect(() => {
     const fetchItemList = async () => {
       try {
+        setLoading(true);
         const token = localStorage.getItem('token');
         if (token === null) {
           throw new Error('토큰이 없습니다.');
@@ -72,6 +86,8 @@ const MainPage = () => {
         console.info(data);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -82,7 +98,7 @@ const MainPage = () => {
     const handleScroll = () => {
       if (
         window.innerHeight + window.scrollY >=
-        document.body.offsetHeight - 500
+        document.body.offsetHeight - 100
       ) {
         setLastId(items[items.length - 1]?.id ?? 2100000); // lastId 업데이트
       }
@@ -104,6 +120,7 @@ const MainPage = () => {
         {items.map((item, index) => (
           <Item key={index} ItemInfo={item} />
         ))}
+        {loading && <Loader marginTop="0" />}
       </div>
     </div>
   );
