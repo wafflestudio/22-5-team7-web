@@ -8,6 +8,7 @@ import uploadIcon from '../assets/cameraIcon.svg';
 import quitcross from '../assets/quitcross.svg';
 import styles from '../css/ItemPostPage.module.css';
 import type { ArticleResponse } from '../typings/item';
+import { categories } from '../typings/item';
 import { uploadImageToS3 } from '../utils/utils';
 
 const LONG_PLACEHOLDER_TEXT = `에 올릴 게시글 내용을 작성해 주세요. (판매 금지 물품은 게시가 제한될 수 있어요.)
@@ -16,6 +17,8 @@ const LONG_PLACEHOLDER_TEXT = `에 올릴 게시글 내용을 작성해 주세�
 
 const ItemPostPage = () => {
   const [title, setTitle] = useState<string>('');
+  const [category, setCategory] = useState('');
+  const [showMore, setShowMore] = useState(false);
   const [price, setPrice] = useState<string>('');
   const [article, setArticle] = useState<string>('');
   const [place, setPlace] = useState<string>('');
@@ -60,6 +63,10 @@ const ItemPostPage = () => {
     }
   };
 
+  const handleCategoryClick = (selectedCategory: string) => {
+    setCategory(selectedCategory);
+  };
+
   useEffect(() => {
     if (textareaRef.current !== null) {
       textareaRef.current.style.height = 'auto';
@@ -74,6 +81,7 @@ const ItemPostPage = () => {
       price: Number(price),
       location: place,
       imageCount: images.length,
+      tag: category,
     };
 
     const token = localStorage.getItem('token');
@@ -196,6 +204,45 @@ const ItemPostPage = () => {
             setTitle(e.target.value);
           }}
         ></input>
+        <div className={styles.categoryButtons}>
+          {categories.slice(0, 3).map((cat, index) => (
+            <button
+              key={index}
+              onClick={() => {
+                handleCategoryClick(cat);
+              }}
+              className={
+                category === cat
+                  ? styles.selectedCategory
+                  : styles.notSelectedCategory
+              }
+            >
+              {cat}
+            </button>
+          ))}
+          {categories.length > 3 && (
+            <button
+              onClick={() => {
+                setShowMore(!showMore);
+              }}
+              className={styles.moreButton}
+            >
+              {showMore ? '접기' : '더보기'}
+            </button>
+          )}
+          {showMore &&
+            categories.slice(3).map((cat, index) => (
+              <button
+                key={index + 3}
+                onClick={() => {
+                  handleCategoryClick(cat);
+                }}
+                className={category === cat ? styles.selectedCategory : ''}
+              >
+                {cat}
+              </button>
+            ))}
+        </div>
         <p className={styles.infotexts}>거래 방식</p>
         <div className={styles.selectbuttons}>
           <button

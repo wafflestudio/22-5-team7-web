@@ -90,7 +90,7 @@ export const App = () => {
           <Route path="/auctions/:id" element={<AuctionItemPage />} />
           <Route path="/auctions/post" element={<AuctionPostPage />} />
           <Route path="/chat" element={<ChatPage />} />
-          <Route path="/chat/:id" element={<ChatRoomPage />} />
+          <Route path="/chat/:chatRoomId" element={<ChatRoomPage />} />
           <Route path="/mannerpraise" element={<MannerPraisePage />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/mypage/settings" element={<SettingsPage />} />

@@ -1,0 +1,18 @@
+.container {
+  padding: 20px;
+}
+
+.categoryList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.categoryList li {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.categoryList li:hover {
+  background-color: #f0f0f0;
+}

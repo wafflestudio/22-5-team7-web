@@ -159,6 +159,45 @@ const ItemPage = () => {
     setIsDropdownOpen(false);
   };
 
+  const handleChatClick = async () => {
+    try {
+      if (item === undefined) {
+        throw new Error('아이템 정보가 없습니다.');
+      }
+      const token = localStorage.getItem('token');
+      if (token === null) {
+        throw new Error('토큰이 없습니다.');
+      }
+      const storedId = localStorage.getItem('userId');
+
+      const response = await fetch('/api/chat/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          articleId: item.id,
+          sellerId: item.seller.id,
+          buyerId: storedId,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      //const data = await response.json();
+      console.info('Chat created');
+    } catch (error) {
+      console.error('Error creating chat:', error);
+    }
+  };
+
+  const handleChatClickWrappper = () => {
+    void handleChatClick();
+  };
+
   const handlePrevSwipe = () => {
     setCurrentImageIndex((prevIndex) =>
       prevIndex === 0 ? prevIndex : prevIndex - 1,
@@ -398,7 +437,12 @@ const ItemPage = () => {
             </p>
             <p className={styles.offerstatus}>{`가격 제안 불가`}</p>
           </div>
-          <button className={styles.chatbutton}>채팅하기</button>
+          <button
+            className={styles.chatbutton}
+            onClick={handleChatClickWrappper}
+          >
+            채팅하기
+          </button>
         </div>
       </div>
     </div>

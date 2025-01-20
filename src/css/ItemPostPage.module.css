@@ -207,6 +207,43 @@
   background-color: white;
 }
 
+.categoryButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.selectedCategory {
+  color: white;
+  font-size: 15px;
+  border-radius: 16px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  background-color: black;
+}
+
+.notSelectedCategory {
+  font-size: 15px;
+  border-radius: 16px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #999999;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  background-color: white;
+}
+
+.moreButton {
+  margin-left: auto;
+}
+
 .pricesuggestion {
   display: flex;
   flex-direction: row;

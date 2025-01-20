@@ -15,16 +15,19 @@
     "check-all": "yarn types:check && yarn format:check && yarn lint:check && yarn unused:check"
   },
   "dependencies": {
+    "@stomp/stompjs": "7.0.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-router": "7.1.1",
     "react-router-dom": "7.1.1",
-    "react-swipeable": "7.0.2"
+    "react-swipeable": "7.0.2",
+    "sockjs-client": "1.6.1"
   },
   "devDependencies": {
     "@types/node": "22.7.4",
     "@types/react": "18.3.10",
     "@types/react-dom": "18.3.0",
+    "@types/sockjs-client": "^1",
     "@vitejs/plugin-react-swc": "3.7.1",
     "@woohm402/eslint-config-react": "0.7.1",
     "eslint": "9.11.1",

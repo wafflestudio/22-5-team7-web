@@ -1,8 +1,11 @@
 /*
   각 채팅방에 해당하는 페이지.
 */
+import { Stomp } from '@stomp/stompjs';
+import { Client } from '@stomp/stompjs';
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import SockJS from 'sockjs-client';
 
 import callIcon from '../assets/callicon.svg';
 import leftarrow from '../assets/leftarrow.svg';
@@ -13,75 +16,133 @@ import etcIcon from '../assets/three_dots_black.svg';
 import styles from '../css/ChatRoomPage.module.css';
 
 type message = {
-  sender: string;
-  text: string;
-  time: number;
+  chatRoomId: number;
+  senderNickname: string;
+  content: string;
+  createdAt: string;
 };
 
 const ChatRoomPage = () => {
+  const { chatRoomId } = useParams<{ chatRoomId: string }>();
   const [currentInput, setCurrentInput] = useState<string>('');
   const [messages, setMessages] = useState<message[]>([]);
+  const [myNickname, setMyNickname] = useState<string>('');
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const profileImage = 'https://placehold.co/100';
   const price = 1200000;
   const formattedPrice = new Intl.NumberFormat('ko-KR').format(price);
   //const [inputMessage, setInputMessage] = useState<string>('');
-  const socketRef = useRef<WebSocket | null>(null);
+  const socketRef = useRef<Client | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // WebSocket 연결 설정
-    socketRef.current = new WebSocket('ws://your-websocket-url'); // 실제 WebSocket URL로 변경하세요
+    const storedNickname = localStorage.getItem('nickname');
+    if (storedNickname !== null) {
+      setMyNickname(storedNickname);
+    }
 
-    socketRef.current.onopen = () => {
-      console.info('WebSocket 연결이 열렸습니다.');
+    const fetchMessages = async () => {
+      if (chatRoomId === undefined) {
+        console.error('채팅방 ID가 없습니다.');
+        return;
+      }
+      console.info('채팅방 ID:', chatRoomId);
+
+      try {
+        const token = localStorage.getItem('token');
+        if (token === null) {
+          throw new Error('토큰이 없습니다.');
+        }
+        const response = await fetch(`/api/chat/${chatRoomId}`, {
+          //const response = await fetch(`/api/chat/${chatRoomId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error('메시지 가져오기 오류');
+        }
+        const data = (await response.json()) as message[];
+        setMessages(data);
+      } catch (error) {
+        console.error('메시지 가져오기 오류:', error);
+      }
     };
 
-    socketRef.current.onmessage = (event) => {
-      const data: message = JSON.parse(event.data as string) as message;
-      const newMessage: message = {
-        sender: data.sender,
-        text: data.text,
-        time: data.time,
+    const setupWebSocket = () => {
+      if (chatRoomId === undefined) {
+        console.error('채팅방 ID가 없습니다.');
+        return;
+      }
+      // SockJS 및 Stomp 설정
+      const socket = new SockJS(`http://${window.location.host}/ws`);
+      //const socket = new SockJS(`https://toykarrot.shop/ws`);
+      const stompClient: Client = Stomp.over(() => socket);
+      socketRef.current = stompClient;
+
+      socketRef.current.onConnect = () => {
+        console.info('WebSocket 연결이 열렸습니다.');
+
+        // 구독 설정
+        socketRef.current?.subscribe(`/topic/chat/${chatRoomId}`, (message) => {
+          const data: message = JSON.parse(message.body) as message;
+          const newMessage: message = {
+            ...data,
+          };
+          setMessages((prevMessages) => [...prevMessages, newMessage]);
+        });
       };
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
+
+      socketRef.current.onStompError = (frame) => {
+        console.error('STOMP 오류:', frame.headers['message']);
+        console.error('상세 정보:', frame.body);
+      };
+
+      socketRef.current.onWebSocketError = (event) => {
+        console.error('WebSocket 오류:', event);
+      };
+
+      socketRef.current.onWebSocketClose = (event) => {
+        console.info('WebSocket 연결이 닫혔습니다:', event);
+      };
+
+      socketRef.current.activate();
     };
 
-    socketRef.current.onclose = () => {
-      console.info('WebSocket 연결이 닫혔습니다.');
-    };
+    void fetchMessages().then(setupWebSocket);
 
     return () => {
       if (socketRef.current !== null) {
-        socketRef.current.close();
+        void socketRef.current.deactivate();
       }
     };
-  }, []);
+  }, [chatRoomId]);
 
-  /*const sendMessage = () => {
-    if (socketRef.current !== null && inputMessage.trim() !== '') {
-      socketRef.current.send(inputMessage);
-      setInputMessage('');
+  const handleSendMessage = () => {
+    if (chatRoomId === undefined) {
+      console.error('채팅방 ID가 없습니다.');
+      return;
     }
-  };*/
+    if (socketRef.current !== null && currentInput.trim() !== '') {
+      const newMessage: message = {
+        chatRoomId: Number(chatRoomId), // chatRoomId 추가
+        senderNickname: myNickname,
+        content: currentInput,
+        createdAt: new Date().toISOString(),
+      };
+      console.info('보낼 메시지:', newMessage);
+      socketRef.current.publish({
+        destination: `/app/chat/sendMessage`,
+        body: JSON.stringify(newMessage),
+      });
+      setCurrentInput('');
+    }
+  };
 
   const handleBackClick = () => {
     void navigate(-1);
-  };
-
-  const handleSendClick = () => {
-    if (currentInput.trim() !== '') {
-      const newMessage: message = {
-        sender: 'User2',
-        text: currentInput,
-        time: Date.now(),
-      };
-      setMessages([...messages, newMessage]);
-      setCurrentInput('');
-      if (textareaRef.current !== null) {
-        textareaRef.current.style.height = 'auto'; // 높이를 초기화
-      }
-    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -92,7 +153,7 @@ const ChatRoomPage = () => {
     }
   };
 
-  const formatDate = (timestamp: number) => {
+  const formatDate = (timestamp: string) => {
     return new Date(timestamp).toLocaleTimeString('ko-KR', {
       hour: '2-digit',
       minute: '2-digit',
@@ -132,31 +193,31 @@ const ChatRoomPage = () => {
           const nextMessage = messages[index + 1];
           const showTime =
             nextMessage === undefined ||
-            new Date(nextMessage.time).toLocaleTimeString('ko-KR', {
+            new Date(nextMessage.createdAt).toLocaleTimeString('ko-KR', {
               hour: '2-digit',
               minute: '2-digit',
             }) !==
-              new Date(message.time).toLocaleTimeString('ko-KR', {
+              new Date(message.createdAt).toLocaleTimeString('ko-KR', {
                 hour: '2-digit',
                 minute: '2-digit',
               }) ||
-            nextMessage.sender !== message.sender;
+            nextMessage.senderNickname !== message.senderNickname;
 
           const isFirstOpponentMessage =
-            message.sender !== 'User' &&
+            message.senderNickname !== myNickname &&
             (index === 0 ||
-              (index > 0 && messages[index - 1]?.sender === 'User'));
+              (index > 0 && messages[index - 1]?.senderNickname === 'User'));
 
           return (
             <div
               key={index}
               className={
-                message.sender === 'User'
+                message.senderNickname === myNickname
                   ? styles.mymessage
                   : styles.opponentmessage
               }
             >
-              {message.sender !== 'User' &&
+              {message.senderNickname !== myNickname &&
                 (isFirstOpponentMessage ? (
                   <img
                     src={profileImage}
@@ -168,15 +229,15 @@ const ChatRoomPage = () => {
                 ))}
               <p
                 className={
-                  message.sender === 'User'
+                  message.senderNickname === myNickname
                     ? styles.mymessagetext
                     : styles.opponentmessagetext
                 }
               >
-                {message.text}
+                {message.content}
               </p>
               <p className={styles.messagetime}>
-                {showTime ? formatDate(message.time) : ''}
+                {showTime ? formatDate(message.createdAt) : ''}
               </p>
             </div>
           );
@@ -195,7 +256,7 @@ const ChatRoomPage = () => {
         </div>
         <button
           className={styles.sendButton}
-          onClick={handleSendClick}
+          onClick={handleSendMessage}
           disabled={currentInput.trim() === ''}
         >
           <img
