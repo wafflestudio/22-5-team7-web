@@ -249,7 +249,7 @@ const CommunityPostPage = () => {
           <div className={styles.postBox}>
             <div className={styles.postTag}>
               <img src={communityIcon} style={{ height: '14px' }} />
-              태그
+              {post.tag}
             </div>
             <div
               className={styles.profileBox}

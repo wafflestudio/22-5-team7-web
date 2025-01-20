@@ -71,6 +71,7 @@ const ItemPostPage = () => {
     const postData = {
       title,
       content: article,
+      tag: '임시태그',
       price: Number(price),
       location: place,
       imageCount: images.length,

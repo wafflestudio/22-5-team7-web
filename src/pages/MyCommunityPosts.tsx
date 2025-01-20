@@ -1,7 +1,7 @@
 /* 
   내 동네생활 글 페이지. 저장한 글 기능은 공감한 글로 대체함.
 */
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import leftArrow from '../assets/leftarrow.svg';
@@ -16,7 +16,11 @@ const MyCommunityPosts = () => {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const [underlineLeft, setUnderlineLeft] = useState(0);
   const [myPosts, setMyPosts] = useState<CommunityPostItemType[]>([]);
-  const [lastId, setLastId] = useState(2100000);
+  const [myComments, setMyComments] = useState<CommunityPostItemType[]>([]);
+  const [myLikes, setMyLikes] = useState<CommunityPostItemType[]>([]);
+  const [lastPostId, setLastPostId] = useState(2100000);
+  const [lastCommentId, setLastCommentId] = useState(2100000);
+  const [lastLikeId, setLastLikeId] = useState(2100000);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -26,43 +30,69 @@ const MyCommunityPosts = () => {
     setUnderlineLeft(percentage);
   };
 
-  useEffect(() => {
-    const fetchPosts = async () => {
+  const fetchPosts = useCallback(
+    async (tab: 'myposts' | 'mycomments' | 'mylikes') => {
       try {
         setLoading(true);
         const token = localStorage.getItem('token');
         if (token === null) throw new Error('토큰이 없습니다.');
 
-        const response = await fetch(`/api/myfeed/my?feedId=${lastId}`, {
+        let url = '';
+        if (tab === 'myposts') url = `/api/myfeed/my?feedId=${lastPostId}`;
+        else if (tab === 'mycomments')
+          url = `/api/myfeed/comment?feedId=${lastCommentId}`;
+        else url = `/api/myfeed/like?feedId=${lastLikeId}`;
+
+        const response = await fetch(url, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
         });
+
         if (!response.ok) {
-          throw new Error(`Failed to fetch my posts: ${response.statusText}`);
+          throw new Error(`Failed to fetch ${tab}: ${response.statusText}`);
         }
+
         const data = (await response.json()) as CommunityPostItemType[];
-        setMyPosts((prevMyPosts) => [...prevMyPosts, ...data]);
+        if (tab === 'myposts') {
+          setMyPosts((prev) => [...prev, ...data]);
+        } else if (tab === 'mycomments') {
+          setMyComments((prev) => [...prev, ...data]);
+        } else {
+          setMyLikes((prev) => [...prev, ...data]);
+        }
+        setError(null);
       } catch (err) {
         console.error(err);
         setError((err as Error).message);
       } finally {
         setLoading(false);
       }
-    };
+    },
+    [lastPostId, lastCommentId, lastLikeId],
+  );
 
-    void fetchPosts();
-  }, [lastId]);
+  useEffect(() => {
+    void fetchPosts('myposts');
+    void fetchPosts('mycomments');
+    void fetchPosts('mylikes');
+  }, [fetchPosts]);
 
   useEffect(() => {
     const handleScroll = () => {
       if (
         window.innerHeight + window.scrollY >=
-        document.body.offsetHeight - 500
+        document.body.offsetHeight - 200
       ) {
-        setLastId(myPosts[myPosts.length - 1]?.id ?? 2100000);
+        if (activeTabIndex === 0) {
+          setLastPostId(myPosts[myPosts.length - 1]?.id ?? 2100000);
+        } else if (activeTabIndex === 1) {
+          setLastCommentId(myComments[myComments.length - 1]?.id ?? 2100000);
+        } else if (activeTabIndex === 2) {
+          setLastLikeId(myLikes[myLikes.length - 1]?.id ?? 2100000);
+        }
       }
     };
 
@@ -70,7 +100,7 @@ const MyCommunityPosts = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [myPosts]);
+  }, [activeTabIndex, myComments, myLikes, myPosts]);
 
   return (
     <div className={styles.main}>
@@ -119,25 +149,32 @@ const MyCommunityPosts = () => {
                 <CommunityPostItem key={post.id} CommunityPostInfo={post} />
               ))
             ))}
-          {activeTabIndex === 1 && (
-            <div className={styles.noContentBox}>
-              <p>댓글단 글을 확인할 수 있어요.</p>
-              <NavLink to="/community" className={styles.navButton}>
-                동네생활 둘러보기
-              </NavLink>
-            </div>
-          )}
-          {activeTabIndex === 2 && (
-            <div className={styles.noContentBox}>
-              <p>
-                다시보고 싶은 글을 공감하세요. <br /> 공감한 글은 나만 볼 수
-                있어요.
-              </p>
-              <NavLink to="/community" className={styles.navButton}>
-                동네생활 둘러보기
-              </NavLink>
-            </div>
-          )}
+          {activeTabIndex === 1 &&
+            (myComments.length === 0 ? (
+              <div className={styles.noContentBox}>
+                <p>댓글단 글을 확인할 수 있어요.</p>
+                <NavLink to="/community" className={styles.navButton}>
+                  동네생활 둘러보기
+                </NavLink>
+              </div>
+            ) : (
+              myComments.map((post) => (
+                <CommunityPostItem key={post.id} CommunityPostInfo={post} />
+              ))
+            ))}
+          {activeTabIndex === 2 &&
+            (myLikes.length === 0 ? (
+              <div className={styles.noContentBox}>
+                <p>공감한 글이 없습니다. 글을 공감해보세요.</p>
+                <NavLink to="/community" className={styles.navButton}>
+                  동네생활 둘러보기
+                </NavLink>
+              </div>
+            ) : (
+              myLikes.map((post) => (
+                <CommunityPostItem key={post.id} CommunityPostInfo={post} />
+              ))
+            ))}
         </div>
       )}
     </div>

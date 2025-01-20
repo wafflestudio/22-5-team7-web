@@ -19,9 +19,9 @@ import { uploadImageToS3 } from '../utils/utils';
 const MyProfileEditPage = () => {
   const [nickname, setNickname] = useState<string>();
   const [location, setLocation] = useState<string>();
-  const [profileImage, setProfileImage] = useState<
-    string | ArrayBuffer | null
-  >();
+  const [profileImage, setProfileImage] = useState<string | ArrayBuffer | null>(
+    null,
+  );
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ const MyProfileEditPage = () => {
       const editedData = {
         nickname: nickname,
         location: location,
-        imageCount: profileImage === null ? 0 : 1,
+        imageCount: profileImage === null || profileImage === '' ? 0 : 1,
       };
 
       try {
