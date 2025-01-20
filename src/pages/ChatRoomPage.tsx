@@ -77,8 +77,8 @@ const ChatRoomPage = () => {
         return;
       }
       // SockJS 및 Stomp 설정
-      const socket = new SockJS(`http://${window.location.host}/ws`);
-      //const socket = new SockJS(`https://toykarrot.shop/ws`);
+      //const socket = new SockJS(`http://${window.location.host}/ws`);
+      const socket = new SockJS(`https://toykarrot.shop/ws`);
       const stompClient: Client = Stomp.over(() => socket);
       socketRef.current = stompClient;
 
