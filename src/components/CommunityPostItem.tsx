@@ -16,7 +16,7 @@ const CommunityPostItem = ({ CommunityPostInfo }: CommunityPostItemProps) => {
       <div className={styles.contentBox}>
         <div className={styles.upperBox}>
           <div className={styles.upperBoxLeft}>
-            <p className={styles.postTag}>{'태그'}</p>
+            <p className={styles.postTag}>{CommunityPostInfo.tag}</p>
             <p className={styles.postTitle}>{CommunityPostInfo.title}</p>
             <p className={styles.postPreview}>{CommunityPostInfo.content}</p>
           </div>
