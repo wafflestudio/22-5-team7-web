@@ -29,6 +29,7 @@ const CommunityRegisterPage = () => {
     const postData = {
       title,
       content: article,
+      tag: tag,
       imageCount: images.length,
     };
 
@@ -80,7 +81,9 @@ const CommunityRegisterPage = () => {
   };
 
   const handlePostClickWrapper = () => {
-    void handlePostClick();
+    if (tag === '' || title === '' || article === '')
+      window.alert('게시글을 완성해주세요.');
+    else void handlePostClick();
   };
 
   const handleSelectTag = () => {

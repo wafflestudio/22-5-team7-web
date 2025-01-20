@@ -13,7 +13,11 @@ import leftArrow from '../assets/leftarrow.svg';
 import peopleIcon from '../assets/people.svg';
 import Loader from '../components/Loader';
 import styles from '../css/MannersPage.module.css';
-import type { ErrorResponseType, Manner } from '../typings/user';
+import {
+  type ErrorResponseType,
+  type Manner,
+  mannerTypeLabels,
+} from '../typings/user';
 
 const MANNER_INFO_TEXT = `
 - 받은 비매너 내역은 나에게만 보입니다.
@@ -96,7 +100,13 @@ const MannersPage = () => {
                 .sort((a, b) => b.count - a.count)
                 .map((manner, index) => (
                   <div key={index} className={styles.mannerLine}>
-                    <p>{manner.mannerType}</p>
+                    <p>
+                      {
+                        mannerTypeLabels[
+                          manner.mannerType as keyof typeof mannerTypeLabels
+                        ]
+                      }
+                    </p>
                     <div className={styles.mannerLineRight}>
                       <img src={peopleIcon} style={{ height: '20px' }} />
                       {manner.count}

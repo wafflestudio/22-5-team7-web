@@ -47,12 +47,14 @@ const AuctionPage = () => {
   return (
     <div>
       <UpperBar toolBarInfo={auctionPageToolBarInfo} />
-      <button className={styles.postbutton}>+ 글쓰기</button>
-      <AuctionItem ItemInfo={mockAuctionItem}></AuctionItem>
-      <AuctionItem ItemInfo={mockAuctionItem}></AuctionItem>
-      <AuctionItem ItemInfo={mockAuctionItem}></AuctionItem>
-      <AuctionItem ItemInfo={mockAuctionItem}></AuctionItem>
-      <AuctionItem ItemInfo={mockAuctionItem}></AuctionItem>
+      <div className={styles.contentBox}>
+        <button className={styles.postbutton}>+ 글쓰기</button>
+        <AuctionItem ItemInfo={mockAuctionItem}></AuctionItem>
+        <AuctionItem ItemInfo={mockAuctionItem}></AuctionItem>
+        <AuctionItem ItemInfo={mockAuctionItem}></AuctionItem>
+        <AuctionItem ItemInfo={mockAuctionItem}></AuctionItem>
+        <AuctionItem ItemInfo={mockAuctionItem}></AuctionItem>
+      </div>
     </div>
   );
 };

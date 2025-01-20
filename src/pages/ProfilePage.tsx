@@ -14,17 +14,19 @@ import Loader from '../components/Loader';
 import TemperatureGauge from '../components/TemperatureGauge';
 import styles from '../css/ProfilePage.module.css';
 import type { ErrorResponseType, ProfileResponse } from '../typings/user';
+import { mannerTypeLabels } from '../typings/user';
 import { handleShareClick } from '../utils/eventhandlers';
 import { getTimeAgo } from '../utils/utils';
 
 const ProfilePage = () => {
   const { nickname } = useParams<{ nickname: string }>();
-  const navigate = useNavigate();
   const [profile, setProfile] = useState<ProfileResponse>();
   const [loading, setLoading] = useState<boolean>(true);
+  const myId = localStorage.getItem('userId');
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchMyProfileInfo = async () => {
+    const fetchProfileInfo = async () => {
       const token = localStorage.getItem('token');
       try {
         setLoading(true);
@@ -55,7 +57,7 @@ const ProfilePage = () => {
       }
     };
 
-    void fetchMyProfileInfo();
+    void fetchProfileInfo();
   }, [nickname]);
 
   return (
@@ -92,9 +94,21 @@ const ProfilePage = () => {
               />
               {profile.user.nickname}
             </div>
-            <NavLink to="/temp" className={styles.profileEditButton}>
-              매너 칭찬하기
-            </NavLink>
+            {profile.user.id === myId ? (
+              <NavLink
+                to="/mypage/profile/edit"
+                className={styles.profileEditButton}
+              >
+                프로필 수정
+              </NavLink>
+            ) : (
+              <NavLink
+                to={`/mannerpraise/${profile.user.nickname}`}
+                className={styles.profileEditButton}
+              >
+                매너 칭찬하기
+              </NavLink>
+            )}
             <div style={{ display: 'flex' }}>
               <p className={styles.mannerTempTitle}>매너온도</p>
               <img src={infoIcon} style={{ height: '20px' }} />
@@ -104,7 +118,11 @@ const ProfilePage = () => {
           <div className={styles.separator} />
           <div className={styles.block}>
             <NavLink
-              to={`/profile/${profile.user.nickname}/sells`}
+              to={
+                profile.user.id === myId
+                  ? '/mypage/sells'
+                  : `/profile/${profile.user.nickname}/sells`
+              }
               className={styles.button}
             >
               <p>판매물품 {profile.itemCount} 개</p>
@@ -127,7 +145,13 @@ const ProfilePage = () => {
                 <div key={index} className={styles.mannerLine}>
                   <img src={peopleIcon} style={{ height: '20px' }} />
                   <p style={{ fontWeight: 'bold' }}>{manner.count}</p>
-                  <p className={styles.mannerLabel}>{manner.mannerType}</p>
+                  <p className={styles.mannerLabel}>
+                    {
+                      mannerTypeLabels[
+                        manner.mannerType as keyof typeof mannerTypeLabels
+                      ]
+                    }
+                  </p>
                 </div>
               ))}
           </div>
