@@ -14,6 +14,7 @@ import Loader from '../components/Loader';
 import TemperatureGauge from '../components/TemperatureGauge';
 import styles from '../css/ProfilePage.module.css';
 import type { ErrorResponseType, ProfileResponse } from '../typings/user';
+import { mannerTypeLabels } from '../typings/user';
 import { handleShareClick } from '../utils/eventhandlers';
 import { getTimeAgo } from '../utils/utils';
 
@@ -101,7 +102,10 @@ const ProfilePage = () => {
                 프로필 수정
               </NavLink>
             ) : (
-              <NavLink to="/mannerpraise" className={styles.profileEditButton}>
+              <NavLink
+                to={`/mannerpraise/${profile.user.nickname}`}
+                className={styles.profileEditButton}
+              >
                 매너 칭찬하기
               </NavLink>
             )}
@@ -141,7 +145,13 @@ const ProfilePage = () => {
                 <div key={index} className={styles.mannerLine}>
                   <img src={peopleIcon} style={{ height: '20px' }} />
                   <p style={{ fontWeight: 'bold' }}>{manner.count}</p>
-                  <p className={styles.mannerLabel}>{manner.mannerType}</p>
+                  <p className={styles.mannerLabel}>
+                    {
+                      mannerTypeLabels[
+                        manner.mannerType as keyof typeof mannerTypeLabels
+                      ]
+                    }
+                  </p>
                 </div>
               ))}
           </div>
