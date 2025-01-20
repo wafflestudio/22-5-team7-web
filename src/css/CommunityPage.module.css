@@ -3,8 +3,9 @@
   border-bottom: 2px solid var(--daangn-lightgray);
   background-color: white;
   top: 65px;
-  position: sticky;
+  position: fixed;
   width: 100vw;
+  height: 42px;
 }
 
 .activeTabButton {
@@ -45,5 +46,5 @@
 }
 
 .contentBox {
-  margin-bottom: 75px;
+  margin: 108px 0 75px;
 }

@@ -31,7 +31,6 @@ import MyCommunityPosts from './pages/MyCommunityPosts';
 import MyLikesPage from './pages/MyLikesPage';
 import MyPage from './pages/MyPage';
 import MyProfileEditPage from './pages/MyProfileEditPage';
-import MyProfilePage from './pages/MyProfilePage';
 import MySellsPage from './pages/MySellsPage';
 import ProfilePage from './pages/ProfilePage';
 import RegisterPage from './pages/RegisterPage';
@@ -91,10 +90,12 @@ export const App = () => {
           <Route path="/auctions/post" element={<AuctionPostPage />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/chat/:id" element={<ChatRoomPage />} />
-          <Route path="/mannerpraise" element={<MannerPraisePage />} />
+          <Route
+            path="/mannerpraise/:nickname"
+            element={<MannerPraisePage />}
+          />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/mypage/settings" element={<SettingsPage />} />
-          <Route path="/mypage/profile" element={<MyProfilePage />} />
           <Route path="/mypage/profile/edit" element={<MyProfileEditPage />} />
           <Route path="/mypage/likes" element={<MyLikesPage />} />
           <Route path="/mypage/sells" element={<MySellsPage />} />
