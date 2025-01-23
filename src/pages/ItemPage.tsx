@@ -16,6 +16,7 @@ import shareicon from '../assets/share_white.svg';
 import dotsicon from '../assets/three_dots_white.svg';
 import TemperatureGaugeSmall from '../components/TemperatureGaugeSmall';
 import styles from '../css/ItemPage.module.css';
+import type { chatItem } from '../typings/chat';
 import type { Item } from '../typings/item';
 import type { LocationState } from '../typings/toolBar';
 import { handleShareClick } from '../utils/eventhandlers';
@@ -177,8 +178,8 @@ const ItemPage = () => {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          articleId: item.id,
-          sellerId: item.seller.id,
+          articleId: item.article.id,
+          sellerId: item.article.seller.id,
           buyerId: storedId,
         }),
       });
@@ -187,7 +188,8 @@ const ItemPage = () => {
         throw new Error('Network response was not ok');
       }
 
-      //const data = await response.json();
+      const data = (await response.json()) as chatItem;
+      void navigate(`/chat/${data.id}`);
       console.info('Chat created');
     } catch (error) {
       console.error('Error creating chat:', error);
@@ -241,9 +243,9 @@ const ItemPage = () => {
 
         const data: Item = (await response.json()) as Item;
         setItem(data);
-        setImages(data.imagePresignedUrl);
-        setIsLiked(data.isLiked);
-        setProfileimage(data.seller.imagePresignedUrl);
+        setImages(data.article.imagePresignedUrl);
+        setIsLiked(data.article.isLiked);
+        setProfileimage(data.article.seller.imagePresignedUrl);
         //const imageUrls = data.imagePresignedUrl.map((url: string) => url);
         // 홀수 인덱스의 원소만 저장
         //const oddIndexImageUrls = imageUrls.filter(
@@ -263,7 +265,7 @@ const ItemPage = () => {
   }, [id]);
 
   useEffect(() => {
-    setIsMyItem(item?.seller.id === userId);
+    setIsMyItem(item?.article.seller.id === userId);
   }, [item, userId]);
 
   return (
@@ -368,7 +370,7 @@ const ItemPage = () => {
       <div className={styles.contentBox}>
         <div className={styles.profilebar}>
           <NavLink
-            to={`/profile/${item?.seller.nickname === undefined ? '' : item.seller.nickname}`}
+            to={`/profile/${item !== undefined ? item.article.seller.nickname : ''}`}
             className={styles.profile}
           >
             <img
@@ -376,17 +378,17 @@ const ItemPage = () => {
               className={styles.profileimage}
             ></img>
             <div className={styles.profiletext}>
-              <p className={styles.nickname}>{item?.seller.nickname}</p>
-              <p className={styles.address}>{item?.seller.location}</p>
+              <p className={styles.nickname}>{item?.article.seller.nickname}</p>
+              <p className={styles.address}>{item?.article.seller.location}</p>
             </div>
           </NavLink>
 
           <div className={styles.mannertempbox}>
             <TemperatureGaugeSmall
               temperature={
-                item?.seller.temperature === undefined
+                item?.article.seller.temperature === undefined
                   ? 0
-                  : item.seller.temperature
+                  : item.article.seller.temperature
               }
             />
             <NavLink to={`/temp`} className={styles.temptext}>
@@ -395,12 +397,12 @@ const ItemPage = () => {
           </div>
         </div>
         <div className={styles.itemInfo}>
-          <p className={styles.titletext}>{item?.title}</p>
+          <p className={styles.titletext}>{item?.article.title}</p>
           <p
             className={styles.categoryanddate}
-          >{`${item?.tag === undefined ? '' : item.tag} · ${getTimeAgo(item?.createdAt === undefined ? '' : item.createdAt)}`}</p>
+          >{`${item?.article.tag === undefined ? '' : item.article.tag} · ${getTimeAgo(item?.article.createdAt === undefined ? '' : item.article.createdAt)}`}</p>
           <p className={styles.article}>
-            {item?.content.split('\n').map((line, index) => (
+            {item?.article.content.split('\n').map((line, index) => (
               <span key={index}>
                 {line}
                 <br />
@@ -409,11 +411,11 @@ const ItemPage = () => {
           </p>
           <div className={styles.locationbox}>
             <p className={styles.locationtitle}>거래 희망 장소</p>
-            <p className={styles.location}>{item?.location}</p>
+            <p className={styles.location}>{item?.article.location}</p>
           </div>
           <p
             className={styles.chatlikeview}
-          >{`채팅3 · 관심 ${item?.likeCount === undefined ? '' : item.likeCount} · 조회 ${item?.viewCount === undefined ? '' : item.viewCount}`}</p>
+          >{`채팅 ${item?.chattingUsers.length === undefined ? '' : item.chattingUsers.length} · 관심 ${item?.article.likeCount === undefined ? '' : item.article.likeCount} · 조회 ${item?.article.viewCount === undefined ? '' : item.article.viewCount}`}</p>
           <NavLink to={`/reportitem`} className={styles.reporttext}>
             이 게시글 신고하기
           </NavLink>
@@ -431,8 +433,8 @@ const ItemPage = () => {
         <div className={styles.priceandchat}>
           <div className={styles.pricebox}>
             <p className={styles.price}>
-              {item?.price !== undefined
-                ? `${Intl.NumberFormat('ko-KR').format(item.price)}원`
+              {item?.article.price !== undefined
+                ? `${Intl.NumberFormat('ko-KR').format(item.article.price)}원`
                 : '가격 정보 없음'}
             </p>
             <p className={styles.offerstatus}>{`가격 제안 불가`}</p>

@@ -1,6 +1,12 @@
 .main {
   display: flex;
   flex-direction: column;
+}
+
+.normal {
+  margin-top: 45px;
+  display: flex;
+  flex-direction: column;
   padding: 15px 10px;
   gap: 20px;
 }
@@ -21,8 +27,13 @@
   flex-grow: 1;
   flex-direction: row;
   justify-content: space-between;
-  position: relative;
-  padding-bottom: 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  z-index: 1000;
+  padding: 10px;
   border-bottom-width: 1px;
   border-bottom-color: rgba(153, 153, 153, 0.5); /* 투명도 50% 설정 */
   border-bottom-style: solid;
@@ -209,6 +220,7 @@
 
 .categoryButtons {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
   gap: 5px;
 }
@@ -242,6 +254,8 @@
 
 .moreButton {
   margin-left: auto;
+  width: 20px;
+  height: 20px;
 }
 
 .pricesuggestion {
@@ -298,4 +312,63 @@
 .helpBox {
   margin-top: 5px;
   text-align: center;
+}
+
+.category {
+  margin-top: 45px;
+  display: flex;
+  flex-direction: column;
+}
+
+.categoryListView {
+  display: flex;
+  flex-direction: column;
+}
+
+.categoryList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.categoryList li {
+  width: 100%;
+}
+
+.notSelectedCategoryButton {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  width: 100%;
+  text-align: left;
+  padding: 10px;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 1px solid #999999;
+}
+
+.selectedCategoryButton {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  color: var(--daangn-orange);
+  width: 100%;
+  text-align: left;
+  padding: 10px;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 1px solid #999999;
+}
+
+.checkmark {
+  margin-left: auto;
+  width: 20px;
+  height: 20px;
+}
+
+.checkmarknotSelected {
+  width: 20px;
+  height: 20px;
+  opacity: 0;
 }

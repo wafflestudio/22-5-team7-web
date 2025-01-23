@@ -201,10 +201,10 @@ const ItemPage = () => {
         }
 
         const data: Item = (await response.json()) as Item;
-        setIsMyItem(data.seller.id === userId);
+        setIsMyItem(data.article.seller.id === userId);
         setItem(data);
-        setImages(data.imagePresignedUrl);
-        console.info(data.imagePresignedUrl);
+        setImages(data.article.imagePresignedUrl);
+        console.info(data.article.imagePresignedUrl);
         //const imageUrls = data.imagePresignedUrl.map((url: string) => url);
         // 홀수 인덱스의 원소만 저장
         //const oddIndexImageUrls = imageUrls.filter(
@@ -325,22 +325,22 @@ const ItemPage = () => {
       <div className={styles.contentBox}>
         <div className={styles.profilebar}>
           <NavLink
-            to={`/profile/${item?.seller.id === undefined ? '' : item.seller.id}`}
+            to={`/profile/${item?.article.seller.id === undefined ? '' : item.article.seller.id}`}
             className={styles.profile}
           >
             <img src={profileimage} className={styles.profileimage}></img>
             <div className={styles.profiletext}>
-              <p className={styles.nickname}>{item?.seller.nickname}</p>
-              <p className={styles.address}>{item?.seller.location}</p>
+              <p className={styles.nickname}>{item?.article.seller.nickname}</p>
+              <p className={styles.address}>{item?.article.seller.location}</p>
             </div>
           </NavLink>
 
           <div className={styles.mannertempbox}>
             <TemperatureGaugeSmall
               temperature={
-                item?.seller.temperature === undefined
+                item?.article.seller.temperature === undefined
                   ? 0
-                  : item.seller.temperature
+                  : item.article.seller.temperature
               }
             />
             <NavLink to={`/temp`} className={styles.temptext}>
@@ -349,18 +349,18 @@ const ItemPage = () => {
           </div>
         </div>
         <div className={styles.itemInfo}>
-          <p className={styles.titletext}>{item?.title}</p>
+          <p className={styles.titletext}>{item?.article.title}</p>
           <p
             className={styles.categoryanddate}
-          >{`디지털기기 · ${getTimeAgo(item?.createdAt === undefined ? '' : item.createdAt)}`}</p>
-          <p className={styles.article}>{item?.content}</p>
+          >{`디지털기기 · ${getTimeAgo(item?.article.createdAt === undefined ? '' : item.article.createdAt)}`}</p>
+          <p className={styles.article}>{item?.article.content}</p>
           <div className={styles.locationbox}>
             <p className={styles.locationtitle}>거래 희망 장소</p>
-            <p className={styles.location}>{item?.location}</p>
+            <p className={styles.location}>{item?.article.location}</p>
           </div>
           <p
             className={styles.chatlikeview}
-          >{`참가자 ${item?.likeCount === undefined ? '' : item.likeCount}명 · 조회 ${item?.viewCount === undefined ? '' : item.viewCount}`}</p>
+          >{`참가자 ${item?.article.likeCount === undefined ? '' : item.article.likeCount}명 · 조회 ${item?.article.viewCount === undefined ? '' : item.article.viewCount}`}</p>
           <NavLink to={`/reportitem`} className={styles.reporttext}>
             이 게시글 신고하기
           </NavLink>
@@ -380,8 +380,8 @@ const ItemPage = () => {
             <div className={styles.currentPrice}>
               <p>현재 가격: </p>
               <p className={styles.price}>
-                {item?.price !== undefined
-                  ? `${Intl.NumberFormat('ko-KR').format(item.price)}원`
+                {item?.article.price !== undefined
+                  ? `${Intl.NumberFormat('ko-KR').format(item.article.price)}원`
                   : '가격 정보 없음'}
               </p>
             </div>

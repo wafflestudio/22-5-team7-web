@@ -82,6 +82,16 @@
   font-weight: bold;
 }
 
+.reserveStatus {
+  font-size: 14px;
+  color: lightgreen;
+}
+
+.soldStatus {
+  font-size: 14px;
+  color: #444444;
+}
+
 .itemname {
   display: flex;
   flex-direction: row;
