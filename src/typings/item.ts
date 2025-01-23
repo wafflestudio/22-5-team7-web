@@ -19,23 +19,29 @@ type User = {
   imagePresignedUrl: string;
 };
 
-export interface Item {
+export type Article = {
   id: string;
   seller: User;
   title: string;
   content: string;
-  price: number;
-  status: string;
   tag: string;
+  price: number;
+  status: number;
   location: string;
   imagePresignedUrl: string[];
   createdAt: string;
   likeCount: number;
   viewCount: number;
   isLiked: boolean;
+};
+
+export interface Item {
+  article: Article;
+  chattingUsers: User[];
 }
 
 export type ArticleResponse = {
+  article: Article;
   id: number;
   imagePresignedUrl: string[];
 };
@@ -44,7 +50,7 @@ export const categories = [
   '디지털기기',
   '생활가전',
   '가구/인테리어',
-  '생황/주방',
+  '생활/주방',
   '유아동',
   '유아도서',
   '여성의류',
