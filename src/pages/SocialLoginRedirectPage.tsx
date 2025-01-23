@@ -29,7 +29,7 @@ const SocialLoginRedirectPage = () => {
         const data = (await response.json()) as ProfileResponse;
         console.info('사용자 정보:', data);
 
-        if (data.user.location === '') {
+        if (data.user.location === 'void') {
           void navigate('/location');
         } else {
           void navigate('/main');
