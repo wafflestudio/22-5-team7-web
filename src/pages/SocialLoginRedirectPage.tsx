@@ -28,6 +28,8 @@ const SocialLoginRedirectPage = () => {
 
         const data = (await response.json()) as ProfileResponse;
         console.info('사용자 정보:', data);
+        localStorage.setItem('userId', data.user.id);
+        localStorage.setItem('nickname', data.user.nickname);
 
         if (data.user.location === 'void') {
           void navigate('/location');
