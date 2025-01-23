@@ -10,9 +10,13 @@ import { useSwipeable } from 'react-swipeable';
 
 import filledhearticon from '../assets/heart_filled_orange.svg';
 import emptyhearticon from '../assets/heart_gray.svg';
+import homeblack from '../assets/home.svg';
 import homeicon from '../assets/home_white.svg';
+import leftarrowblack from '../assets/leftarrow.svg';
 import leftarrowicon from '../assets/leftarrow_white.svg';
+import shareblack from '../assets/share.svg';
 import shareicon from '../assets/share_white.svg';
+import dotsblack from '../assets/three_dots_black.svg';
 import dotsicon from '../assets/three_dots_white.svg';
 import TemperatureGaugeSmall from '../components/TemperatureGaugeSmall';
 import styles from '../css/ItemPage.module.css';
@@ -35,7 +39,7 @@ const ItemPage = () => {
   const [profileimage, setProfileimage] = useState<string>(
     'https://placehold.co/100',
   );
-  const baseimage = 'https://placehold.co/300';
+  const baseimage = 'https://placehold.co/100';
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -270,183 +274,277 @@ const ItemPage = () => {
 
   return (
     <div className={styles.main}>
-      <div className={styles.upperbar}>
-        <div className={styles.navicons}>
-          <img
-            src={leftarrowicon}
-            className={styles.leftarrowicon}
-            onClick={handleBackClick}
-          ></img>
-          <img
-            src={homeicon}
-            className={styles.homeicon}
-            onClick={handleHomeClick}
-          ></img>
+      {item?.article.seller.nickname === undefined ? (
+        <div className={styles.loadingScreen}>
+          <div className={styles.loadingBox}></div>
+          <div className={styles.profileloading}>
+            <div className={styles.loadingcircle}></div>
+            <div className={styles.loadingLines}>
+              <div className={styles.loadingLine0}></div>
+              <div className={styles.loadingLine05}></div>
+            </div>
+          </div>
+          <div className={styles.loadingLine1}></div>
+          <div className={styles.loadingLine2}></div>
+          <div className={styles.loadingLine3}></div>
         </div>
-        <div className={styles.etcicons}>
-          <img
-            src={shareicon}
-            className={styles.shareicon}
-            onClick={handleShareClick}
-          ></img>
-          <div className={styles.dropdownContainer}>
-            <img
-              src={dotsicon}
-              className={styles.dotsicon}
-              onClick={handleDotsClick}
-            />
-            {isDropdownOpen && (
-              <>
+      ) : (
+        <>
+          {images.length > 0 && (
+            <div className={styles.upperbar}>
+              <div className={styles.navicons}>
+                <img
+                  src={leftarrowicon}
+                  className={styles.leftarrowicon}
+                  onClick={handleBackClick}
+                ></img>
+                <img
+                  src={homeicon}
+                  className={styles.homeicon}
+                  onClick={handleHomeClick}
+                ></img>
+              </div>
+              <div className={styles.etcicons}>
+                <img
+                  src={shareicon}
+                  className={styles.shareicon}
+                  onClick={handleShareClick}
+                ></img>
+                <div className={styles.dropdownContainer}>
+                  <img
+                    src={dotsicon}
+                    className={styles.dotsicon}
+                    onClick={handleDotsClick}
+                  />
+                  {isDropdownOpen && (
+                    <>
+                      <div
+                        className={styles.overlay}
+                        onClick={handleCancelClick}
+                      ></div>
+                      <div className={styles.actionSheet}>
+                        <div className={styles.actionSheetContent}>
+                          {isMyItem ? (
+                            <>
+                              <button
+                                onClick={handleEditClick}
+                                className={styles.editbutton}
+                              >
+                                게시글 수정
+                              </button>
+                              <button
+                                onClick={handleDeleteClickWrappper}
+                                className={styles.deletebutton}
+                              >
+                                삭제
+                              </button>
+                            </>
+                          ) : (
+                            <button
+                              onClick={handleReportClick}
+                              className={styles.reportbutton}
+                            >
+                              신고
+                            </button>
+                          )}
+                        </div>
+                        <button
+                          onClick={handleCancelClick}
+                          className={styles.cancelbutton}
+                        >
+                          취소
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+          <>
+            {images.length > 0 ? (
+              <div className={styles.imagecontainer} {...handlers}>
                 <div
-                  className={styles.overlay}
-                  onClick={handleCancelClick}
-                ></div>
-                <div className={styles.actionSheet}>
-                  <div className={styles.actionSheetContent}>
-                    {isMyItem ? (
+                  className={styles.imagewrapper}
+                  style={{
+                    transform: `translateX(calc(-${currentImageIndex * 100}vw + ${(images.length - 1) * 50}vw))`,
+                    display: 'flex',
+                  }}
+                >
+                  {images.map((src, index) => (
+                    <div key={index} className={styles.imageOverlayContainer}>
+                      <img
+                        src={src}
+                        className={
+                          styles.image === undefined ? '' : styles.image
+                        }
+                        alt={`item ${index}`}
+                      />
+                      <div className={styles.gradientOverlay}></div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className={styles.noimageupperbar}>
+                <div className={styles.navicons}>
+                  <img
+                    src={leftarrowblack}
+                    className={styles.leftarrowicon}
+                    onClick={handleBackClick}
+                  ></img>
+                  <img
+                    src={homeblack}
+                    className={styles.homeicon}
+                    onClick={handleHomeClick}
+                  ></img>
+                </div>
+                <div className={styles.etcicons}>
+                  <img
+                    src={shareblack}
+                    className={styles.shareicon}
+                    onClick={handleShareClick}
+                  ></img>
+                  <div className={styles.dropdownContainer}>
+                    <img
+                      src={dotsblack}
+                      className={styles.dotsicon}
+                      onClick={handleDotsClick}
+                    />
+                    {isDropdownOpen && (
                       <>
-                        <button
-                          onClick={handleEditClick}
-                          className={styles.editbutton}
-                        >
-                          게시글 수정
-                        </button>
-                        <button
-                          onClick={handleDeleteClickWrappper}
-                          className={styles.deletebutton}
-                        >
-                          삭제
-                        </button>
+                        <div
+                          className={styles.overlay}
+                          onClick={handleCancelClick}
+                        ></div>
+                        <div className={styles.actionSheet}>
+                          <div className={styles.actionSheetContent}>
+                            {isMyItem ? (
+                              <>
+                                <button
+                                  onClick={handleEditClick}
+                                  className={styles.editbutton}
+                                >
+                                  게시글 수정
+                                </button>
+                                <button
+                                  onClick={handleDeleteClickWrappper}
+                                  className={styles.deletebutton}
+                                >
+                                  삭제
+                                </button>
+                              </>
+                            ) : (
+                              <button
+                                onClick={handleReportClick}
+                                className={styles.reportbutton}
+                              >
+                                신고
+                              </button>
+                            )}
+                          </div>
+                          <button
+                            onClick={handleCancelClick}
+                            className={styles.cancelbutton}
+                          >
+                            취소
+                          </button>
+                        </div>
                       </>
-                    ) : (
-                      <button
-                        onClick={handleReportClick}
-                        className={styles.reportbutton}
-                      >
-                        신고
-                      </button>
                     )}
                   </div>
-                  <button
-                    onClick={handleCancelClick}
-                    className={styles.cancelbutton}
-                  >
-                    취소
-                  </button>
                 </div>
-              </>
+              </div>
             )}
-          </div>
-        </div>
-      </div>
-      <div className={styles.imagecontainer} {...handlers}>
-        <div
-          className={styles.imagewrapper}
-          style={{
-            transform: `translateX(calc(-${currentImageIndex * 100}vw + ${(images.length - 1) * 50}vw))`,
-            display: images.length > 0 ? 'flex' : 'none',
-          }}
-        >
-          {images.map((src, index) => (
-            <div key={index} className={styles.imageOverlayContainer}>
-              <img
-                src={src}
-                className={styles.image === undefined ? '' : styles.image}
-                alt={`item ${index}`}
+          </>
+          <div className={styles.dots}>
+            {images.map((_, index) => (
+              <div
+                key={index}
+                className={`${styles.dot === undefined ? '' : styles.dot} ${currentImageIndex === index ? (styles.active === undefined ? '' : styles.active) : ''}`}
               />
-              <div className={styles.gradientOverlay}></div>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className={styles.dots}>
-        {images.map((_, index) => (
-          <div
-            key={index}
-            className={`${styles.dot === undefined ? '' : styles.dot} ${currentImageIndex === index ? (styles.active === undefined ? '' : styles.active) : ''}`}
-          />
-        ))}
-      </div>
-      <div className={styles.contentBox}>
-        <div className={styles.profilebar}>
-          <NavLink
-            to={`/profile/${item !== undefined ? item.article.seller.nickname : ''}`}
-            className={styles.profile}
-          >
-            <img
-              src={profileimage === '' ? baseimage : profileimage}
-              className={styles.profileimage}
-            ></img>
-            <div className={styles.profiletext}>
-              <p className={styles.nickname}>{item?.article.seller.nickname}</p>
-              <p className={styles.address}>{item?.article.seller.location}</p>
-            </div>
-          </NavLink>
-
-          <div className={styles.mannertempbox}>
-            <TemperatureGaugeSmall
-              temperature={
-                item?.article.seller.temperature === undefined
-                  ? 0
-                  : item.article.seller.temperature
-              }
-            />
-            <NavLink to={`/temp`} className={styles.temptext}>
-              매너온도
-            </NavLink>
-          </div>
-        </div>
-        <div className={styles.itemInfo}>
-          <p className={styles.titletext}>{item?.article.title}</p>
-          <p
-            className={styles.categoryanddate}
-          >{`${item?.article.tag === undefined ? '' : item.article.tag} · ${getTimeAgo(item?.article.createdAt === undefined ? '' : item.article.createdAt)}`}</p>
-          <p className={styles.article}>
-            {item?.article.content.split('\n').map((line, index) => (
-              <span key={index}>
-                {line}
-                <br />
-              </span>
             ))}
-          </p>
-          <div className={styles.locationbox}>
-            <p className={styles.locationtitle}>거래 희망 장소</p>
-            <p className={styles.location}>{item?.article.location}</p>
           </div>
-          <p
-            className={styles.chatlikeview}
-          >{`채팅 ${item?.chattingUsers.length === undefined ? '' : item.chattingUsers.length} · 관심 ${item?.article.likeCount === undefined ? '' : item.article.likeCount} · 조회 ${item?.article.viewCount === undefined ? '' : item.article.viewCount}`}</p>
-          <NavLink to={`/reportitem`} className={styles.reporttext}>
-            이 게시글 신고하기
-          </NavLink>
-        </div>
-      </div>
-      <div className={styles.bottombar}>
-        <div className={styles.likebutton}>
-          <img
-            src={isLiked ? filledhearticon : emptyhearticon}
-            className={styles.likeicon}
-            alt="like"
-            onClick={handleLikeClickWrappper}
-          />
-        </div>
-        <div className={styles.priceandchat}>
-          <div className={styles.pricebox}>
-            <p className={styles.price}>
-              {item?.article.price !== undefined
-                ? `${Intl.NumberFormat('ko-KR').format(item.article.price)}원`
-                : '가격 정보 없음'}
-            </p>
-            <p className={styles.offerstatus}>{`가격 제안 불가`}</p>
+          <div className={styles.contentBox}>
+            <div className={styles.profilebar}>
+              <NavLink
+                to={`/profile/${item.article.seller.nickname}`}
+                className={styles.profile}
+              >
+                <img
+                  src={profileimage === '' ? baseimage : profileimage}
+                  className={styles.profileimage}
+                ></img>
+                <div className={styles.profiletext}>
+                  <p className={styles.nickname}>
+                    {item.article.seller.nickname}
+                  </p>
+                  <p className={styles.address}>
+                    {item.article.seller.location}
+                  </p>
+                </div>
+              </NavLink>
+
+              <div className={styles.mannertempbox}>
+                <TemperatureGaugeSmall
+                  temperature={item.article.seller.temperature}
+                />
+                <NavLink to={`/temp`} className={styles.temptext}>
+                  매너온도
+                </NavLink>
+              </div>
+            </div>
+            <div className={styles.itemInfo}>
+              <p className={styles.titletext}>{item.article.title}</p>
+              <p
+                className={styles.categoryanddate}
+              >{`${item.article.tag} · ${getTimeAgo(item.article.createdAt)}`}</p>
+              <p className={styles.article}>
+                {item.article.content.split('\n').map((line, index) => (
+                  <span key={index}>
+                    {line}
+                    <br />
+                  </span>
+                ))}
+              </p>
+              <div className={styles.locationbox}>
+                <p className={styles.locationtitle}>거래 희망 장소</p>
+                <p className={styles.location}>{item.article.location}</p>
+              </div>
+              <p
+                className={styles.chatlikeview}
+              >{`채팅 ${item.chattingUsers.length} · 관심 ${item.article.likeCount} · 조회 ${item.article.viewCount}`}</p>
+              <NavLink to={`/reportitem`} className={styles.reporttext}>
+                이 게시글 신고하기
+              </NavLink>
+            </div>
           </div>
-          <button
-            className={styles.chatbutton}
-            onClick={handleChatClickWrappper}
-          >
-            채팅하기
-          </button>
-        </div>
-      </div>
+          <div className={styles.bottombar}>
+            <div className={styles.likebutton}>
+              <img
+                src={isLiked ? filledhearticon : emptyhearticon}
+                className={styles.likeicon}
+                alt="like"
+                onClick={handleLikeClickWrappper}
+              />
+            </div>
+            <div className={styles.priceandchat}>
+              <div className={styles.pricebox}>
+                <p className={styles.price}>
+                  {`${Intl.NumberFormat('ko-KR').format(item.article.price)}원`}
+                </p>
+                <p className={styles.offerstatus}>{`가격 제안 불가`}</p>
+              </div>
+              <button
+                className={styles.chatbutton}
+                onClick={handleChatClickWrappper}
+              >
+                채팅하기
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

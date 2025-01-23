@@ -11,7 +11,7 @@ import leftarrow from '../assets/leftarrow.svg';
 import quitcross from '../assets/quitcross.svg';
 import grayRightArrow from '../assets/rightarrow_gray.svg';
 import styles from '../css/ItemPostPage.module.css';
-import type { ArticleResponse } from '../typings/item';
+import type { Item } from '../typings/item';
 import { categories } from '../typings/item';
 import { uploadImageToS3 } from '../utils/utils';
 
@@ -89,6 +89,7 @@ const ItemPostPage = () => {
       imageCount: images.length,
       tag: category,
     };
+    console.info('Post data:', postData);
 
     const token = localStorage.getItem('token');
 
@@ -107,12 +108,12 @@ const ItemPostPage = () => {
         throw new Error('서버에 데이터를 전송하지 못했습니다.');
       }
 
-      const data = (await response.json()) as ArticleResponse;
+      const data = (await response.json()) as Item;
       if (images.length > 0) {
         console.info('업로드 성공, 사진 업로드 중');
-        console.info(data.imagePresignedUrl);
+        console.info(data.article.imagePresignedUrl);
 
-        const presignedUrls = data.imagePresignedUrl;
+        const presignedUrls = data.article.imagePresignedUrl;
         console.info('Presigned URL: ', presignedUrls);
         if (images.length !== presignedUrls.length)
           throw new Error('이미지와 presigned URL 개수가 다릅니다');
