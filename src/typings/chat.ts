@@ -1,24 +1,23 @@
-import type { Article} from "./item";
-import type { User } from "./user";
+import type { Article } from './item';
+import type { User } from './user';
 
 export type message = {
-    chatRoomId: number;
-    senderNickname: string;
-    content: string;
-    createdAt: string;
+  chatRoomId: number;
+  senderNickname: string;
+  content: string;
+  createdAt: string;
 };
-  
 
 export type chatItem = {
-    id: number;
-    article: Article;
-    seller: User;
-    buyer: User;
-    chatMessage: string;
-    updatedAt: string;
+  id: number;
+  article: Article;
+  seller: User;
+  buyer: User;
+  chatMessage: string;
+  updatedAt: string;
 };
 
 export type chatRoomResponse = {
-    article: Article;
-    messages: message[];
+  article: Article;
+  messages: message[];
 };

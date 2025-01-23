@@ -314,7 +314,7 @@
   text-align: center;
 }
 
-.category{
+.category {
   margin-top: 45px;
   display: flex;
   flex-direction: column;
@@ -367,7 +367,7 @@
   height: 20px;
 }
 
-.checkmarknotSelected{
+.checkmarknotSelected {
   width: 20px;
   height: 20px;
   opacity: 0;
