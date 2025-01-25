@@ -206,6 +206,11 @@ const ChatRoomPage = () => {
     [instant, fetchMessages],
   );
 
+  const handleSendReviewClick = () => {
+    if (itemInfo === null) throw new Error('Item is null');
+    void navigate(`/sendreview/${itemInfo.id}`);
+  };
+
   return (
     <div className={styles.main}>
       <div className={styles.upperbar}>
@@ -223,36 +228,44 @@ const ChatRoomPage = () => {
           <img src={etcIcon} className={styles.othericons}></img>
         </div>
       </div>
-      <div className={styles.iteminfo}>
-        <img
-          src={
-            itemInfo === null
-              ? 'https://placehold.co/100'
-              : itemInfo.imagePresignedUrl[0]
-          }
-          className={styles.itemimage}
-        ></img>
-        <div className={styles.itemnameandprice}>
-          <div className={styles.itemname}>
-            <p className={styles.itemstatus}>
-              {itemInfo?.status === 0 ? (
-                ''
-              ) : (
-                <span
-                  className={
-                    itemInfo?.status === 1
-                      ? styles.reserveStatus
-                      : styles.soldStatus
-                  }
-                >
-                  {itemInfo?.status === 1 ? '예약중' : '거래완료'}
-                </span>
-              )}
-            </p>
-            <p>{itemInfo?.title}</p>
+      <div className={styles.iteminfoBox}>
+        <div className={styles.iteminfo}>
+          <img
+            src={
+              itemInfo === null
+                ? 'https://placehold.co/100'
+                : itemInfo.imagePresignedUrl[0]
+            }
+            className={styles.itemimage}
+          ></img>
+          <div className={styles.itemnameandprice}>
+            <div className={styles.itemname}>
+              <p className={styles.itemstatus}>
+                {itemInfo?.status === 0 ? (
+                  ''
+                ) : (
+                  <span
+                    className={
+                      itemInfo?.status === 1
+                        ? styles.reserveStatus
+                        : styles.soldStatus
+                    }
+                  >
+                    {itemInfo?.status === 1 ? '예약중' : '거래완료'}
+                  </span>
+                )}
+              </p>
+              <p>{itemInfo?.title}</p>
+            </div>
+            <div className={styles.itemprice}>{`${formattedPrice}원`}</div>
           </div>
-          <div className={styles.itemprice}>{`${formattedPrice}원`}</div>
         </div>
+        <button
+          className={styles.iteminfoButton}
+          onClick={handleSendReviewClick}
+        >
+          후기 보내기
+        </button>
       </div>
       <div className={styles.messages}>
         {messages.map((message, index) => {

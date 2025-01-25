@@ -38,6 +38,7 @@ import ReviewsPage from './pages/ReviewsPage';
 import SearchPage from './pages/SearchPage';
 import SearchResultPage from './pages/SearchResultPage';
 import SellsPage from './pages/SellsPage';
+import SendReviewPage from './pages/SendReviewPage';
 import SetLocationPage from './pages/SetLocationPage';
 import SettingsPage from './pages/SettingsPage';
 import SocialLoginRedirectPage from './pages/SocialLoginRedirectPage';
@@ -94,6 +95,7 @@ export const App = () => {
             path="/mannerpraise/:nickname"
             element={<MannerPraisePage />}
           />
+          <Route path="/sendreview/:id" element={<SendReviewPage />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/mypage/settings" element={<SettingsPage />} />
           <Route path="/mypage/profile/edit" element={<MyProfileEditPage />} />
