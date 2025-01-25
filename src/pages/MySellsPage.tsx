@@ -96,7 +96,7 @@ const MySellsPage = () => {
     const handleScroll = () => {
       if (
         window.innerHeight + window.scrollY >=
-        document.body.offsetHeight - 500
+        document.body.offsetHeight - 200
       ) {
         setLastId(nextRequestId);
       }
@@ -169,7 +169,7 @@ const MySellsPage = () => {
         />
       </div>
       <div className={styles.contentBox}>
-        {isLoading && <Loader marginTop="30vh" />}
+        {isLoading && <Loader marginTop="0" />}
         {!isLoading && activeTab === 'selling' && (
           <>
             {sellingItems.length === 0 ? (

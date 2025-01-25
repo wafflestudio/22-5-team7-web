@@ -35,6 +35,7 @@ type Comment = {
   commentLikesCount: number;
   createdAt: string;
   updatedAt: string;
+  isLiked: boolean;
 };
 
 export type CommentProps = {

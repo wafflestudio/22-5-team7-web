@@ -70,6 +70,7 @@ const CommunityEditPage = () => {
     const postData = {
       title,
       content: article,
+      tag: tag,
       imageCount: images.length,
     };
 
