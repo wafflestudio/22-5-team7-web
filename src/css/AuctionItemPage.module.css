@@ -1,3 +1,101 @@
+.loadingScreen {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+}
+
+.loadingBox {
+  width: 100%;
+  height: 400px;
+  background: linear-gradient(270deg, #e0e0e0, #f0f0f0);
+  background-size: 400% 400%;
+  animation: wave 1.5s ease infinite;
+}
+
+.profileloading {
+  display: flex;
+  padding: 20px;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.loadingcircle {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(270deg, #e0e0e0, #f0f0f0);
+  background-size: 400% 400%;
+  animation: wave 1.5s ease infinite;
+}
+
+.loadingLines {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.loadingLine0 {
+  width: 30%;
+  height: 20px;
+  background: linear-gradient(270deg, #e0e0e0, #f0f0f0);
+  background-size: 400% 400%;
+  animation: wave 1.5s ease infinite;
+}
+
+.loadingLine05 {
+  width: 50%;
+  height: 20px;
+  background: linear-gradient(270deg, #e0e0e0, #f0f0f0);
+  background-size: 400% 400%;
+  animation: wave 1.5s ease infinite;
+}
+
+.loadingLine1 {
+  margin-left: 10%;
+  width: 40%;
+  height: 20px;
+  background: linear-gradient(270deg, #e0e0e0, #f0f0f0);
+  background-size: 400% 400%;
+  animation: wave 1.5s ease infinite;
+  margin-bottom: 10px;
+}
+
+.loadingLine2 {
+  margin-left: 10%;
+  width: 60%;
+  height: 20px;
+  background: linear-gradient(270deg, #e0e0e0, #f0f0f0);
+  background-size: 400% 400%;
+  animation: wave 1.5s ease infinite;
+  margin-bottom: 10px;
+}
+.loadingLine3 {
+  margin-left: 10%;
+  width: 80%;
+  height: 20px;
+  background: linear-gradient(270deg, #e0e0e0, #f0f0f0);
+  background-size: 400% 400%;
+  animation: wave 1.5s ease infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes wave {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 .upperbar {
   position: fixed;
   top: 0px;
@@ -7,6 +105,17 @@
   width: 100%;
   padding: 10px;
   z-index: 1000;
+}
+
+.noimageupperbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  z-index: 1000;
+  background-color: white;
+  border-bottom: 1px solid #e6e6e6;
 }
 
 .navicons {
@@ -206,6 +315,7 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .profile {
@@ -360,6 +470,12 @@
   border: none;
   border-bottom: 1px solid #333333;
   outline: none;
+}
+
+.offerstatus {
+  font-size: 14px;
+  font-weight: bold;
+  color: #666666;
 }
 
 .chatbutton {

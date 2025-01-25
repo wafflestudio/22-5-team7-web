@@ -45,3 +45,33 @@ export const uploadImageToS3 = async (
     throw error;
   }
 };
+
+export const calculateTimeLeft = (
+  endTime: string,
+  setTimeLeft: (time: string) => void,
+) => {
+  const interval = setInterval(() => {
+    const now = new Date();
+    const end = new Date(endTime);
+    const timeDiff = end.getTime() - now.getTime();
+
+    if (timeDiff <= 0) {
+      clearInterval(interval);
+      setTimeLeft('경매 종료');
+    } else {
+      const hours = Math.floor(timeDiff / (1000 * 60 * 60));
+      const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+      if (hours > 0) {
+        setTimeLeft(`${hours}시간 ${minutes}분 ${seconds}초 남음`);
+      } else if (minutes > 0) {
+        setTimeLeft(`${minutes}분 ${seconds}초 남음`);
+      } else {
+        setTimeLeft(`${seconds}초 남음`);
+      }
+    }
+  }, 1000);
+
+  return interval;
+};

@@ -5,24 +5,43 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import uploadIcon from '../assets/cameraIcon.svg';
+import checkmark from '../assets/checkmark.svg';
+import checkmarkorange from '../assets/checkmark_orange.svg';
+import leftarrow from '../assets/leftarrow.svg';
 import quitcross from '../assets/quitcross.svg';
+import grayRightArrow from '../assets/rightarrow_gray.svg';
 import styles from '../css/ItemPostPage.module.css';
-import type { ArticleResponse } from '../typings/item';
+import type { AuctionItem } from '../typings/auctionitem';
+import { categories } from '../typings/item';
 import { uploadImageToS3 } from '../utils/utils';
 
-const LONG_PLACEHOLDER_TEXT = `경매는 24시간 동안 진행돼요. 시작가는 1원부터 설정할 수 있어요. 경매가 종료되면 가장 높은 가격을 제시한 분께 물품이 판매돼요.
+const LONG_PLACEHOLDER_TEXT = `에 올릴 게시글 내용을 작성해 주세요. (판매 금지 물품은 게시가 제한될 수 있어요.)
 
 신뢰할 수 있는 거래를 위해 자세히 적어주세요. 과학기술정보통신부, 한국 인터넷진흥원과 함께 해요.`;
 
-const ItemPostPage = () => {
+const AuctionPostPage = () => {
   const [title, setTitle] = useState<string>('');
+  const [category, setCategory] = useState('');
+  const [showMore, setShowMore] = useState(false);
   const [price, setPrice] = useState<string>('');
   const [article, setArticle] = useState<string>('');
   const [place, setPlace] = useState<string>('');
+  const [location, setLocation] = useState<string>('');
+  const [timeLimit, setTimeLimit] = useState<string>('');
   //const [isChecked, setIsChecked] = useState(false);
   //const [selectedButton, setSelectedButton] = useState('sell'); // 상태 추가
   const [images, setImages] = useState<File[]>([]);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (inputRef.current !== null) {
+      const length = inputRef.current.value.length - 2;
+      inputRef.current.setSelectionRange(length, length);
+      inputRef.current.focus();
+    }
+  }, [timeLimit]);
+
   const navigate = useNavigate();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,27 +71,35 @@ const ItemPostPage = () => {
     }
   };
 
+  const handleCategoryClick = (selectedCategory: string) => {
+    setCategory(selectedCategory);
+  };
+
   useEffect(() => {
     if (textareaRef.current !== null) {
       textareaRef.current.style.height = 'auto';
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
+    setLocation(localStorage.getItem('location') ?? 'error');
   }, [article]);
 
   const handlePostClick = async () => {
     const postData = {
       title,
       content: article,
-      price: Number(price),
+      startingPrice: Number(price),
+      duration: Number(timeLimit),
       location: place,
       imageCount: images.length,
+      tag: category,
     };
+    console.info('Post data:', postData);
 
     const token = localStorage.getItem('token');
 
     try {
       if (token === null) throw new Error('No token found');
-      const response = await fetch('/api/item/post', {
+      const response = await fetch('/api/auction/post', {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -85,7 +112,7 @@ const ItemPostPage = () => {
         throw new Error('서버에 데이터를 전송하지 못했습니다.');
       }
 
-      const data = (await response.json()) as ArticleResponse;
+      const data = (await response.json()) as AuctionItem;
       if (images.length > 0) {
         console.info('업로드 성공, 사진 업로드 중');
         console.info(data.imagePresignedUrl);
@@ -107,7 +134,7 @@ const ItemPostPage = () => {
         console.info('모든 이미지 업로드 성공: ', uploadedUrls);
       }
 
-      void navigate(`/item/${data.id}`, {
+      void navigate(`/auctions/${data.id}`, {
         state: { from: 'itempost' },
       });
     } catch (error) {
@@ -121,109 +148,226 @@ const ItemPostPage = () => {
 
   return (
     <div className={styles.main}>
-      <div className={styles.upperbar}>
-        <button
-          onClick={() => {
-            void navigate(-1);
-          }}
-          className={styles.button}
-        >
-          <img src={quitcross} className={styles.quitcross} />
-        </button>
-        <p className={styles.upperbartext}>내 물건 경매하기</p>
-        <p>임시저장</p>
-      </div>
-      <div className={styles.imageToolbox}>
-        <div className={styles.imageUpload}>
-          <input
-            className={styles.fileInput}
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={handleImageChange}
-            id="fileInput"
-          />
-          <label htmlFor="fileInput" className={styles.fileInputLabel}>
-            <div className={styles.uploadcontainer}>
-              <img
-                src={uploadIcon}
-                alt="Upload"
-                className={styles.uploadicon}
+      {!showMore ? (
+        <div className={styles.normal}>
+          <div className={styles.upperbar}>
+            <button
+              onClick={() => {
+                void navigate(-1);
+              }}
+              className={styles.button}
+            >
+              <img src={quitcross} className={styles.quitcross} />
+            </button>
+            <p className={styles.upperbartext}>내 물건 경매하기</p>
+            <p>임시저장</p>
+          </div>
+          <div className={styles.imageToolbox}>
+            <div className={styles.imageUpload}>
+              <input
+                className={styles.fileInput}
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleImageChange}
+                id="fileInput"
               />
-              <p className={styles.imagecount}>{images.length} / 10</p> {}
+              <label htmlFor="fileInput" className={styles.fileInputLabel}>
+                <div className={styles.uploadcontainer}>
+                  <img
+                    src={uploadIcon}
+                    alt="Upload"
+                    className={styles.uploadicon}
+                  />
+                  <p className={styles.imagecount}>{images.length} / 10</p> {}
+                </div>
+              </label>
             </div>
-          </label>
-        </div>
-        <div className={styles.imagePreview}>
-          {images.map((image, index) => (
-            <div key={index} className={styles.imageContainer}>
-              <img
-                src={URL.createObjectURL(image)}
-                alt={`첨부된 이미지 ${index + 1}`}
-                className={styles.previewImage}
-              />
-              {index === 0 && (
-                <div className={styles.firstImageLabel}>대표 사진</div>
+            <div className={styles.imagePreview}>
+              {images.map((image, index) => (
+                <div key={index} className={styles.imageContainer}>
+                  <img
+                    src={URL.createObjectURL(image)}
+                    alt={`첨부된 이미지 ${index + 1}`}
+                    className={styles.previewImage}
+                  />
+                  {index === 0 && (
+                    <div className={styles.firstImageLabel}>대표 사진</div>
+                  )}
+                  <button
+                    className={styles.removeButton}
+                    onClick={() => {
+                      handleRemoveImage(index);
+                    }}
+                  >
+                    x
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className={styles.content}>
+            <p className={styles.infotexts}>제목</p>
+            <input
+              className={styles.inputBox}
+              type="text"
+              placeholder="글 제목"
+              value={title}
+              onChange={(e) => {
+                setTitle(e.target.value);
+              }}
+            ></input>
+            <div className={styles.categoryButtons}>
+              {category === '' ? (
+                <>
+                  {categories.slice(0, 3).map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => {
+                        setCategory(cat);
+                      }}
+                      className={styles.notSelectedCategory}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                  <img
+                    src={grayRightArrow}
+                    onClick={() => {
+                      setShowMore(!showMore);
+                    }}
+                    className={styles.moreButton}
+                  ></img>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={() => {
+                      handleCategoryClick(category);
+                    }}
+                    className={styles.selectedCategory}
+                  >
+                    {category}
+                  </button>
+                  {categories
+                    .filter((cat) => cat !== category)
+                    .slice(0, 2)
+                    .map((cat) => (
+                      <button
+                        key={cat}
+                        onClick={() => {
+                          handleCategoryClick(cat);
+                        }}
+                        className={styles.notSelectedCategory}
+                      >
+                        {cat}
+                      </button>
+                    ))}
+                  <img
+                    src={grayRightArrow}
+                    onClick={() => {
+                      setShowMore(!showMore);
+                    }}
+                    className={styles.moreButton}
+                  ></img>
+                </>
               )}
-              <button
-                className={styles.removeButton}
-                onClick={() => {
-                  handleRemoveImage(index);
-                }}
-              >
-                x
-              </button>
             </div>
-          ))}
+            <p className={styles.infotexts}>시작 가격</p>
+            <input
+              className={styles.inputBox}
+              type="text"
+              placeholder="₩ 가격을 입력해주세요"
+              value={price === '' ? '' : `₩ ${price}`}
+              onChange={(e) => {
+                const value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 남기기
+                setPrice(value);
+              }}
+            ></input>
+            <p className={styles.infotexts}>경매 진행 시간</p>
+            <input
+              ref={inputRef}
+              className={styles.inputBox}
+              type="text"
+              placeholder="시간을 분 단위로 입력해주세요. 24시간까지 가능해요"
+              value={timeLimit === '' ? '' : `${timeLimit} 분`}
+              onChange={(e) => {
+                const value = e.target.value.replace(/[^0-9]/g, '');
+                setTimeLimit(value);
+              }}
+            />
+            <p className={styles.infotexts}>자세한 설명</p>
+            <textarea
+              className={styles.articleBox}
+              placeholder={location + LONG_PLACEHOLDER_TEXT}
+              value={article}
+              onChange={handleTextareaChange}
+              ref={textareaRef}
+            ></textarea>
+            <p className={styles.infotexts}>거래 희망 장소</p>
+            <input
+              className={styles.inputBox}
+              type="text"
+              placeholder="위치 추가"
+              value={place}
+              onChange={(e) => {
+                setPlace(e.target.value);
+              }}
+            ></input>
+            <button
+              onClick={handlePostClickWrapper}
+              className={styles.PostButton}
+            >
+              작성 완료
+            </button>
+            <div className={styles.helpBox}></div>
+          </div>
         </div>
-      </div>
-      <div className={styles.content}>
-        <p className={styles.infotexts}>제목</p>
-        <input
-          className={styles.inputBox}
-          type="text"
-          placeholder="글 제목"
-          value={title}
-          onChange={(e) => {
-            setTitle(e.target.value);
-          }}
-        ></input>
-        <p className={styles.infotexts}>시작 가격</p>
-        <input
-          className={styles.inputBox}
-          type="text"
-          placeholder="₩ 시작 가격을 입력해주세요"
-          value={price === '' ? '' : `₩ ${price}`}
-          onChange={(e) => {
-            const value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 남기기
-            setPrice(value);
-          }}
-        ></input>
-        <p className={styles.infotexts}>자세한 설명</p>
-        <textarea
-          className={styles.articleBox}
-          placeholder={LONG_PLACEHOLDER_TEXT}
-          value={article}
-          onChange={handleTextareaChange}
-          ref={textareaRef}
-        ></textarea>
-        <p className={styles.infotexts}>거래 희망 장소</p>
-        <input
-          className={styles.inputBox}
-          type="text"
-          placeholder="위치 추가"
-          value={place}
-          onChange={(e) => {
-            setPlace(e.target.value);
-          }}
-        ></input>
-        <button onClick={handlePostClickWrapper} className={styles.PostButton}>
-          작성 완료
-        </button>
-        <div className={styles.helpBox}></div>
-      </div>
+      ) : (
+        <div className={styles.category}>
+          <div className={styles.upperbar}>
+            <button
+              onClick={() => {
+                setShowMore(false);
+              }}
+              className={styles.button}
+            >
+              <img src={leftarrow} className={styles.quitcross} />
+            </button>
+            <p className={styles.upperbartext}>카테고리 선택</p>
+          </div>
+          <div className={styles.categoryListView}>
+            <ul className={styles.categoryList}>
+              {categories.map((cat) => (
+                <li key={cat}>
+                  <button
+                    onClick={() => {
+                      setCategory(cat);
+                    }}
+                    className={
+                      category === cat
+                        ? styles.selectedCategoryButton
+                        : styles.notSelectedCategoryButton
+                    }
+                  >
+                    {cat}
+                    <img
+                      src={category === cat ? checkmarkorange : checkmark}
+                      className={
+                        category === cat
+                          ? styles.checkmark
+                          : styles.checkmarknotSelected
+                      }
+                    ></img>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-export default ItemPostPage;
+export default AuctionPostPage;

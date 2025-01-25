@@ -1,10 +1,14 @@
 /*
   기존에 없던 새로운 기능인 '경매'에에 해당하는 페이지.
 */
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import bellIcon from '../assets/upperbar-bell.svg';
 import profileIcon from '../assets/upperbar-profile.svg';
 import searchIcon from '../assets/upperbar-search.svg';
 import AuctionItem from '../components/AuctionItem';
+import Loader from '../components/Loader';
 import UpperBar from '../components/UpperBar';
 import styles from '../css/AuctionPage.module.css';
 import type { PreviewAuctionItem } from '../typings/auctionitem';
@@ -32,28 +36,80 @@ const auctionPageToolBarInfo: toolBarInfo = {
   ],
 };
 
-const mockAuctionItem: PreviewAuctionItem = {
-  id: 1,
-  title: '빈티지 시계',
-  price: 50000,
-  status: true,
-  location: '서울특별시 강남구',
-  image_url: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30',
-  createdAt: '2025-01-11T07:40:00Z',
-  likeCount: 10,
-};
-
 const AuctionPage = () => {
+  const [items, setItems] = useState<PreviewAuctionItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [lastId, setLastId] = useState(2100000);
+  const navigate = useNavigate();
+
+  const handlePostClick = () => {
+    void navigate('/auctions/post');
+  };
+
+  useEffect(() => {
+    const fetchItemList = async () => {
+      try {
+        setLoading(true);
+        const token = localStorage.getItem('token');
+        if (token === null) {
+          throw new Error('토큰이 없습니다.');
+        }
+        const response = await fetch(
+          `/api/auctions?auctionId=${lastId}`,
+          //`https://b866fe16-c4c5-4989-bdc9-5a783448ec03.mock.pstmn.io/api/home?articleId=${lastId}`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          },
+        );
+
+        if (!response.ok) {
+          throw new Error('서버에서 데이터를 받아오지 못했습니다.');
+        }
+
+        const data: PreviewAuctionItem[] =
+          (await response.json()) as PreviewAuctionItem[];
+        setItems((prevItems) => [...prevItems, ...data]);
+        console.info(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    void fetchItemList();
+  }, [lastId]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + window.scrollY >=
+        document.body.offsetHeight - 100
+      ) {
+        setLastId(items[items.length - 1]?.id ?? 2100000); // lastId 업데이트
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [items]);
   return (
-    <div>
+    <div className={styles.main}>
       <UpperBar toolBarInfo={auctionPageToolBarInfo} />
+      <button className={styles.postbutton} onClick={handlePostClick}>
+        + 글쓰기
+      </button>
       <div className={styles.contentBox}>
-        <button className={styles.postbutton}>+ 글쓰기</button>
-        <AuctionItem ItemInfo={mockAuctionItem}></AuctionItem>
-        <AuctionItem ItemInfo={mockAuctionItem}></AuctionItem>
-        <AuctionItem ItemInfo={mockAuctionItem}></AuctionItem>
-        <AuctionItem ItemInfo={mockAuctionItem}></AuctionItem>
-        <AuctionItem ItemInfo={mockAuctionItem}></AuctionItem>
+        {items.map((item, index) => (
+          <AuctionItem key={index} ItemInfo={item} />
+        ))}
+        {loading && <Loader marginTop="0" />}
       </div>
     </div>
   );
