@@ -9,6 +9,7 @@ import SockJS from 'sockjs-client';
 
 import callIcon from '../assets/callicon.svg';
 import leftarrow from '../assets/leftarrow.svg';
+import baseImage from '../assets/placeholder_gray.png';
 import sendIconGray from '../assets/send-gray.svg';
 import sendIconOrange from '../assets/send-orange.svg';
 import etcIcon from '../assets/three_dots_black.svg';
@@ -66,7 +67,11 @@ const ChatRoomPage = () => {
           throw new Error('메시지 가져오기 오류');
         }
         const data = (await response.json()) as chatRoomResponse;
-        setProfileImage(data.article.seller.imagePresignedUrl);
+        if (data.article.seller.imagePresignedUrl === '') {
+          setProfileImage(baseImage);
+        } else {
+          setProfileImage(data.article.seller.imagePresignedUrl);
+        }
         setItemInfo(data.article);
         setFormattedPrice(
           new Intl.NumberFormat('ko-KR').format(data.article.price),
@@ -88,54 +93,13 @@ const ChatRoomPage = () => {
   );
 
   useEffect(() => {
+    console.info('useEffect 실행됨');
     const storedNickname = localStorage.getItem('nickname');
     if (storedNickname !== null) {
       setMyNickname(storedNickname);
     }
 
     void fetchMessages(new Date('2030-01-01T00:00:00Z').toISOString());
-
-    /*const fetchMessages = async () => {
-      if (chatRoomId === undefined) {
-        console.error('채팅방 ID가 없습니다.');
-        return;
-      }
-      console.info('채팅방 ID:', chatRoomId);
-
-      try {
-        const token = localStorage.getItem('token');
-        if (token === null) {
-          throw new Error('토큰이 없습니다.');
-        }
-
-        const response = await fetch(
-          `/api/chat/${chatRoomId}?createdAt=${instant}`,
-          {
-            //const response = await fetch(`/api/chat/${chatRoomId}`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
-        if (!response.ok) {
-          throw new Error('메시지 가져오기 오류');
-        }
-        const data = (await response.json()) as message[];
-        const sortedData = data.sort(
-          (a, b) =>
-            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
-        );
-        setMessages((prevMessages) => [...sortedData, ...prevMessages]);
-
-        if (sortedData[0] !== undefined) {
-          setInstant(sortedData[0].createdAt);
-        }
-      } catch (error) {
-        console.error('메시지 가져오기 오류:', error);
-      }
-    };*/
 
     const setupWebSocket = () => {
       if (chatRoomId === undefined) {
@@ -232,7 +196,9 @@ const ChatRoomPage = () => {
       if (observer.current !== null) observer.current.disconnect();
       observer.current = new IntersectionObserver((entries) => {
         if (entries[0] !== undefined && entries[0].isIntersecting) {
-          void fetchMessages(instant);
+          if (instant !== '2030-01-01T00:00:00Z') {
+            void fetchMessages(instant);
+          }
         }
       });
       if (node !== null) observer.current.observe(node);
