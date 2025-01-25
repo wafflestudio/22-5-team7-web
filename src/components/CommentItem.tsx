@@ -17,7 +17,10 @@ import Overlay from './Overlay';
 const Comment = ({ CommentInfo }: CommentProps) => {
   const [isOverlayOpen, setIsOverlayOpen] = useState<boolean>(false);
   const [isCommentEditOpen, setIsCommentEditOpen] = useState<boolean>(false);
-  const tempLiked = Math.random() < 0.5; // 임시로 설정, 추후에는 user가 댓글에 좋아요 했는지 확인해서 설정
+  const [isLiked, setIsLiked] = useState<boolean>(CommentInfo.isLiked);
+  const [likeCount, setLikeCount] = useState<number>(
+    CommentInfo.commentLikesCount,
+  );
   const navigate = useNavigate();
 
   const nickname = localStorage.getItem('nickname');
@@ -99,7 +102,7 @@ const Comment = ({ CommentInfo }: CommentProps) => {
         const token = localStorage.getItem('token');
         if (token === null) throw new Error('No token found');
 
-        if (tempLiked) {
+        if (isLiked) {
           const response = await fetch(
             `/api/comment/unlike/${CommentInfo.id}`,
             {
@@ -114,6 +117,7 @@ const Comment = ({ CommentInfo }: CommentProps) => {
           if (!response.ok) {
             throw new Error('댓글 좋아요 취소 요청에 실패하였습니다.');
           }
+          setLikeCount(likeCount - 1);
         } else {
           const response = await fetch(`/api/comment/like/${CommentInfo.id}`, {
             method: 'POST',
@@ -126,7 +130,10 @@ const Comment = ({ CommentInfo }: CommentProps) => {
           if (!response.ok) {
             throw new Error('댓글 좋아요 요청에 실패하였습니다.');
           }
+          setLikeCount(likeCount + 1);
         }
+
+        setIsLiked(!isLiked);
       } catch (err) {
         console.error('에러 발생:', err);
       }
@@ -164,15 +171,11 @@ const Comment = ({ CommentInfo }: CommentProps) => {
         <div className={styles.buttonBox}>
           <div className={styles.likeButton} onClick={handleLikeClick}>
             <img
-              src={tempLiked ? likeOrangeIcon : likeGrayIcon}
+              src={isLiked ? likeOrangeIcon : likeGrayIcon}
               style={{ height: '16px' }}
             />
             좋아요
-            <span>
-              {CommentInfo.commentLikesCount === 0
-                ? ''
-                : CommentInfo.commentLikesCount}
-            </span>
+            <span>{likeCount === 0 ? '' : likeCount}</span>
           </div>
         </div>
       </div>

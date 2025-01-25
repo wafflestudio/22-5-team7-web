@@ -35,6 +35,7 @@ const CommunityPostPage = () => {
   const [currentInput, setCurrentInput] = useState<string>('');
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [likeCount, setLikeCount] = useState<number>(0);
 
   const fetchPost = useCallback(async () => {
     try {
@@ -62,6 +63,7 @@ const CommunityPostPage = () => {
       const data = (await response.json()) as CommunityPost;
       setPost(data);
       setIsLiked(data.isLiked);
+      setLikeCount(data.likeCount);
     } catch (err) {
       console.error(err);
       setError((err as Error).message);
@@ -161,6 +163,7 @@ const CommunityPostPage = () => {
           }
 
           setIsLiked(false);
+          setLikeCount(likeCount - 1);
         } else {
           const response = await fetch(`/api/feed/like/${id}`, {
             method: 'POST',
@@ -175,6 +178,7 @@ const CommunityPostPage = () => {
           }
 
           setIsLiked(true);
+          setLikeCount(likeCount + 1);
         }
       } catch (err) {
         console.error('에러 발생:', err);
@@ -284,17 +288,17 @@ const CommunityPostPage = () => {
             ))}
             <div className={styles.viewBox}>
               <img src={eyeIcon} style={{ height: '20px' }} />
-              <p>{post.viewCount}명이 봤어요</p>
+              <p>{post.viewCount}</p>
             </div>
             <button
               className={isLiked ? styles.likeButton_liked : styles.likeButton}
               onClick={handleLikeClick}
             >
               <img src={likeIcon} style={{ height: '16px' }} />
-              {post.likeCount === 0 ? (
+              {likeCount === 0 ? (
                 <span>공감하기</span>
               ) : (
-                <span>{post.likeCount}</span>
+                <span>{likeCount}</span>
               )}
             </button>
           </div>

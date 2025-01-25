@@ -40,6 +40,16 @@ export interface Item {
   chattingUsers: User[];
 }
 
+export type ArticleResponse = {
+  article: {
+    id: number;
+    seller: User;
+    title: string;
+    imagePresignedUrl: string[];
+  };
+  chattingUsers: User[];
+};
+
 export const categories = [
   '디지털기기',
   '생활가전',

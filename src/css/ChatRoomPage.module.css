@@ -61,12 +61,18 @@
   height: 24px;
 }
 
+.iteminfoBox {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  gap: 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
 .iteminfo {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px;
-  border-bottom: 1px solid #e0e0e0;
   cursor: pointer;
 }
 
@@ -80,6 +86,13 @@
 .itemstatus {
   font-size: 14px;
   font-weight: bold;
+}
+
+.iteminfoButton {
+  border: 2px solid var(--daangn-lightgray);
+  border-radius: 5px;
+  align-self: flex-start;
+  padding: 5px 10px;
 }
 
 .reserveStatus {
