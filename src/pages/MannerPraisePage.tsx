@@ -121,7 +121,7 @@ const MannerPraisePage = () => {
         />
         <div className={styles.nickname}>
           <p className={styles.nicknameText}>
-            {nickname === undefined ? '닉네임' : nickname}
+            {nickname === undefined ? '닉네임' : decodeURIComponent(nickname)}
           </p>
           <p
             className={styles.temp}

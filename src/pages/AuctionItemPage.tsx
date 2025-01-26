@@ -4,7 +4,7 @@
 */
 import { Stomp } from '@stomp/stompjs';
 import { Client } from '@stomp/stompjs';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { NavLink } from 'react-router';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
@@ -30,12 +30,14 @@ import { calculateTimeLeft } from '../utils/utils';
 const ItemPage = () => {
   const { id } = useParams<{ id: string }>();
   const [isLiked, setIsLiked] = useState(false);
+  //const [isFirstClick, setIsFirstClick] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [currentInput, setCurrentInput] = useState<string>('');
+  //const [currentInput, setCurrentInput] = useState<string>('');
   const [item, setItem] = useState<AuctionItem>();
   const userId = localStorage.getItem('userId');
   const [isMyItem, setIsMyItem] = useState(false);
+  const [isHighestBid, setIsHighestBid] = useState(false);
   const [myNickname, setMyNickname] = useState<string>('');
   const [images, setImages] = useState<string[]>([]);
   const [timeLeft, setTimeLeft] = useState('');
@@ -59,6 +61,34 @@ const ItemPage = () => {
       clearInterval(interval);
     };
   }, [item?.endTime]);
+
+  const updateAuctionEndTime = useCallback(async () => {
+    if (id === undefined) {
+      console.error('경매 ID가 없습니다.');
+      return;
+    }
+    const token = localStorage.getItem('token');
+    if (token === null) {
+      throw new Error('토큰이 없습니다.');
+    }
+    const response = await fetch(`/api/auction/get/${id}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error('아이템 정보를 가져오는 데 실패했습니다.');
+    }
+    const updatedItem = (await response.json()) as AuctionItem;
+    setItem(updatedItem);
+  }, [id]);
+
+  useEffect(() => {
+    if (price !== 0) {
+      void updateAuctionEndTime();
+    }
+  }, [price, updateAuctionEndTime]);
 
   const handleLikeClick = async () => {
     if (!isLiked) {
@@ -285,28 +315,44 @@ const ItemPage = () => {
     };
   }, [id]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^0-9]/g, '');
-    setCurrentInput(value);
-  };
-
   const handleSendBid = () => {
     if (id === undefined) {
       console.error('경매 ID가 없습니다.');
       return;
     }
-    if (socketRef.current !== null && currentInput.trim() !== '') {
+    if (item === undefined) {
+      console.error('아이템 정보가 없습니다.');
+      return;
+    }
+    const confirmBid = window.confirm(
+      `입찰가 ${Math.round(
+        Number(price) + item.startingPrice * 0.05,
+      )}원으로 입찰하시겠습니까?`,
+    );
+    if (!confirmBid) {
+      return;
+    }
+    if (socketRef.current !== null) {
+      const increasedPrice = Math.round(
+        Number(price) + item.startingPrice * 0.05,
+      );
+      setPrice(increasedPrice);
       const newMessage: AuctionMessage = {
         auctionId: Number(id),
         senderNickname: myNickname,
-        price: Number(currentInput),
+        price: increasedPrice,
         createdAt: new Date().toISOString(),
       };
       socketRef.current.publish({
         destination: `/app/chat/sendPrice`,
         body: JSON.stringify(newMessage),
       });
-      setCurrentInput('');
+
+      if (increasedPrice > item.currentPrice) {
+        setIsHighestBid(true);
+      } else {
+        setIsHighestBid(false);
+      }
     }
   };
 
@@ -494,7 +540,7 @@ const ItemPage = () => {
           <div className={styles.contentBox}>
             <div className={styles.profilebar}>
               <NavLink
-                to={`/profile/${item.seller.nickname}`}
+                to={`/profile/${encodeURIComponent(item.seller.nickname)}`}
                 className={styles.profile}
               >
                 <img
@@ -549,19 +595,19 @@ const ItemPage = () => {
             <div className={styles.priceandchat}>
               <div className={styles.pricebox}>
                 <div className={styles.currentPrice}>
+                  <p>시작 가격: </p>
+                  <p className={styles.price}>
+                    {`${Intl.NumberFormat('ko-KR').format(item.startingPrice)}원`}
+                  </p>
+                </div>
+                <div className={styles.bidbox}>
                   <p>현재 가격: </p>
                   <p className={styles.price}>
                     {`${Intl.NumberFormat('ko-KR').format(price)}원`}
                   </p>
-                </div>
-                <div className={styles.bidbox}>
-                  <p className={styles.bidtext}>새 가격:</p>
-                  <input
-                    className={styles.bidinput}
-                    value={currentInput}
-                    onChange={handleInputChange}
-                  ></input>
-                  <p className={styles.bidtext}>원</p>
+                  {isHighestBid && (
+                    <p className={styles.highestBidText}>현재 최고 입찰!</p>
+                  )}
                 </div>
               </div>
               <button className={styles.chatbutton} onClick={handleSendBid}>

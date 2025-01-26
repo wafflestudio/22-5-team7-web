@@ -27,6 +27,7 @@ const ChatRoomPage = () => {
   );
   const [messages, setMessages] = useState<message[]>([]);
   const [myNickname, setMyNickname] = useState<string>('');
+  const [amIseller, setAmIseller] = useState<boolean>(false);
   const [itemInfo, setItemInfo] = useState<Article | null>(null);
   const [profileImage, setProfileImage] = useState<string>(
     'https://placehold.co/100',
@@ -67,14 +68,25 @@ const ChatRoomPage = () => {
           throw new Error('메시지 가져오기 오류');
         }
         const data = (await response.json()) as chatRoomResponse;
-        if (data.article.seller.imagePresignedUrl === '') {
-          setProfileImage(baseImage);
-        } else {
-          setProfileImage(data.article.seller.imagePresignedUrl);
+        if (data.chatRoom.article.seller.nickname === myNickname) {
+          setAmIseller(true);
         }
-        setItemInfo(data.article);
+        if (amIseller) {
+          if (data.chatRoom.seller.imagePresignedUrl === '') {
+            setProfileImage(baseImage);
+          } else {
+            setProfileImage(data.chatRoom.seller.imagePresignedUrl);
+          }
+        } else {
+          if (data.chatRoom.buyer.imagePresignedUrl === '') {
+            setProfileImage(baseImage);
+          } else {
+            setProfileImage(data.chatRoom.buyer.imagePresignedUrl);
+          }
+        }
+        setItemInfo(data.chatRoom.article);
         setFormattedPrice(
-          new Intl.NumberFormat('ko-KR').format(data.article.price),
+          new Intl.NumberFormat('ko-KR').format(data.chatRoom.article.price),
         );
         const sortedData = data.messages.sort(
           (a, b) =>
@@ -89,7 +101,7 @@ const ChatRoomPage = () => {
         console.error('메시지 가져오기 오류:', error);
       }
     },
-    [chatRoomId],
+    [chatRoomId, amIseller, myNickname],
   );
 
   useEffect(() => {

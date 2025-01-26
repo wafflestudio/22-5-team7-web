@@ -32,15 +32,12 @@ const ProfilePage = () => {
         setLoading(true);
         if (token === null) throw new Error('No token found');
         if (nickname === undefined) throw new Error('Nickname is undefined');
-        const response = await fetch(
-          `/api/profile/${encodeURIComponent(nickname)}`,
-          {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+        const response = await fetch(`/api/profile/${nickname}`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
-        );
+        });
 
         if (!response.ok) {
           const errorData = (await response.json()) as ErrorResponseType;
@@ -103,7 +100,7 @@ const ProfilePage = () => {
               </NavLink>
             ) : (
               <NavLink
-                to={`/mannerpraise/${profile.user.nickname}`}
+                to={`/mannerpraise/${encodeURIComponent(profile.user.nickname)}`}
                 className={styles.profileEditButton}
               >
                 매너 칭찬하기
@@ -121,7 +118,7 @@ const ProfilePage = () => {
               to={
                 profile.user.id === myId
                   ? '/mypage/sells'
-                  : `/profile/${profile.user.nickname}/sells`
+                  : `/profile/${encodeURIComponent(profile.user.nickname)}/sells`
               }
               className={styles.button}
             >
@@ -132,7 +129,7 @@ const ProfilePage = () => {
           <div className={styles.separator} />
           <div className={styles.block}>
             <NavLink
-              to={`/profile/${profile.user.nickname}/manners`}
+              to={`/profile/${encodeURIComponent(profile.user.nickname)}/manners`}
               className={styles.button}
             >
               <p>받은 매너 평가</p>
@@ -158,7 +155,7 @@ const ProfilePage = () => {
           <div className={styles.separator} />
           <div className={styles.block}>
             <NavLink
-              to={`/profile/${profile.user.nickname}/reviews`}
+              to={`/profile/${encodeURIComponent(profile.user.nickname)}/reviews`}
               className={styles.button}
             >
               <p>받은 거래 후기 {profile.reviewCount}</p>

@@ -81,7 +81,8 @@ const MyProfileEditPage = () => {
         console.error('에러 발생:', error);
       } finally {
         setIsLoading(false);
-        if (nickname !== undefined) void navigate(`/profile/${nickname}`);
+        if (nickname !== undefined)
+          void navigate(`/profile/${encodeURIComponent(nickname)}`);
       }
     };
 

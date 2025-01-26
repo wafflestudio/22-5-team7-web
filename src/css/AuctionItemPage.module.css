@@ -478,6 +478,13 @@
   color: #666666;
 }
 
+.highestBidText {
+  color: var(--daangn-orange);
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
 .chatbutton {
   background-color: var(--daangn-orange);
   border: none;
