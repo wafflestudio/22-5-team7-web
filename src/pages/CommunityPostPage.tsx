@@ -257,7 +257,11 @@ const CommunityPostPage = () => {
             </div>
             <div
               className={styles.profileBox}
-              onClick={() => void navigate(`/profile/${post.author.nickname}`)}
+              onClick={() =>
+                void navigate(
+                  `/profile/${encodeURIComponent(post.author.nickname)}`,
+                )
+              }
             >
               <img
                 src={

@@ -115,7 +115,7 @@ const SendReviewPage = () => {
 
       for (const mannerType of selectedMannerTypes) {
         const response = await fetch(
-          `/api/profile/${partner.nickname}/praise/${mannerType}`,
+          `/api/profile/${encodeURIComponent(partner.nickname)}/praise/${mannerType}`,
           {
             method: 'PUT',
             headers: {
@@ -131,17 +131,20 @@ const SendReviewPage = () => {
       }
 
       if (content !== '') {
-        const response = await fetch(`/api/${partner.nickname}/review`, {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
+        const response = await fetch(
+          `/api/${encodeURIComponent(partner.nickname)}/review`,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              content: content,
+              location: myLocation,
+            }),
           },
-          body: JSON.stringify({
-            content: content,
-            location: myLocation,
-          }),
-        });
+        );
 
         if (!response.ok) {
           throw new Error('Failed to send review');

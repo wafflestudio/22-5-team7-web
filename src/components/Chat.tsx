@@ -10,6 +10,7 @@ interface ChatProps {
 
 const Chat: React.FC<ChatProps> = ({ chatItem }) => {
   const navigate = useNavigate();
+  const myNickname = localStorage.getItem('nickname');
 
   const handleClick = () => {
     void navigate(`/chat/${chatItem.id}`);
@@ -29,10 +30,16 @@ const Chat: React.FC<ChatProps> = ({ chatItem }) => {
       </div>
       <div className={styles.chatinfo}>
         <div className={styles.basicinfo}>
-          <p className={styles.nickname}>{chatItem.buyer.nickname}</p>
-          <p
-            className={styles.placeanddate}
-          >{`${chatItem.seller.location} · ${getTimeAgo(chatItem.updatedAt)}`}</p>
+          <p className={styles.nickname}>
+            {chatItem.buyer.nickname === myNickname
+              ? chatItem.seller.nickname
+              : chatItem.buyer.nickname}
+          </p>
+          <p className={styles.placeanddate}>{`${
+            chatItem.buyer.nickname === myNickname
+              ? chatItem.seller.location
+              : chatItem.buyer.location
+          } · ${getTimeAgo(chatItem.updatedAt)}`}</p>
         </div>
         <div className={styles.chatmessage}>{chatItem.chatMessage}</div>
       </div>

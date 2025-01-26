@@ -18,6 +18,6 @@ export type chatItem = {
 };
 
 export type chatRoomResponse = {
-  article: Article;
+  chatRoom: chatItem;
   messages: message[];
 };

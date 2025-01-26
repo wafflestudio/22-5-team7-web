@@ -468,7 +468,7 @@ const ItemPage = () => {
           <div className={styles.contentBox}>
             <div className={styles.profilebar}>
               <NavLink
-                to={`/profile/${item.article.seller.nickname}`}
+                to={`/profile/${encodeURIComponent(item.article.seller.nickname)}`}
                 className={styles.profile}
               >
                 <img

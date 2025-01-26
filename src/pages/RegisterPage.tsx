@@ -28,9 +28,7 @@ const LoginPage = () => {
   const handlenicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setnickname(e.target.value);
     setIsNicknameValid(
-      e.target.value.length >= 2 &&
-        e.target.value.length <= 10 &&
-        !e.target.value.includes('/'),
+      e.target.value.length >= 2 && e.target.value.length <= 10,
     );
     setIsNicknameConflict(false);
   };
@@ -110,9 +108,7 @@ const LoginPage = () => {
           onChange={handlenicknameChange}
         ></input>
         {!isNicknameValid && (
-          <p className={styles.alertText}>
-            닉네임은 2~10 글자로, /가 포함되면 안돼요.
-          </p>
+          <p className={styles.alertText}>닉네임은 2~10 글자여야 해요.</p>
         )}
         {isNicknameConflict && (
           <p className={styles.alertText}>이 닉네임은 이미 사용중이에요.</p>

@@ -81,7 +81,7 @@ const MyPage = () => {
         ) : (
           <div className={styles.block}>
             <NavLink
-              to={`/profile/${myPageInfo.nickname}`}
+              to={`/profile/${encodeURIComponent(myPageInfo.nickname)}`}
               className={styles.profile}
             >
               <img
