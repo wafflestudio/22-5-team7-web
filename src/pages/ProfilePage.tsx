@@ -2,7 +2,7 @@
   다른 이용자들의 프로필 페이지.
 */
 import { useEffect, useState } from 'react';
-import { NavLink, useNavigate, useParams } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import infoIcon from '../assets/information.svg';
 import leftArrow from '../assets/leftarrow.svg';
@@ -13,6 +13,7 @@ import shareIcon from '../assets/share.svg';
 import Loader from '../components/Loader';
 import TemperatureGauge from '../components/TemperatureGauge';
 import styles from '../css/ProfilePage.module.css';
+import type { LocationState } from '../typings/toolBar';
 import type { ErrorResponseType, ProfileResponse } from '../typings/user';
 import { mannerTypeLabels } from '../typings/user';
 import { handleShareClick } from '../utils/eventhandlers';
@@ -24,6 +25,7 @@ const ProfilePage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const myId = localStorage.getItem('userId');
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const fetchProfileInfo = async () => {
@@ -32,12 +34,15 @@ const ProfilePage = () => {
         setLoading(true);
         if (token === null) throw new Error('No token found');
         if (nickname === undefined) throw new Error('Nickname is undefined');
-        const response = await fetch(`/api/profile/${nickname}`, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
+        const response = await fetch(
+          `/api/profile/${encodeURIComponent(nickname)}`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
-        });
+        );
 
         if (!response.ok) {
           const errorData = (await response.json()) as ErrorResponseType;
@@ -57,15 +62,20 @@ const ProfilePage = () => {
     void fetchProfileInfo();
   }, [nickname]);
 
+  const handleBackClick = () => {
+    const locationState = location.state as LocationState;
+
+    if (locationState !== null && locationState.from === 'profileEdit') {
+      void navigate(-2);
+    } else {
+      void navigate(-1);
+    }
+  };
+
   return (
     <div className={styles.main}>
       <div className={styles.upperBar}>
-        <button
-          onClick={() => {
-            void navigate(-1);
-          }}
-          className={styles.button}
-        >
+        <button onClick={handleBackClick} className={styles.button}>
           <img src={leftArrow} className={styles.upperIcon} />
         </button>
         <p className={styles.pageTitle}>프로필</p>
@@ -100,7 +110,7 @@ const ProfilePage = () => {
               </NavLink>
             ) : (
               <NavLink
-                to={`/mannerpraise/${encodeURIComponent(profile.user.nickname)}`}
+                to={`/mannerpraise/${profile.user.nickname}`}
                 className={styles.profileEditButton}
               >
                 매너 칭찬하기
@@ -118,7 +128,7 @@ const ProfilePage = () => {
               to={
                 profile.user.id === myId
                   ? '/mypage/sells'
-                  : `/profile/${encodeURIComponent(profile.user.nickname)}/sells`
+                  : `/profile/${profile.user.nickname}/sells`
               }
               className={styles.button}
             >
@@ -129,7 +139,7 @@ const ProfilePage = () => {
           <div className={styles.separator} />
           <div className={styles.block}>
             <NavLink
-              to={`/profile/${encodeURIComponent(profile.user.nickname)}/manners`}
+              to={`/profile/${profile.user.nickname}/manners`}
               className={styles.button}
             >
               <p>받은 매너 평가</p>
@@ -155,7 +165,7 @@ const ProfilePage = () => {
           <div className={styles.separator} />
           <div className={styles.block}>
             <NavLink
-              to={`/profile/${encodeURIComponent(profile.user.nickname)}/reviews`}
+              to={`/profile/${profile.user.nickname}/reviews`}
               className={styles.button}
             >
               <p>받은 거래 후기 {profile.reviewCount}</p>

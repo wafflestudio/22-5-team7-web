@@ -27,6 +27,7 @@ const SendReviewPage = () => {
   const [content, setContent] = useState<string>(''); // 리뷰 content
   const { id } = useParams<{ id: string }>(); // item id
   const myNickname = localStorage.getItem('nickname');
+  const myId = localStorage.getItem('userId');
   const myLocation = localStorage.getItem('location');
   const navigate = useNavigate();
 
@@ -131,26 +132,28 @@ const SendReviewPage = () => {
       }
 
       if (content !== '') {
-        const response = await fetch(
-          `/api/${encodeURIComponent(partner.nickname)}/review`,
-          {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              content: content,
-              location: myLocation,
-            }),
+        const reviewCreateRequest = {
+          content: content,
+          location: myLocation,
+          isWritedByBuyer: !isSeller,
+          sellerId: itemInfo?.article.seller.id,
+          buyerId: isSeller ? partner.id : myId,
+        };
+        console.info(reviewCreateRequest);
+        const response = await fetch('/api/review/post', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
           },
-        );
+          body: JSON.stringify(reviewCreateRequest),
+        });
 
         if (!response.ok) {
           throw new Error('Failed to send review');
         }
       }
-
+      console.info('리뷰 보내기 성공!');
       void navigate(-1);
     } catch (error) {
       console.error('에러 발생:', error);
