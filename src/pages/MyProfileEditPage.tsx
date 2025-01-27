@@ -82,7 +82,9 @@ const MyProfileEditPage = () => {
       } finally {
         setIsLoading(false);
         if (nickname !== undefined)
-          void navigate(`/profile/${encodeURIComponent(nickname)}`);
+          void navigate(`/profile/${encodeURIComponent(nickname)}`, {
+            state: { from: 'profileEdit' },
+          });
       }
     };
 

@@ -46,7 +46,7 @@ const ReviewsPage = () => {
 
         setNextRequestId(data[data.length - 1]?.id ?? 0);
         console.info(data);
-        setReviews(data);
+        setReviews((prevReviews) => [...prevReviews, ...data]);
       } catch (error) {
         console.error('error:', error);
       } finally {
@@ -91,7 +91,7 @@ const ReviewsPage = () => {
       ) : (
         <div className={styles.contentBox}>
           <p className={styles.reviewNumber}>후기 {reviews.length}개</p>
-          {reviews.slice(0, 3).map((review, index) => (
+          {reviews.map((review, index) => (
             <div key={index} className={styles.reviewBlock}>
               <img src={placeHolder} className={styles.reviewPic} />
               <div className={styles.reviewSubBlock}>
