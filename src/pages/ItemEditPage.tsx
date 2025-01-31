@@ -116,7 +116,7 @@ const ItemEditPage = () => {
       content: article,
       price: Number(price),
       location: place,
-      image_count: images.length,
+      imageCount: images.length,
       tag: category,
     };
 

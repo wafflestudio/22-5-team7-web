@@ -204,6 +204,10 @@ const ItemPage = () => {
     void handleChatClick();
   };
 
+  const handleChatRoomCountClick = () => {
+    void navigate(`/chat`);
+  };
+
   const handlePrevSwipe = () => {
     setCurrentImageIndex((prevIndex) =>
       prevIndex === 0 ? prevIndex : prevIndex - 1,
@@ -537,9 +541,13 @@ const ItemPage = () => {
               </div>
               <button
                 className={styles.chatbutton}
-                onClick={handleChatClickWrappper}
+                onClick={
+                  isMyItem ? handleChatRoomCountClick : handleChatClickWrappper
+                }
               >
-                채팅하기
+                {isMyItem
+                  ? `대화 중인 채팅방: ${item.chattingUsers.length}`
+                  : '채팅하기'}
               </button>
             </div>
           </div>

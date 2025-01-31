@@ -276,6 +276,7 @@ const ItemPage = () => {
       //const socket = new SockJS(`http://${window.location.host}/ws`);
       const socket = new SockJS(`https://toykarrot.shop/ws`);
       const stompClient: Client = Stomp.over(() => socket);
+      const storedNickname = localStorage.getItem('nickname');
       socketRef.current = stompClient;
 
       socketRef.current.onConnect = () => {
@@ -287,6 +288,12 @@ const ItemPage = () => {
             message.body,
           ) as AuctionMessage;
           setPrice(data.price);
+
+          if (data.senderNickname === storedNickname) {
+            setIsHighestBid(true);
+          } else {
+            setIsHighestBid(false);
+          }
         });
       };
 
@@ -324,6 +331,12 @@ const ItemPage = () => {
       console.error('아이템 정보가 없습니다.');
       return;
     }
+    const currentTime = new Date().getTime();
+    const endTime = new Date(item.endTime).getTime();
+    if (currentTime >= endTime) {
+      alert('경매가 종료되었습니다.');
+      return;
+    }
     const confirmBid = window.confirm(
       `입찰가 ${Math.round(
         Number(price) + item.startingPrice * 0.05,
@@ -347,12 +360,6 @@ const ItemPage = () => {
         destination: `/app/chat/sendPrice`,
         body: JSON.stringify(newMessage),
       });
-
-      if (increasedPrice > item.currentPrice) {
-        setIsHighestBid(true);
-      } else {
-        setIsHighestBid(false);
-      }
     }
   };
 

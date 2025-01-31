@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
+import placeholder from '../assets/placeholder_gray.png';
 import styles from '../css/Chat.module.css';
 import type { chatItem } from '../typings/chat';
 import { getTimeAgo } from '../utils/utils';
@@ -20,11 +21,19 @@ const Chat: React.FC<ChatProps> = ({ chatItem }) => {
     <div className={styles.main} onClick={handleClick}>
       <div className={styles.chatimage}>
         <img
-          src={chatItem.seller.imagePresignedUrl}
+          src={
+            chatItem.seller.imagePresignedUrl === ''
+              ? placeholder
+              : chatItem.seller.imagePresignedUrl
+          }
           className={styles.profileimage}
         ></img>
         <img
-          src={chatItem.article.imagePresignedUrl[0]}
+          src={
+            chatItem.article.imagePresignedUrl.length === 0
+              ? placeholder
+              : chatItem.article.imagePresignedUrl[0]
+          }
           className={styles.itemimage}
         ></img>
       </div>
