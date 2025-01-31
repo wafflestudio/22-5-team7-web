@@ -95,8 +95,8 @@ const LoginPage = () => {
           아이디와 비밀번호로 회원가입 합니다.
         </p>
         <p className={styles.subText}>
-          토이프로젝트 7조의 당근은 아이디와 비밀번호로 로그인해요. 아이디와
-          비밀번호는 <span style={{ fontWeight: 'bold' }}>안전하게 보관</span>
+          와플마켓은 아이디와 비밀번호로 로그인해요. 아이디와 비밀번호는{' '}
+          <span style={{ fontWeight: 'bold' }}>안전하게 보관</span>
           되며 어디에도 공개되지 않아요.
         </p>
         <p>닉네임</p>

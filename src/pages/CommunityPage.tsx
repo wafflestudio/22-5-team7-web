@@ -44,6 +44,7 @@ const CommunityPage = () => {
   const [communityPageToolBarInfo, setCommunityPageToolBarInfo] =
     useState<toolBarInfo>(communityPageToolBarInfoTemplate);
   const [lastId, setLastId] = useState(2100000);
+  const [nextRequestId, setNextRequestId] = useState(2100000);
 
   useEffect(() => {
     const location = localStorage.getItem('location') ?? 'error';
@@ -73,6 +74,10 @@ const CommunityPage = () => {
         const data = (await response.json()) as CommunityPostItemType[];
         console.info(data);
         setPosts((prevPosts) => [...prevPosts, ...data]);
+        if (data.length > 0) {
+          const lastPost = data[data.length - 1];
+          if (lastPost !== undefined) setNextRequestId(lastPost.id);
+        }
       } catch (err) {
         setError((err as Error).message);
       } finally {
@@ -89,7 +94,7 @@ const CommunityPage = () => {
         window.innerHeight + window.scrollY >=
         document.body.offsetHeight - 100
       ) {
-        setLastId(posts[posts.length - 1]?.id ?? 2100000);
+        setLastId(nextRequestId);
       }
     };
 
@@ -97,7 +102,7 @@ const CommunityPage = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [posts]);
+  }, [posts, nextRequestId]);
 
   return (
     <div>
@@ -135,9 +140,19 @@ const CommunityPage = () => {
         {error !== null ? (
           <p>Error: {error}</p>
         ) : (
-          posts.map((post) => (
-            <CommunityPostItem key={post.id} CommunityPostInfo={post} />
-          ))
+          posts
+            .sort((a, b) => {
+              if (activeTab === 'feed')
+                return a.createdAt > b.createdAt
+                  ? -1
+                  : a.createdAt < b.createdAt
+                    ? 1
+                    : 0;
+              return b.likeCount - a.likeCount;
+            })
+            .map((post) => (
+              <CommunityPostItem key={post.id} CommunityPostInfo={post} />
+            ))
         )}
         {loading && <Loader marginTop="0" />}
       </div>

@@ -138,6 +138,16 @@ const CommunityRegisterPage = () => {
 
   const handleAddHashtag = () => {
     setArticle((prev) => `${prev}#`);
+
+    setTimeout(() => {
+      if (styles.articleBox === undefined)
+        throw new Error('articleBox is undefined!');
+      const textarea = document.querySelector(
+        `.${styles.articleBox}`,
+      ) as HTMLTextAreaElement;
+      textarea.focus();
+      textarea.selectionStart = textarea.selectionEnd = textarea.value.length;
+    }, 0);
   };
 
   return (
