@@ -19,7 +19,7 @@ const LandingPage = () => {
     <div className={styles.main}>
       <div className={styles.logobox}>
         <img src={DaangnLogo} className={styles.daangnLogo} />
-        <p className={styles.daangnMainText}>당신 근처의 당근</p>
+        <p className={styles.daangnMainText}>당신 근처의 와플</p>
         <p className={styles.daangnSubText}>
           동네라서 가능한 모든 것<br />
           지금 내 동네를 선택하고 시작해보세요!
