@@ -27,7 +27,7 @@ const ReviewsPage = () => {
         if (nickname === undefined) throw new Error('id is undefined!');
 
         const response = await fetch(
-          `/api/profile/${nickname}/reviews?reviewId=${lastId}`,
+          `/api/profile/reviews?nickname=${encodeURIComponent(nickname)}&reviewId=${lastId}`,
           {
             method: 'GET',
             headers: {

@@ -36,7 +36,7 @@ const SellsPage = () => {
         setIsLoading(true);
         if (token === null) throw new Error('No token found');
         const response = await fetch(
-          `/api/profile/${encodeURIComponent(nickname)}`,
+          `/api/profile?nickname=${encodeURIComponent(nickname)}`,
           {
             method: 'GET',
             headers: {
@@ -68,7 +68,7 @@ const SellsPage = () => {
       try {
         if (token === null) throw new Error('No token found');
         const response = await fetch(
-          `/api/profile/${nickname}/sells?articleId=${lastId}`,
+          `/api/profile/sells?nickname=${encodeURIComponent(nickname)}&articleId=${lastId}`,
           {
             method: 'GET',
             headers: {

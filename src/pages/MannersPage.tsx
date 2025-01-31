@@ -45,13 +45,16 @@ const MannersPage = () => {
         if (token === null) throw new Error('No token found');
         if (nickname === undefined) throw new Error('nickname is undefined!');
 
-        const response = await fetch(`/api/profile/${nickname}/manners`, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
+        const response = await fetch(
+          `/api/profile/manners?nickname=${encodeURIComponent(nickname)}`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
           },
-        });
+        );
 
         if (!response.ok) {
           const errorData = (await response.json()) as ErrorResponseType;
