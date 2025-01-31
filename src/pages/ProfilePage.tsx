@@ -66,7 +66,7 @@ const ProfilePage = () => {
     const locationState = location.state as LocationState;
 
     if (locationState !== null && locationState.from === 'profileEdit') {
-      void navigate(-2);
+      void navigate(-3);
     } else {
       void navigate(-1);
     }
