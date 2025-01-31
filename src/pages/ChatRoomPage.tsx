@@ -26,8 +26,11 @@ const ChatRoomPage = () => {
     new Date('2030-01-01T00:00:00Z').toISOString(),
   );
   const [messages, setMessages] = useState<message[]>([]);
-  const [myNickname, setMyNickname] = useState<string>('');
+  const [myNickname, setMyNickname] = useState<string | null>('');
   const [amIseller, setAmIseller] = useState<boolean>(false);
+  const [chatRoomInfo, setChatRoomInfo] = useState<chatRoomResponse | null>(
+    null,
+  );
   const [itemInfo, setItemInfo] = useState<Article | null>(null);
   const [profileImage, setProfileImage] = useState<string>(
     'https://placehold.co/100',
@@ -40,6 +43,7 @@ const ChatRoomPage = () => {
   //const [inputMessage, setInputMessage] = useState<string>('');
   const socketRef = useRef<Client | null>(null);
   const observer = useRef<IntersectionObserver | null>(null);
+  //const myNickname = localStorage.getItem('nickname');
   const navigate = useNavigate();
 
   const fetchMessages = useCallback(
@@ -52,6 +56,10 @@ const ChatRoomPage = () => {
         const token = localStorage.getItem('token');
         if (token === null) {
           throw new Error('토큰이 없습니다.');
+        }
+        const storedNickname = localStorage.getItem('nickname');
+        if (storedNickname === null) {
+          throw new Error('닉네임이 없습니다.');
         }
 
         const response = await fetch(
@@ -68,22 +76,23 @@ const ChatRoomPage = () => {
           throw new Error('메시지 가져오기 오류');
         }
         const data = (await response.json()) as chatRoomResponse;
-        if (data.chatRoom.article.seller.nickname === myNickname) {
+        if (data.chatRoom.article.seller.nickname === storedNickname) {
           setAmIseller(true);
         }
         if (amIseller) {
           if (data.chatRoom.seller.imagePresignedUrl === '') {
             setProfileImage(baseImage);
           } else {
-            setProfileImage(data.chatRoom.seller.imagePresignedUrl);
+            setProfileImage(data.chatRoom.buyer.imagePresignedUrl);
           }
         } else {
           if (data.chatRoom.buyer.imagePresignedUrl === '') {
             setProfileImage(baseImage);
           } else {
-            setProfileImage(data.chatRoom.buyer.imagePresignedUrl);
+            setProfileImage(data.chatRoom.seller.imagePresignedUrl);
           }
         }
+        setChatRoomInfo(data);
         setItemInfo(data.chatRoom.article);
         setFormattedPrice(
           new Intl.NumberFormat('ko-KR').format(data.chatRoom.article.price),
@@ -101,17 +110,15 @@ const ChatRoomPage = () => {
         console.error('메시지 가져오기 오류:', error);
       }
     },
-    [chatRoomId, amIseller, myNickname],
+    [chatRoomId, amIseller],
   );
 
   useEffect(() => {
     console.info('useEffect 실행됨');
-    const storedNickname = localStorage.getItem('nickname');
-    if (storedNickname !== null) {
-      setMyNickname(storedNickname);
-    }
 
     void fetchMessages(new Date('2030-01-01T00:00:00Z').toISOString());
+
+    setMyNickname(localStorage.getItem('nickname'));
 
     const setupWebSocket = () => {
       if (chatRoomId === undefined) {
@@ -167,7 +174,11 @@ const ChatRoomPage = () => {
       console.error('채팅방 ID가 없습니다.');
       return;
     }
-    if (socketRef.current !== null && currentInput.trim() !== '') {
+    if (
+      socketRef.current !== null &&
+      currentInput.trim() !== '' &&
+      myNickname !== null
+    ) {
       const newMessage: message = {
         chatRoomId: Number(chatRoomId), // chatRoomId 추가
         senderNickname: myNickname,
@@ -232,8 +243,16 @@ const ChatRoomPage = () => {
           onClick={handleBackClick}
         ></img>
         <div className={styles.opponentinfo}>
-          <p className={styles.opponentnickname}>{itemInfo?.seller.nickname}</p>
-          <p className={styles.opponenttemp}>{itemInfo?.seller.temperature}</p>
+          <p className={styles.opponentnickname}>
+            {amIseller
+              ? chatRoomInfo?.chatRoom.buyer.nickname
+              : chatRoomInfo?.chatRoom.seller.nickname}
+          </p>
+          <p className={styles.opponenttemp}>
+            {amIseller
+              ? chatRoomInfo?.chatRoom.buyer.temperature
+              : chatRoomInfo?.chatRoom.seller.temperature}
+          </p>
         </div>
         <div className={styles.upperbaricons}>
           <img src={callIcon} className={styles.othericons}></img>
@@ -244,9 +263,9 @@ const ChatRoomPage = () => {
         <div className={styles.iteminfo}>
           <img
             src={
-              itemInfo === null
-                ? 'https://placehold.co/100'
-                : itemInfo.imagePresignedUrl[0]
+              itemInfo !== null && itemInfo.imagePresignedUrl[0] === ''
+                ? itemInfo.imagePresignedUrl[0]
+                : 'https://placehold.co/100'
             }
             className={styles.itemimage}
           ></img>
