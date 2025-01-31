@@ -63,6 +63,17 @@ export const mannerTypeLabels = {
   SHARING: '나눔을 해주셨어요.',
 };
 
+export const negMannerTypeLabels = {
+  NEG_KINDNESS: '불친절해요.',
+  NEG_PUNCTUALITY: '시간약속을 안 지켜요.',
+  NEG_QUICK_RESPONSE: '채팅 메시지를 읽고도 답이 없어요.',
+  NEG_DELIVERY: '약속 장소에 나타나지 않았어요.',
+  NEG_ACCURATE_DESCRIPTION: '물품상태가 설명한 것과 달라요.',
+  NEG_AFFORDABLE_PRICE: '물품을 너무 비싸게 판매해요.',
+  NEG_DETAILED_DESCRIPTION: '물품설명이 자세하지 않아요.',
+  NEG_SHARING: '그냥 싫은데!..',
+};
+
 export const Regions = [
   '보라매동',
   '은천동',
