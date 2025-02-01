@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import leftArrow from '../assets/leftarrow.svg';
 import placeHolder from '../assets/placeholder_gray.png';
+import Loader from '../components/Loader';
 import styles from '../css/SendReviewPage.module.css';
 import type { ArticleResponse } from '../typings/item';
 import {
@@ -33,6 +34,7 @@ const SendReviewPage = () => {
   const [itemInfo, setItemInfo] = useState<ArticleResponse>();
   const [partner, setPartner] = useState<User>(); // 거래한 상대방이 누군지 (판매자/구매자 둘 다 가능)
   const [content, setContent] = useState<string>(''); // 리뷰 content
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { id } = useParams<{ id: string }>(); // item id
   const myNickname = localStorage.getItem('nickname');
   const myLocation = localStorage.getItem('location');
@@ -115,6 +117,7 @@ const SendReviewPage = () => {
 
   const handlePostClick = async () => {
     try {
+      setIsLoading(true);
       const token = localStorage.getItem('token');
       if (token === null) throw new Error('No token found');
       if (partner === undefined) throw new Error('상대방 정보가 없습니다.');
@@ -172,6 +175,8 @@ const SendReviewPage = () => {
       void navigate(-1);
     } catch (error) {
       console.error('에러 발생:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -347,6 +352,11 @@ const SendReviewPage = () => {
           </div>
         )}
       </div>
+      {isLoading && (
+        <div className={styles.loadingBox}>
+          <Loader marginTop="45vh" />
+        </div>
+      )}
     </div>
   );
 };

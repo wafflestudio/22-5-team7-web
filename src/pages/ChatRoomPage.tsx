@@ -440,7 +440,7 @@ const ChatRoomPage = () => {
         <div className={styles.iteminfo}>
           <img
             src={
-              itemInfo !== null && itemInfo.imagePresignedUrl[0] === ''
+              itemInfo !== null && itemInfo.imagePresignedUrl[0] !== ''
                 ? itemInfo.imagePresignedUrl[0]
                 : 'https://placehold.co/100'
             }
@@ -524,7 +524,8 @@ const ChatRoomPage = () => {
           const isFirstOpponentMessage =
             message.senderNickname !== myNickname &&
             (index === 0 ||
-              (index > 0 && messages[index - 1]?.senderNickname === 'User'));
+              (index > 0 &&
+                messages[index - 1]?.senderNickname === myNickname));
 
           return (
             <div
