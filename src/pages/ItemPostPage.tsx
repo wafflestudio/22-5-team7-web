@@ -22,6 +22,8 @@ const LONG_PLACEHOLDER_TEXT = `에 올릴 게시글 내용을 작성해 주세�
 const ItemPostPage = () => {
   const [title, setTitle] = useState<string>('');
   const [category, setCategory] = useState('');
+  const [titleError, setTitleError] = useState('');
+  const [articleError, setArticleError] = useState('');
   const [showMore, setShowMore] = useState(false);
   const [price, setPrice] = useState<string>('');
   const [article, setArticle] = useState<string>('');
@@ -81,6 +83,20 @@ const ItemPostPage = () => {
   }, [article]);
 
   const handlePostClick = async () => {
+    if (title.trim() === '') {
+      setTitleError('제목을 한글자 이상 작성해 주세요'); // 경고 메시지 설정
+      return;
+    } else {
+      setTitleError(''); // 경고 메시지 초기화
+    }
+
+    if (article.trim() === '') {
+      setArticleError('설명을 한글자 이상 작성해 주세요'); // 경고 메시지 설정
+      return;
+    } else {
+      setArticleError(''); // 경고 메시지 초기화
+    }
+
     const postData = {
       title,
       content: article,
@@ -213,6 +229,7 @@ const ItemPostPage = () => {
                 setTitle(e.target.value);
               }}
             ></input>
+            {titleError !== '' && <p style={{ color: 'red' }}>{titleError}</p>}
             <div className={styles.categoryButtons}>
               {category === '' ? (
                 <>
@@ -337,6 +354,9 @@ const ItemPostPage = () => {
               onChange={handleTextareaChange}
               ref={textareaRef}
             ></textarea>
+            {articleError !== '' && (
+              <p style={{ color: 'red' }}>{articleError}</p>
+            )}
             <p className={styles.infotexts}>거래 희망 장소</p>
             <input
               className={styles.inputBox}
