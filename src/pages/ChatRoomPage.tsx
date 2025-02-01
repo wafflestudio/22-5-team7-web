@@ -401,7 +401,7 @@ const ChatRoomPage = () => {
       },
       {
         color: 'black',
-        text: '판매완료',
+        text: '거래완료',
         function: () => {
           handleChangeStatus(2);
           if (itemInfo === null) throw new Error('Item is null');
