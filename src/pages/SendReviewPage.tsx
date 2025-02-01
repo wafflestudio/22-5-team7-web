@@ -27,7 +27,6 @@ const SendReviewPage = () => {
   const [content, setContent] = useState<string>(''); // 리뷰 content
   const { id } = useParams<{ id: string }>(); // item id
   const myNickname = localStorage.getItem('nickname');
-  const myId = localStorage.getItem('userId');
   const myLocation = localStorage.getItem('location');
   const navigate = useNavigate();
 
@@ -69,7 +68,7 @@ const SendReviewPage = () => {
         setIsSeller(data.article.seller.nickname === myNickname);
 
         if (data.article.seller.nickname === myNickname) {
-          const firstBuyer = data.chattingUsers[0]; // 내가 판매자일 경우 임시로 buyer 지정. 추후엔 location state 이용해서 buyer 정보 받아오기.
+          const firstBuyer = data.chattingUsers[0];
           if (firstBuyer === undefined)
             throw new Error('구매자 정보가 존재하지 않습니다');
           setPartner(firstBuyer);
@@ -94,6 +93,7 @@ const SendReviewPage = () => {
 
   const handleChangeBuyerClick = () => {
     if (itemInfo === undefined) return;
+    if (id === undefined) return;
 
     const currentIndex = itemInfo.chattingUsers.findIndex(
       (user) => user.nickname === partner?.nickname,
@@ -102,6 +102,7 @@ const SendReviewPage = () => {
     const nextIndex = (currentIndex + 1) % itemInfo.chattingUsers.length;
 
     setPartner(itemInfo.chattingUsers[nextIndex]);
+    void navigate(`/item/buyerselect/${id}`);
   };
 
   const handlePostClick = async () => {
@@ -137,7 +138,7 @@ const SendReviewPage = () => {
           location: myLocation,
           isWritedByBuyer: !isSeller,
           sellerId: itemInfo?.article.seller.id,
-          buyerId: isSeller ? partner.id : myId,
+          buyerId: itemInfo?.article.buyer.id,
         };
         console.info(reviewCreateRequest);
         const response = await fetch('/api/review/post', {
@@ -194,7 +195,10 @@ const SendReviewPage = () => {
             <p className={styles.itemTitle}>{itemInfo?.article.title}</p>
             <p>
               거래한 이웃
-              <span style={{ fontWeight: 'bold' }}> {partner?.nickname} </span>
+              <span style={{ fontWeight: 'bold' }}>
+                {' '}
+                {itemInfo?.article.buyer.nickname}{' '}
+              </span>
               {isSeller && (
                 <span
                   className={styles.changeBuyer}
@@ -210,7 +214,7 @@ const SendReviewPage = () => {
           <p className={styles.selectMoodMainText}>
             {myNickname}님,
             <br />
-            {partner?.nickname}님과 거래가 어떠셨나요?
+            {itemInfo?.article.buyer.nickname}님과 거래가 어떠셨나요?
           </p>
           <p className={styles.selectMoodSubText}>
             거래 선호도는 나만 볼 수 있어요.

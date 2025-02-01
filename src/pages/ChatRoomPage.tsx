@@ -8,11 +8,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import SockJS from 'sockjs-client';
 
 import callIcon from '../assets/callicon.svg';
+import downarrow from '../assets/down_arrow.svg';
 import leftarrow from '../assets/leftarrow.svg';
 import baseImage from '../assets/placeholder_gray.png';
 import sendIconGray from '../assets/send-gray.svg';
 import sendIconOrange from '../assets/send-orange.svg';
 import etcIcon from '../assets/three_dots_black.svg';
+import Overlay from '../components/Overlay';
 //import UpperBar from '../components/UpperBar';
 import styles from '../css/ChatRoomPage.module.css';
 import type { message } from '../typings/chat';
@@ -28,6 +30,7 @@ const ChatRoomPage = () => {
   const [messages, setMessages] = useState<message[]>([]);
   const [messageLoading, setMessageLoading] = useState<boolean>(true);
   const [myNickname, setMyNickname] = useState<string | null>('');
+  const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const [amIseller, setAmIseller] = useState<boolean>(false);
   const [isInit, setIsInit] = useState(false);
   const [isComposing, setIsComposing] = useState(false);
@@ -306,6 +309,108 @@ const ChatRoomPage = () => {
     void navigate(`/sendreview/${itemInfo.id}`);
   };
 
+  const handleStatusClick = () => {
+    setIsOverlayOpen(true);
+  };
+
+  const handleChangeStatus = (Status: number) => {
+    const changeStatus = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (token === null) {
+          throw new Error('토큰이 없습니다.');
+        }
+        if (itemInfo === null) {
+          throw new Error('아이템 정보가 없습니다.');
+        }
+        const response = await fetch(`/api/item/status/${itemInfo.id}`, {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ status: Status }),
+        });
+
+        if (!response.ok) {
+          throw new Error('상태 변경 요청에 실패했습니다.');
+        }
+      } catch (error) {
+        console.error('에러 발생:', error);
+      } finally {
+        setIsOverlayOpen(false);
+      }
+    };
+
+    void changeStatus();
+  };
+
+  const handleBuyerSelect = async () => {
+    if (itemInfo === null) {
+      alert('아이템 정보가 없습니다.');
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      if (token === null) {
+        throw new Error('토큰이 없습니다.');
+      }
+      const response = await fetch('/api/item/update/buyer', {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          articleId: itemInfo.id,
+          buyerId: chatRoomInfo?.chatRoom.buyer.id,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('구매자 정보를 업데이트하지 못했습니다.');
+      }
+
+      void navigate(`/sendreview/${itemInfo.id}`);
+      //void navigate('/sendreview', { state: { selectedUser } });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const overlayInfo = {
+    isOpen: isOverlayOpen,
+    closeOverlayFunction: () => {
+      setIsOverlayOpen(false);
+    },
+    overlayButtons: [
+      {
+        color: 'black',
+        text: '판매중',
+        function: () => {
+          handleChangeStatus(0);
+        },
+      },
+      {
+        color: 'black',
+        text: '예약중',
+        function: () => {
+          handleChangeStatus(1);
+        },
+      },
+      {
+        color: 'black',
+        text: '판매완료',
+        function: () => {
+          handleChangeStatus(2);
+          if (itemInfo === null) throw new Error('Item is null');
+          void handleBuyerSelect();
+        },
+      },
+    ],
+  };
+
   return (
     <div className={styles.main}>
       <div className={styles.upperbar}>
@@ -343,32 +448,53 @@ const ChatRoomPage = () => {
           ></img>
           <div className={styles.itemnameandprice}>
             <div className={styles.itemname}>
-              <p className={styles.itemstatus}>
-                {itemInfo?.status === 0 ? (
-                  ''
-                ) : (
-                  <span
-                    className={
-                      itemInfo?.status === 1
-                        ? styles.reserveStatus
-                        : styles.soldStatus
-                    }
-                  >
-                    {itemInfo?.status === 1 ? '예약중' : '거래완료'}
-                  </span>
+              <div
+                className={styles.itemstatus}
+                onClick={amIseller ? handleStatusClick : undefined}
+              >
+                <p>
+                  {itemInfo?.status === 0
+                    ? '판매중'
+                    : itemInfo?.status === 1
+                      ? '예약중'
+                      : itemInfo?.status === 2
+                        ? '판매완료'
+                        : ''}
+                </p>
+                {amIseller && (
+                  <img src={downarrow} className={styles.downarrow}></img>
                 )}
-              </p>
+              </div>
               <p>{itemInfo?.title}</p>
             </div>
             <div className={styles.itemprice}>{`${formattedPrice}원`}</div>
           </div>
         </div>
-        <button
-          className={styles.iteminfoButton}
-          onClick={handleSendReviewClick}
-        >
-          후기 보내기
-        </button>
+        <div className={styles.buttons}>
+          {itemInfo?.status === 0 && (
+            <>
+              <button className={styles.iteminfoButton}>약속잡기</button>
+              <button className={styles.iteminfoButton}>송금요청</button>
+              <button className={styles.iteminfoButton}>용달찾기</button>
+            </>
+          )}
+          {itemInfo?.status === 1 && (
+            <>
+              <button className={styles.iteminfoButton}>약속잡기</button>
+              <button className={styles.iteminfoButton}>송금요청</button>
+              <button className={styles.iteminfoButton}>용달찾기</button>
+              <button
+                className={styles.iteminfoButton}
+                onClick={handleSendReviewClick}
+              >
+                후기 보내기
+              </button>
+            </>
+          )}
+          {itemInfo?.status === 2 &&
+            // 판매완료 상태에서는 아무 버튼도 나타나지 않음
+            null}
+        </div>
       </div>
       <div
         className={styles.messages}
@@ -430,6 +556,7 @@ const ChatRoomPage = () => {
         })}
         <div ref={messagesEndRef} />
       </div>
+      <Overlay overlayInfo={overlayInfo} />
       <form onSubmit={handleSendMessage} className={styles.inputBox}>
         <textarea
           ref={textareaRef}

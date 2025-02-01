@@ -4,18 +4,21 @@
   선택한 분야에 따라 다른 component들을 띄워야 함
 */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
 import leftArrow from '../assets/leftarrow.svg';
-//import Item from '../components/Item';
 import styles from '../css/SearchResultPage.module.css';
+//import Item from '../components/Item';
+import type { PreviewItem as ItemType } from '../typings/item';
 
 const tempLocation = '대학동';
 
 const SearchResultPage = () => {
   const [activeTab, setActiveTab] = useState<'items' | 'posts'>('items');
   const { query } = useParams<{ query: string }>();
+  const [items, setItems] = useState<ItemType[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
 
   if (query === undefined) throw new Error('query is undefined');
@@ -24,6 +27,45 @@ const SearchResultPage = () => {
     if (newQuery.trim() !== '')
       void navigate(`/search/${encodeURIComponent(newQuery.trim())}`);
   };
+
+  useEffect(() => {
+    const fetchItemList = async () => {
+      try {
+        setLoading(true);
+        const token = localStorage.getItem('token');
+        if (token === null) {
+          throw new Error('토큰이 없습니다.');
+        }
+        const response = await fetch(
+          `/api/item/search/{articleId}`,
+          //`https://b866fe16-c4c5-4989-bdc9-5a783448ec03.mock.pstmn.io/api/home?articleId=${lastId}`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          },
+        );
+
+        if (!response.ok) {
+          throw new Error('서버에서 데이터를 받아오지 못했습니다.');
+        }
+
+        const data: ItemType[] = (await response.json()) as ItemType[];
+        setItems((prevItems) => [...prevItems, ...data]);
+        console.info(data);
+        console.info(items);
+        console.info(loading);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    void fetchItemList();
+  }, [items, loading]);
 
   return (
     <div className={styles.main}>
