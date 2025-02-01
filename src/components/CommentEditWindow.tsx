@@ -11,6 +11,7 @@ import type { CommentEditWindowProps } from '../typings/communityPost';
 const CommentEditWindow = ({
   CommentInfo,
   closeWindow,
+  onCommentEdit,
 }: CommentEditWindowProps) => {
   const [commentBody, setCommentBody] = useState<string>(CommentInfo.content);
 
@@ -36,6 +37,7 @@ const CommentEditWindow = ({
       }
 
       closeWindow();
+      onCommentEdit();
     } catch (error) {
       console.error('수정 중 에러 발생:', error);
     }
