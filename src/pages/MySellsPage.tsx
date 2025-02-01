@@ -169,7 +169,6 @@ const MySellsPage = () => {
         />
       </div>
       <div className={styles.contentBox}>
-        {isLoading && <Loader marginTop="0" />}
         {!isLoading && activeTab === 'selling' && (
           <>
             {sellingItems.length === 0 ? (
@@ -196,6 +195,7 @@ const MySellsPage = () => {
             )}
           </>
         )}
+        {isLoading && <Loader marginTop="0" />}
       </div>
     </div>
   );

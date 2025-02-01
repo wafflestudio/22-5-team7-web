@@ -56,7 +56,6 @@
   background: none;
   font-weight: bold;
   padding: 0;
-  border-bottom: 2px solid black;
 }
 
 .inactiveTabButton {
@@ -67,9 +66,23 @@
   background: none;
   font-weight: bold;
   padding: 0;
-  border-bottom: 2px solid var(--daangn-lightgray);
+}
+
+.underline {
+  position: absolute;
+  bottom: 0;
+  width: 50vw;
+  height: 2px;
+  background-color: black;
+  transition: left 0.3s ease;
 }
 
 .contentBox {
   margin-top: 100px;
+}
+
+.noResultsText {
+  margin-top: 30vh;
+  text-align: center;
+  color: var(--daangn-gray);
 }

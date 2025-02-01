@@ -123,16 +123,20 @@ const SendReviewPage = () => {
         .map(([key]) => key as MannerType);
 
       for (const mannerType of selectedMannerTypes) {
-        const response = await fetch(
-          `/api/profile/praise/${mannerType}?nickname=${encodeURIComponent(partner.nickname)}`,
-          {
-            method: 'PUT',
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
+        const MannerRequest = {
+          nickname: partner.nickname,
+          mannerType: mannerType,
+          articleId: id,
+        };
+        console.info(MannerRequest);
+        const response = await fetch('/api/profile/praise', {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
           },
-        );
+          body: JSON.stringify(MannerRequest),
+        });
 
         if (!response.ok) {
           throw new Error(`Failed to send praise for ${mannerType}`);
@@ -146,6 +150,7 @@ const SendReviewPage = () => {
           isWritedByBuyer: !isSeller,
           sellerId: itemInfo?.article.seller.id,
           buyerId: isSeller ? partner.id : myId,
+          articleId: id,
         };
         console.info(reviewCreateRequest);
         const response = await fetch('/api/review/post', {
