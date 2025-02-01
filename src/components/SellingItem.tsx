@@ -204,7 +204,7 @@ const SellingItem = ({ ItemInfo }: SellingItemProps) => {
             <div className={styles.subBox}>
               <div className={styles.iconBox}>
                 <img src={chatIcon} className={styles.smallIcon} />
-                {14}
+                {ItemInfo.chatCount}
               </div>
               {ItemInfo.likeCount > 0 && (
                 <div className={styles.iconBox}>

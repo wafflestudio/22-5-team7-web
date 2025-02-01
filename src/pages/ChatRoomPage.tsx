@@ -491,9 +491,15 @@ const ChatRoomPage = () => {
               </button>
             </>
           )}
-          {itemInfo?.status === 2 &&
-            // 판매완료 상태에서는 아무 버튼도 나타나지 않음
-            null}
+          {itemInfo?.status === 2 && (
+            // 판매완료 상태에서는 아무 버튼도 나타나지 않음 -> 구매자를 위해 후기 보내기 버튼 추가
+            <button
+              className={styles.iteminfoButton}
+              onClick={handleSendReviewClick}
+            >
+              후기 보내기
+            </button>
+          )}
         </div>
       </div>
       <div
