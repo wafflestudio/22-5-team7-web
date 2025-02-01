@@ -66,7 +66,11 @@ const MannersPage = () => {
 
         const data = (await response.json()) as Manner[];
         console.info(data);
-        setManners(data);
+
+        const PosManners = data.filter(
+          (manner) => !manner.mannerType.startsWith('NEG_'),
+        );
+        setManners(PosManners);
 
         if (nickname === myNickname) {
           const NegManners = data.filter((manner) =>
