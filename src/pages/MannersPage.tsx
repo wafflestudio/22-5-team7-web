@@ -17,6 +17,7 @@ import {
   type ErrorResponseType,
   type Manner,
   mannerTypeLabels,
+  negMannerTypeLabels,
 } from '../typings/user';
 
 const MANNER_INFO_TEXT = `
@@ -34,7 +35,9 @@ const MANNER_INFO_TEXT = `
 const MannersPage = () => {
   const { nickname } = useParams<{ nickname: string }>();
   const [manners, setManners] = useState<Manner[]>([]);
+  const [negManners, setNegManners] = useState<Manner[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const myNickname = localStorage.getItem('nickname');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -63,7 +66,18 @@ const MannersPage = () => {
 
         const data = (await response.json()) as Manner[];
         console.info(data);
-        setManners(data);
+
+        const PosManners = data.filter(
+          (manner) => !manner.mannerType.startsWith('NEG_'),
+        );
+        setManners(PosManners);
+
+        if (nickname === myNickname) {
+          const NegManners = data.filter((manner) =>
+            manner.mannerType.startsWith('NEG_'),
+          );
+          setNegManners(NegManners);
+        }
       } catch (error) {
         console.error('error:', error);
       } finally {
@@ -72,7 +86,7 @@ const MannersPage = () => {
     };
 
     void fetchMannersInfo();
-  }, [nickname]);
+  }, [nickname, myNickname]);
 
   return (
     <div className={styles.main}>
@@ -123,7 +137,35 @@ const MannersPage = () => {
             <span className={styles.mannerEmoji}>😞</span>
             <span>받은 비매너</span>
           </div>
-          <p className={styles.mannerLine}>받은 비매너가 없어요.</p>
+          {nickname === myNickname ? (
+            negManners.length === 0 ? (
+              <p className={styles.mannerLine}>받은 비매너가 없어요.</p>
+            ) : (
+              <>
+                {negManners
+                  .sort((a, b) => b.count - a.count)
+                  .map((manner, index) => (
+                    <div key={index} className={styles.mannerLine}>
+                      <p>
+                        {
+                          negMannerTypeLabels[
+                            manner.mannerType as keyof typeof negMannerTypeLabels
+                          ]
+                        }
+                      </p>
+                      <div className={styles.mannerLineRight}>
+                        <img src={peopleIcon} style={{ height: '20px' }} />
+                        {manner.count}
+                      </div>
+                    </div>
+                  ))}
+              </>
+            )
+          ) : (
+            <p className={styles.mannerLine}>
+              &lsquo;받은 비매너&rsquo;는 본인에게만 보여요.
+            </p>
+          )}
         </div>
       )}
       <div className={styles.mannerInfoBox}>

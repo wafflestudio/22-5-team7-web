@@ -144,13 +144,14 @@ const SendReviewPage = () => {
         }
       }
 
-      if (content !== '') {
+      if (content !== '' && activeMood !== 'bad') {
+        if (itemInfo === undefined) throw new Error('itemInfo is undefined');
         const reviewCreateRequest = {
           content: content,
           location: myLocation,
           isWritedByBuyer: !isSeller,
-          sellerId: itemInfo?.article.seller.id,
-          buyerId: itemInfo?.article.buyer.id,
+          sellerId: itemInfo.article.seller.id,
+          buyerId: itemInfo.article.buyer.id,
           articleId: id,
         };
         console.info(reviewCreateRequest);
@@ -208,10 +209,7 @@ const SendReviewPage = () => {
             <p className={styles.itemTitle}>{itemInfo?.article.title}</p>
             <p>
               거래한 이웃
-              <span style={{ fontWeight: 'bold' }}>
-                {' '}
-                {itemInfo?.article.buyer.nickname}{' '}
-              </span>
+              <span style={{ fontWeight: 'bold' }}> {partner?.nickname} </span>
               {isSeller && (
                 <span
                   className={styles.changeBuyer}
@@ -227,7 +225,7 @@ const SendReviewPage = () => {
           <p className={styles.selectMoodMainText}>
             {myNickname}님,
             <br />
-            {itemInfo?.article.buyer.nickname}님과 거래가 어떠셨나요?
+            {partner?.nickname}님과 거래가 어떠셨나요?
           </p>
           <p className={styles.selectMoodSubText}>
             거래 선호도는 나만 볼 수 있어요.

@@ -2,13 +2,14 @@
   각 채팅방에 해당하는 페이지.
 */
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import leftarrow from '../assets/leftarrow.svg';
 //import UpperBar from '../components/UpperBar';
 import styles from '../css/BuyerSelectPage.module.css';
 import type { Article } from '../typings/item';
 import type { Item } from '../typings/item';
+import type { LocationState } from '../typings/toolBar';
 
 const BuyerSelectPage = () => {
   const { id } = useParams();
@@ -20,9 +21,16 @@ const BuyerSelectPage = () => {
     new Intl.NumberFormat('ko-KR').format(price),
   );
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleBackClick = () => {
-    void navigate(-1);
+    const locationState = location.state as LocationState;
+
+    if (locationState !== null && locationState.from === 'mysells') {
+      void navigate(-2);
+    } else {
+      void navigate(-1);
+    }
   };
 
   useEffect(() => {
@@ -136,7 +144,7 @@ const BuyerSelectPage = () => {
                     : itemInfo?.status === 1
                       ? '예약중'
                       : itemInfo?.status === 2
-                        ? '판매완료'
+                        ? '거래완료'
                         : ''}
                 </p>
               </div>

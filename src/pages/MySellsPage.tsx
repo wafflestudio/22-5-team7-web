@@ -2,7 +2,7 @@
   나의 판매내역 페이지.
   '판매중', '거래완료' 로만 구분함
 */
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 import leftArrow from '../assets/leftarrow.svg';
@@ -24,8 +24,8 @@ const MySellsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchMySellsInfo = async () => {
+  const fetchMySellsInfo = useCallback(
+    async (fetchType: 'both' | 'selling' | 'sold') => {
       const token = localStorage.getItem('token');
       try {
         if (token === null) throw new Error('No token found');
@@ -51,15 +51,22 @@ const MySellsPage = () => {
         );
         const sold = data.filter((item) => item.status === 2);
 
-        setSellingItems((prevItems) => [...prevItems, ...selling]); // 판매 중 or 예약 중
-        setSoldItems((prevItems) => [...prevItems, ...sold]); // 거래완료
+        if (fetchType === 'both' || fetchType === 'selling') {
+          setSellingItems((prevItems) => [...prevItems, ...selling]); // 판매 중 or 예약 중
+        }
+        if (fetchType === 'both' || fetchType === 'sold') {
+          setSoldItems((prevItems) => [...prevItems, ...sold]); // 거래완료
+        }
       } catch (error) {
         console.error('error:', error);
       }
-    };
+    },
+    [lastId],
+  );
 
-    void fetchMySellsInfo();
-  }, [lastId]);
+  useEffect(() => {
+    void fetchMySellsInfo('both');
+  }, [fetchMySellsInfo]);
 
   useEffect(() => {
     const fetchMyPageInfo = async () => {
@@ -107,6 +114,24 @@ const MySellsPage = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [nextRequestId]);
+
+  const handleStatusChange = (updatedItem: PreviewItem) => {
+    if (activeTab === 'selling') {
+      //setSellingItems((prev) =>
+      //  prev.filter((item) => item.id !== updatedItem.id),
+      //);
+      //setSoldItems([]);
+      //void fetchMySellsInfo('sold');
+      void navigate(`/sendreview/${updatedItem.id}`);
+      void navigate(`/item/buyerselect/${updatedItem.id}`, {
+        state: { from: 'mysells' },
+      });
+    } else {
+      setSoldItems((prev) => prev.filter((item) => item.id !== updatedItem.id));
+      setSellingItems([]);
+      void fetchMySellsInfo('selling');
+    }
+  };
 
   return (
     <div className={styles.main}>
@@ -176,7 +201,11 @@ const MySellsPage = () => {
             ) : (
               <div>
                 {sellingItems.map((item, index) => (
-                  <SellingItem key={index} ItemInfo={item} />
+                  <SellingItem
+                    key={index}
+                    ItemInfo={item}
+                    onStatusChange={handleStatusChange}
+                  />
                 ))}
               </div>
             )}
@@ -189,7 +218,11 @@ const MySellsPage = () => {
             ) : (
               <div>
                 {soldItems.map((item, index) => (
-                  <SellingItem key={index} ItemInfo={item} />
+                  <SellingItem
+                    key={index}
+                    ItemInfo={item}
+                    onStatusChange={handleStatusChange}
+                  />
                 ))}
               </div>
             )}

@@ -109,10 +109,7 @@ const ProfilePage = () => {
                 프로필 수정
               </NavLink>
             ) : (
-              <NavLink
-                to={`/mannerpraise/${profile.user.nickname}`}
-                className={styles.profileEditButton}
-              >
+              <NavLink to="/temp" className={styles.profileEditButton}>
                 매너 칭찬하기
               </NavLink>
             )}

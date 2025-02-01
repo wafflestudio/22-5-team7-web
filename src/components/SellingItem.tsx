@@ -14,9 +14,10 @@ import { getTimeAgo } from '../utils/utils';
 
 type SellingItemProps = {
   ItemInfo: PreviewItem;
+  onStatusChange: (updatedItem: PreviewItem) => void;
 };
 
-const SellingItem = ({ ItemInfo }: SellingItemProps) => {
+const SellingItem = ({ ItemInfo, onStatusChange }: SellingItemProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -58,6 +59,8 @@ const SellingItem = ({ ItemInfo }: SellingItemProps) => {
         if (!response.ok) {
           throw new Error('상태 변경 요청에 실패했습니다.');
         }
+
+        onStatusChange({ ...ItemInfo, status: Status as 0 | 1 | 2 });
       } catch (error) {
         console.error('에러 발생:', error);
       } finally {
@@ -204,7 +207,7 @@ const SellingItem = ({ ItemInfo }: SellingItemProps) => {
             <div className={styles.subBox}>
               <div className={styles.iconBox}>
                 <img src={chatIcon} className={styles.smallIcon} />
-                {14}
+                {ItemInfo.chatCount}
               </div>
               {ItemInfo.likeCount > 0 && (
                 <div className={styles.iconBox}>

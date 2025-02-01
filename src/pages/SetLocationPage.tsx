@@ -58,7 +58,7 @@ const SetLocationPage = () => {
       <div className={styles.content}>
         <p className={styles.mainText}>내 동네를 설정해주세요.</p>
         <p className={styles.subText}>
-          당근마켓은 동네 직거래 마켓이에요. <br />내 동네를 설정하고
+          와플마켓은 동네 직거래 마켓이에요. <br />내 동네를 설정하고
           시작해보세요! <br /> 동네 정보는 내 프로필에서 변경할 수도 있어요.
         </p>
         <select
