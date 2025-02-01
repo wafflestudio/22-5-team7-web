@@ -144,7 +144,7 @@ const SendReviewPage = () => {
         }
       }
 
-      if (content !== '') {
+      if (content !== '' && activeMood !== 'bad') {
         if (itemInfo === undefined) throw new Error('itemInfo is undefined');
         const reviewCreateRequest = {
           content: content,
