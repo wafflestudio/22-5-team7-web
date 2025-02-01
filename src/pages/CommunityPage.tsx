@@ -1,7 +1,7 @@
 /*
   '동네생활' 에 해당하는 페이지.
 */
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { NavLink } from 'react-router';
 
 import bellIcon from '../assets/upperbar-bell.svg';
@@ -39,12 +39,15 @@ const communityPageToolBarInfoTemplate: toolBarInfo = {
 const CommunityPage = () => {
   const [activeTab, setActiveTab] = useState<'feed' | 'popular'>('feed');
   const [posts, setPosts] = useState<CommunityPostItemType[]>([]);
+  const [popularPosts, setPopularPosts] = useState<CommunityPostItemType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [communityPageToolBarInfo, setCommunityPageToolBarInfo] =
     useState<toolBarInfo>(communityPageToolBarInfoTemplate);
   const [lastId, setLastId] = useState(2100000);
+  const [lastPopularId, setLastPopularId] = useState(2100000);
   const [nextRequestId, setNextRequestId] = useState(2100000);
+  const [nextRequestPopularId, setNextRequestPopularId] = useState(2100000);
 
   useEffect(() => {
     const location = localStorage.getItem('location') ?? 'error';
@@ -54,14 +57,18 @@ const CommunityPage = () => {
     }));
   }, []);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
+  const fetchPosts = useCallback(
+    async (tab: 'feed' | 'popular') => {
       try {
         setLoading(true);
         const token = localStorage.getItem('token');
         if (token === null) throw new Error('토큰이 없습니다.');
 
-        const response = await fetch(`/api/feed?feedId=${lastId}`, {
+        let url = '';
+        if (tab === 'feed') url = `/api/feed?feedId=${lastId}`;
+        else url = `/api/feed/popular?feedId=${lastPopularId}`;
+
+        const response = await fetch(url, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -73,20 +80,35 @@ const CommunityPage = () => {
         }
         const data = (await response.json()) as CommunityPostItemType[];
         console.info(data);
-        setPosts((prevPosts) => [...prevPosts, ...data]);
-        if (data.length > 0) {
-          const lastPost = data[data.length - 1];
-          if (lastPost !== undefined) setNextRequestId(lastPost.id);
+
+        if (tab === 'feed') {
+          setPosts((prevPosts) => [...prevPosts, ...data]);
+          if (data.length > 0) {
+            const lastPost = data[data.length - 1];
+            if (lastPost !== undefined) setNextRequestId(lastPost.id);
+          }
+        } else {
+          setPopularPosts((prevPosts) => [...prevPosts, ...data]);
+          if (data.length > 0) {
+            const lastPopularPost = data[data.length - 1];
+            if (lastPopularPost !== undefined)
+              setNextRequestPopularId(lastPopularPost.id);
+          }
         }
+        setError(null);
       } catch (err) {
         setError((err as Error).message);
       } finally {
         setLoading(false);
       }
-    };
+    },
+    [lastId, lastPopularId],
+  );
 
-    void fetchPosts();
-  }, [lastId]);
+  useEffect(() => {
+    void fetchPosts('feed');
+    void fetchPosts('popular');
+  }, [fetchPosts]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -94,7 +116,11 @@ const CommunityPage = () => {
         window.innerHeight + window.scrollY >=
         document.body.offsetHeight - 100
       ) {
-        setLastId(nextRequestId);
+        if (activeTab === 'feed') {
+          setLastId(nextRequestId);
+        } else {
+          setLastPopularId(nextRequestPopularId);
+        }
       }
     };
 
@@ -102,7 +128,7 @@ const CommunityPage = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [posts, nextRequestId]);
+  }, [posts, activeTab, nextRequestId, nextRequestPopularId]);
 
   return (
     <div>
@@ -140,19 +166,16 @@ const CommunityPage = () => {
         {error !== null ? (
           <p>Error: {error}</p>
         ) : (
-          posts
-            .sort((a, b) => {
-              if (activeTab === 'feed')
-                return a.createdAt > b.createdAt
-                  ? -1
-                  : a.createdAt < b.createdAt
-                    ? 1
-                    : 0;
-              return b.likeCount - a.likeCount;
-            })
-            .map((post) => (
-              <CommunityPostItem key={post.id} CommunityPostInfo={post} />
-            ))
+          <div>
+            {activeTab === 'feed' &&
+              posts.map((post) => (
+                <CommunityPostItem key={post.id} CommunityPostInfo={post} />
+              ))}
+            {activeTab === 'popular' &&
+              popularPosts.map((post) => (
+                <CommunityPostItem key={post.id} CommunityPostInfo={post} />
+              ))}
+          </div>
         )}
         {loading && <Loader marginTop="0" />}
       </div>

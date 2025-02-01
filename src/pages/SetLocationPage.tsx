@@ -5,15 +5,18 @@ import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 import leftArrow from '../assets/leftarrow.svg';
+import Loader from '../components/Loader';
 import styles from '../css/SetLocationPage.module.css';
 import { Regions } from '../typings/user';
 
 const SetLocationPage = () => {
   const [location, setLocation] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const handleNextClick = async () => {
     try {
+      setIsLoading(true);
       const token = localStorage.getItem('token');
       const nickname = localStorage.getItem('nickname');
       if (token === null) throw new Error('No token found');
@@ -38,6 +41,8 @@ const SetLocationPage = () => {
       void navigate('/main');
     } catch (error) {
       console.error('error: ', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -79,6 +84,7 @@ const SetLocationPage = () => {
         >
           다음
         </button>
+        {isLoading && <Loader marginTop="10vh" />}
       </div>
     </div>
   );

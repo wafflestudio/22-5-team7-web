@@ -8,9 +8,15 @@ import leftArrow from '../assets/leftarrow.svg';
 import placeHolder from '../assets/placeholder_gray.png';
 import styles from '../css/SendReviewPage.module.css';
 import type { ArticleResponse } from '../typings/item';
-import { mannerTypeLabels, type User } from '../typings/user';
+import {
+  mannerTypeLabels,
+  negMannerTypeLabels,
+  type User,
+} from '../typings/user';
 
-type MannerType = keyof typeof mannerTypeLabels;
+type MannerType =
+  | keyof typeof mannerTypeLabels
+  | keyof typeof negMannerTypeLabels;
 
 const SendReviewPage = () => {
   const [activeMood, setActiveMood] = useState<'bad' | 'good' | 'great' | null>(
@@ -18,7 +24,9 @@ const SendReviewPage = () => {
   );
   const [checkedItems, setCheckedItems] = useState<Record<MannerType, boolean>>(
     Object.fromEntries(
-      Object.keys(mannerTypeLabels).map((type) => [type, false]),
+      Object.keys(
+        activeMood !== 'bad' ? mannerTypeLabels : negMannerTypeLabels,
+      ).map((type) => [type, false]),
     ) as Record<MannerType, boolean>,
   );
   const [isSeller, setIsSeller] = useState<boolean>(false); // 내가 판매자인지
@@ -115,16 +123,20 @@ const SendReviewPage = () => {
         .map(([key]) => key as MannerType);
 
       for (const mannerType of selectedMannerTypes) {
-        const response = await fetch(
-          `/api/profile/${encodeURIComponent(partner.nickname)}/praise/${mannerType}`,
-          {
-            method: 'PUT',
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
+        const MannerRequest = {
+          nickname: partner.nickname,
+          mannerType: mannerType,
+          articleId: id,
+        };
+        console.info(MannerRequest);
+        const response = await fetch('/api/profile/praise', {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
           },
-        );
+          body: JSON.stringify(MannerRequest),
+        });
 
         if (!response.ok) {
           throw new Error(`Failed to send praise for ${mannerType}`);
@@ -138,6 +150,7 @@ const SendReviewPage = () => {
           isWritedByBuyer: !isSeller,
           sellerId: itemInfo?.article.seller.id,
           buyerId: isSeller ? partner.id : myId,
+          articleId: id,
         };
         console.info(reviewCreateRequest);
         const response = await fetch('/api/review/post', {
@@ -276,6 +289,19 @@ const SendReviewPage = () => {
                   ? '좋았나요?'
                   : '최고였나요?'}
             </p>
+            {activeMood === 'bad' &&
+              Object.entries(negMannerTypeLabels).map(([key, label]) => (
+                <label key={key} className={styles.checkboxLabel}>
+                  <input
+                    type="checkbox"
+                    name={key}
+                    className={styles.checkbox}
+                    checked={checkedItems[key as MannerType]}
+                    onChange={handleCheckboxChange}
+                  />
+                  {label}
+                </label>
+              ))}
             {activeMood !== 'bad' &&
               Object.entries(filteredMannerTypeLabels).map(([key, label]) => (
                 <label key={key} className={styles.checkboxLabel}>

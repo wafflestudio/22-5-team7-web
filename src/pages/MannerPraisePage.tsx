@@ -41,13 +41,16 @@ const MannerPraisePage = () => {
         if (nickname === undefined) {
           throw new Error('닉네임 정보가 없습니다.');
         }
-        const response = await fetch(`/api/profile/${nickname}`, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
+        const response = await fetch(
+          `/api/profile?nickname=${encodeURIComponent(nickname)}`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
           },
-        });
+        );
 
         if (!response.ok) {
           throw new Error(`서버에 데이터를 전송하지 못했습니다`);
@@ -76,7 +79,7 @@ const MannerPraisePage = () => {
 
       for (const mannerType of selectedMannerTypes) {
         const response = await fetch(
-          `/api/profile/praise/${mannerType}?nickname=${nickname}`,
+          `/api/profile/praise/${mannerType}?nickname=${encodeURIComponent(nickname)}`,
           {
             method: 'PUT',
             headers: {
