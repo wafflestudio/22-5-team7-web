@@ -76,7 +76,7 @@ const MannerPraisePage = () => {
 
       for (const mannerType of selectedMannerTypes) {
         const response = await fetch(
-          `/api/profile/${nickname}/praise/${mannerType}`,
+          `/api/profile/praise/${mannerType}?nickname=${nickname}`,
           {
             method: 'PUT',
             headers: {

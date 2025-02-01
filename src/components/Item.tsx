@@ -52,10 +52,12 @@ const Item = ({ ItemInfo }: ItemProps) => {
               </p>
             </div>
             <div className={styles.subBox}>
-              <div className={styles.iconBox}>
-                <img src={chatIcon} className={styles.smallIcon} />
-                {14}
-              </div>
+              {ItemInfo.chatCount > 0 && (
+                <div className={styles.iconBox}>
+                  <img src={chatIcon} className={styles.smallIcon} />
+                  {ItemInfo.chatCount}
+                </div>
+              )}
               {ItemInfo.likeCount > 0 && (
                 <div className={styles.iconBox}>
                   <img src={heartIcon} className={styles.smallIcon} />

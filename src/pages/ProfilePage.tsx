@@ -34,15 +34,12 @@ const ProfilePage = () => {
         setLoading(true);
         if (token === null) throw new Error('No token found');
         if (nickname === undefined) throw new Error('Nickname is undefined');
-        const response = await fetch(
-          `/api/profile/${encodeURIComponent(nickname)}`,
-          {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+        const response = await fetch(`/api/profile/?nickname=${nickname}`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
-        );
+        });
 
         if (!response.ok) {
           const errorData = (await response.json()) as ErrorResponseType;

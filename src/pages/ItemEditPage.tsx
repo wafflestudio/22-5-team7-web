@@ -13,6 +13,7 @@ import grayRightArrow from '../assets/rightarrow_gray.svg';
 import styles from '../css/ItemPostPage.module.css';
 import type { Item } from '../typings/item';
 import { categories } from '../typings/item';
+import { uploadImageToS3 } from '../utils/utils';
 
 const ItemEditPage = () => {
   const { id } = useParams();
@@ -140,8 +141,24 @@ const ItemEditPage = () => {
         throw new Error('서버에 데이터를 전송하지 못했습니다.');
       }
 
-      const result = (await response.json()) as string;
-      console.info('성공:', result);
+      const data = (await response.json()) as Item;
+      if (images.length > 0) {
+        const presignedUrls = data.article.imagePresignedUrl;
+        console.info('Presigned URL: ', presignedUrls);
+        if (images.length !== presignedUrls.length)
+          throw new Error('이미지와 presigned URL 개수가 다릅니다');
+
+        // S3에 이미지 업로드
+        const uploadPromises = images.map((file, index) => {
+          const presignedUrl = presignedUrls[index];
+          if (presignedUrl === undefined)
+            throw new Error('Presigned URL is undefined');
+          return uploadImageToS3(file, presignedUrl);
+        });
+
+        const uploadedUrls = await Promise.all(uploadPromises);
+        console.info('모든 이미지 업로드 성공: ', uploadedUrls);
+      }
       void navigate(`/item/${id}`, {
         state: { from: 'itempost' },
       });
