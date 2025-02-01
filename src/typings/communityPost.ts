@@ -40,11 +40,13 @@ type Comment = {
 
 export type CommentProps = {
   CommentInfo: Comment;
+  onCommentEdit: () => void;
 };
 
 export type CommentEditWindowProps = {
   CommentInfo: Comment;
   closeWindow: () => void;
+  onCommentEdit: () => void;
 };
 
 export const TagsArray = [

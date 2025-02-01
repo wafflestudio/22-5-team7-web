@@ -352,7 +352,13 @@ const CommunityPostPage = () => {
                     : 0;
             })
             .map((Comment, index) => (
-              <CommentItem key={index} CommentInfo={Comment} />
+              <CommentItem
+                key={index}
+                CommentInfo={Comment}
+                onCommentEdit={() => {
+                  void fetchPost();
+                }}
+              />
             ))}
         </div>
       )}

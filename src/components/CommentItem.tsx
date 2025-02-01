@@ -14,7 +14,7 @@ import { getTimeAgo } from '../utils/utils';
 import CommentEditWindow from './CommentEditWindow';
 import Overlay from './Overlay';
 
-const Comment = ({ CommentInfo }: CommentProps) => {
+const Comment = ({ CommentInfo, onCommentEdit }: CommentProps) => {
   const [isOverlayOpen, setIsOverlayOpen] = useState<boolean>(false);
   const [isCommentEditOpen, setIsCommentEditOpen] = useState<boolean>(false);
   const [isLiked, setIsLiked] = useState<boolean>(CommentInfo.isLiked);
@@ -186,6 +186,7 @@ const Comment = ({ CommentInfo }: CommentProps) => {
           closeWindow={() => {
             setIsCommentEditOpen(false);
           }}
+          onCommentEdit={onCommentEdit}
         />
       )}
     </div>
