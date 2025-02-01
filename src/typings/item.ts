@@ -23,6 +23,7 @@ type User = {
 export type Article = {
   id: string;
   seller: User;
+  buyer: User;
   title: string;
   content: string;
   tag: string;
@@ -45,6 +46,7 @@ export type ArticleResponse = {
   article: {
     id: number;
     seller: User;
+    buyer: User;
     title: string;
     imagePresignedUrl: string[];
   };

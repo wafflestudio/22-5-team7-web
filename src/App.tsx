@@ -12,6 +12,7 @@ import BottomNavBar from './components/BottomNavBar';
 import AuctionItemPage from './pages/AuctionItemPage';
 import AuctionPage from './pages/AuctionPage';
 import AuctionPostPage from './pages/AuctionPostPage';
+import BuyerSelectPage from './pages/BuyerSelectPage';
 import ChatPage from './pages/ChatPage';
 import ChatRoomPage from './pages/ChatRoomPage';
 import CommunityEditPage from './pages/CommunityEditPage';
@@ -77,6 +78,7 @@ export const App = () => {
           />
           <Route path="/location" element={<SetLocationPage />} />
           <Route path="/item/:id" element={<ItemPage />} />
+          <Route path="/item/buyerselect/:id" element={<BuyerSelectPage />} />
           <Route path="/itemedit/:id" element={<ItemEditPage />} />
           <Route path="/itempost" element={<ItemPostPage />} />
           <Route path="/main" element={<MainPage />} />
