@@ -26,8 +26,12 @@ const ChatRoomPage = () => {
     new Date('2030-01-01T00:00:00Z').toISOString(),
   );
   const [messages, setMessages] = useState<message[]>([]);
+  const [messageLoading, setMessageLoading] = useState<boolean>(true);
   const [myNickname, setMyNickname] = useState<string | null>('');
   const [amIseller, setAmIseller] = useState<boolean>(false);
+  const [isInit, setIsInit] = useState(false);
+  //const [isFirst, setIsFirst] = useState(false);
+  const [rcvdMessage, setRcvdMessage] = useState<message | null>(null);
   const [chatRoomInfo, setChatRoomInfo] = useState<chatRoomResponse | null>(
     null,
   );
@@ -42,9 +46,44 @@ const ChatRoomPage = () => {
   );
   //const [inputMessage, setInputMessage] = useState<string>('');
   const socketRef = useRef<Client | null>(null);
-  const observer = useRef<IntersectionObserver | null>(null);
+  //const observer = useRef<IntersectionObserver | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const messageContainerRef = useRef<HTMLDivElement | null>(null);
   //const myNickname = localStorage.getItem('nickname');
   const navigate = useNavigate();
+
+  /*const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      handleSendMessage();
+    }
+  };*/
+
+  const scrollToBottom = (smooth: boolean = true) => {
+    if (messagesEndRef.current !== null) {
+      messagesEndRef.current.scrollIntoView({
+        behavior: smooth ? 'smooth' : 'auto',
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (
+      messageContainerRef.current !== null &&
+      messagesEndRef.current !== null &&
+      !messageLoading
+    ) {
+      console.info('스크롤을 맨 아래로 이동합니다.');
+      setIsInit(true);
+      scrollToBottom(false);
+    }
+  }, [messageLoading]);
+
+  useEffect(() => {
+    if (rcvdMessage !== null) {
+      scrollToBottom();
+    }
+  }, [rcvdMessage]);
 
   const fetchMessages = useCallback(
     async (innerInstant: string) => {
@@ -79,7 +118,7 @@ const ChatRoomPage = () => {
         if (data.chatRoom.article.seller.nickname === storedNickname) {
           setAmIseller(true);
         }
-        if (amIseller) {
+        if (data.chatRoom.article.seller.nickname === storedNickname) {
           if (data.chatRoom.seller.imagePresignedUrl === '') {
             setProfileImage(baseImage);
           } else {
@@ -92,6 +131,7 @@ const ChatRoomPage = () => {
             setProfileImage(data.chatRoom.seller.imagePresignedUrl);
           }
         }
+        //console.info('왜 두번 도는거냐고!');
         setChatRoomInfo(data);
         setItemInfo(data.chatRoom.article);
         setFormattedPrice(
@@ -102,6 +142,7 @@ const ChatRoomPage = () => {
             new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
         );
         setMessages((prevMessages) => [...sortedData, ...prevMessages]);
+        setMessageLoading(false);
 
         if (sortedData[0] !== undefined) {
           setInstant(sortedData[0].createdAt);
@@ -110,12 +151,10 @@ const ChatRoomPage = () => {
         console.error('메시지 가져오기 오류:', error);
       }
     },
-    [chatRoomId, amIseller],
+    [chatRoomId],
   );
 
   useEffect(() => {
-    console.info('useEffect 실행됨');
-
     void fetchMessages(new Date('2030-01-01T00:00:00Z').toISOString());
 
     setMyNickname(localStorage.getItem('nickname'));
@@ -141,6 +180,7 @@ const ChatRoomPage = () => {
             ...data,
           };
           setMessages((prevMessages) => [...prevMessages, newMessage]);
+          setRcvdMessage(newMessage);
         });
       };
 
@@ -169,7 +209,11 @@ const ChatRoomPage = () => {
     };
   }, [chatRoomId, fetchMessages]);
 
-  const handleSendMessage = () => {
+  const handleSendMessage = (event?: React.FormEvent | React.MouseEvent) => {
+    if (event !== undefined) {
+      event.preventDefault(); // 기본 동작을 막습니다.
+    }
+
     if (chatRoomId === undefined) {
       console.error('채팅방 ID가 없습니다.');
       return;
@@ -186,11 +230,11 @@ const ChatRoomPage = () => {
         createdAt: new Date().toISOString(),
       };
       console.info('보낼 메시지:', newMessage);
+      setCurrentInput('');
       socketRef.current.publish({
         destination: `/app/chat/sendMessage`,
         body: JSON.stringify(newMessage),
       });
-      setCurrentInput('');
     }
   };
 
@@ -214,20 +258,47 @@ const ChatRoomPage = () => {
     });
   };
 
-  const lastMessageRef = useCallback(
+  /*const lastMessageRef = useCallback(
     (node: HTMLElement | null) => {
       if (observer.current !== null) observer.current.disconnect();
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0] !== undefined && entries[0].isIntersecting) {
-          if (instant !== '2030-01-01T00:00:00Z') {
-            void fetchMessages(instant);
+
+      if (isInit === 1 && messages.length >= 30) {
+        observer.current = new IntersectionObserver((entries) => {
+          if (entries[0] !== undefined && entries[0].isIntersecting) {
+            if (instant !== '2030-01-01T00:00:00Z') {
+              void fetchMessages(instant);
+            }
           }
-        }
-      });
-      if (node !== null) observer.current.observe(node);
+        });
+        if (node !== null) observer.current.observe(node);
+      }
     },
-    [instant, fetchMessages],
-  );
+    [instant, messages.length, fetchMessages, isInit],
+  );*/
+
+  const handleScroll = async () => {
+    if (isInit && messageContainerRef.current !== null) {
+      const { scrollTop } = messageContainerRef.current;
+      if (scrollTop === 0) {
+        // 스크롤이 맨 위에 도달했을 때 추가 데이터를 로드합니다.
+        //console.info('스크롤이 맨 위에 도달했습니다.');
+        if (instant !== '2030-01-01T00:00:00Z') {
+          const previousScrollHeight = messageContainerRef.current.scrollHeight;
+          await fetchMessages(instant);
+          setTimeout(() => {
+            if (messageContainerRef.current !== null) {
+              messageContainerRef.current.scrollTop =
+                messageContainerRef.current.scrollHeight - previousScrollHeight;
+            }
+          }, 0);
+        }
+      }
+    }
+  };
+
+  const handelScrollWrapper = () => {
+    void handleScroll();
+  };
 
   const handleSendReviewClick = () => {
     if (itemInfo === null) throw new Error('Item is null');
@@ -298,7 +369,11 @@ const ChatRoomPage = () => {
           후기 보내기
         </button>
       </div>
-      <div className={styles.messages}>
+      <div
+        className={styles.messages}
+        ref={messageContainerRef}
+        onScroll={handelScrollWrapper}
+      >
         {messages.map((message, index) => {
           const nextMessage = messages[index + 1];
           const showTime =
@@ -326,7 +401,6 @@ const ChatRoomPage = () => {
                   ? styles.mymessage
                   : styles.opponentmessage
               }
-              ref={index === 0 ? lastMessageRef : null}
             >
               {message.senderNickname !== myNickname &&
                 (isFirstOpponentMessage ? (
@@ -353,21 +427,26 @@ const ChatRoomPage = () => {
             </div>
           );
         })}
+        <div ref={messagesEndRef} />
       </div>
-      <div className={styles.inputBox}>
-        <div className={styles.inputtext}>
-          <textarea
-            ref={textareaRef}
-            className={styles.chatInput}
-            placeholder="메시지 보내기"
-            value={currentInput}
-            onChange={handleInputChange}
-            rows={1}
-          />
-        </div>
+      <form onSubmit={handleSendMessage} className={styles.inputBox}>
+        <textarea
+          ref={textareaRef}
+          className={styles.chatInput}
+          placeholder="메시지 보내기"
+          value={currentInput}
+          onChange={handleInputChange}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              handleSendMessage(e);
+            }
+          }}
+          rows={1}
+        />
         <button
+          type="submit"
           className={styles.sendButton}
-          onClick={handleSendMessage}
           disabled={currentInput.trim() === ''}
         >
           <img
@@ -375,7 +454,7 @@ const ChatRoomPage = () => {
             style={{ height: '24px' }}
           />
         </button>
-      </div>
+      </form>
     </div>
   );
 };

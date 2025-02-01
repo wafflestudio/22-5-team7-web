@@ -169,6 +169,10 @@ const ItemPage = () => {
       if (item === undefined) {
         throw new Error('아이템 정보가 없습니다.');
       }
+      if (item.article.status === 2) {
+        alert('거래 완료된 게시물입니다.');
+        return;
+      }
       const token = localStorage.getItem('token');
       if (token === null) {
         throw new Error('토큰이 없습니다.');

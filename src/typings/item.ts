@@ -7,6 +7,7 @@ export type PreviewItem = {
   imagePresignedUrl: string | undefined;
   createdAt: string;
   likeCount: number;
+  chatCount: number;
 };
 
 type User = {
