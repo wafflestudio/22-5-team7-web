@@ -129,7 +129,7 @@ const BuyerSelectPage = () => {
         <div className={styles.iteminfo}>
           <img
             src={
-              itemInfo !== null && itemInfo.imagePresignedUrl[0] === ''
+              itemInfo !== null && itemInfo.imagePresignedUrl[0] !== ''
                 ? itemInfo.imagePresignedUrl[0]
                 : 'https://placehold.co/100'
             }
