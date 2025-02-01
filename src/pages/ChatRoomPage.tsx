@@ -30,6 +30,7 @@ const ChatRoomPage = () => {
   const [myNickname, setMyNickname] = useState<string | null>('');
   const [amIseller, setAmIseller] = useState<boolean>(false);
   const [isInit, setIsInit] = useState(false);
+  const [isComposing, setIsComposing] = useState(false);
   //const [isFirst, setIsFirst] = useState(false);
   const [rcvdMessage, setRcvdMessage] = useState<message | null>(null);
   const [chatRoomInfo, setChatRoomInfo] = useState<chatRoomResponse | null>(
@@ -436,10 +437,16 @@ const ChatRoomPage = () => {
           placeholder="메시지 보내기"
           value={currentInput}
           onChange={handleInputChange}
+          onCompositionStart={() => {
+            setIsComposing(true);
+          }}
+          onCompositionEnd={() => {
+            setIsComposing(false);
+          }}
           onKeyDown={(e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
+            if (e.key === 'Enter' && !e.shiftKey && !isComposing) {
               e.preventDefault();
-              handleSendMessage(e);
+              handleSendMessage();
             }
           }}
           rows={1}
