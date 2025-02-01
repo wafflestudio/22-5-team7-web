@@ -40,16 +40,16 @@ const SearchResultPage = () => {
         const token = localStorage.getItem('token');
         if (token === null) throw new Error('토큰이 없습니다.');
 
-        const itemResponse = await fetch(`/api/item/search/${lastItemId}`, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
+        const itemResponse = await fetch(
+          `/api/item/search/${lastItemId}?text=${query}`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
           },
-          body: JSON.stringify({
-            text: query,
-          }),
-        });
+        );
 
         if (!itemResponse.ok) {
           throw new Error(`Failed to fetch items: ${itemResponse.statusText}`);
@@ -64,16 +64,13 @@ const SearchResultPage = () => {
         }
 
         const communityResponse = await fetch(
-          `/api/feed/search/${lastCommunityId}`,
+          `/api/feed/search/${lastCommunityId}?text=${query}`,
           {
             method: 'GET',
             headers: {
               Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-              text: query,
-            }),
           },
         );
         if (!communityResponse.ok) {
