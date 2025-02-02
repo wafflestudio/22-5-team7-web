@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import heartIcon from '../assets/heart.svg';
+import auctionIcon from '../assets/navbar/navbar-auction-gray.svg';
 import placeHolder from '../assets/placeholder_gray.png';
 import receiptIcon from '../assets/receipt.svg';
 import rightArrow from '../assets/rightarrow_gray.svg';
@@ -115,6 +116,11 @@ const MyPage = () => {
           <NavLink to="buys" className={styles.blockLine}>
             <img src={shoppingBagIcon} className={styles.icon} />
             구매내역
+            <img src={rightArrow} className={styles.arrow} />
+          </NavLink>
+          <NavLink to="auctions" className={styles.blockLine}>
+            <img src={auctionIcon} className={styles.icon} />
+            경매내역
             <img src={rightArrow} className={styles.arrow} />
           </NavLink>
         </div>

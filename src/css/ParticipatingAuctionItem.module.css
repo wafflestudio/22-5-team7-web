@@ -104,3 +104,31 @@
   font-weight: bold;
   font-size: 14px;
 }
+
+.highestText {
+  font-size: 14px;
+  color: var(--daangn-orange);
+}
+
+.statusText {
+  font-size: 14px;
+  color: var(--daangn-gray);
+}
+
+.successText {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--daangn-orange);
+}
+
+.failureText {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--daangn-gray);
+}
+
+.successContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}

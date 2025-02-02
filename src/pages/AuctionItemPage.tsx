@@ -37,7 +37,8 @@ const ItemPage = () => {
   const [item, setItem] = useState<AuctionItem>();
   const userId = localStorage.getItem('userId');
   const [isMyItem, setIsMyItem] = useState(false);
-  const [isHighestBid, setIsHighestBid] = useState(false);
+  //const [isHighestBid, setIsHighestBid] = useState(false);
+  const [highestBidder, setHighestBidder] = useState('');
   const [myNickname, setMyNickname] = useState<string>('');
   const [images, setImages] = useState<string[]>([]);
   const [timeLeft, setTimeLeft] = useState('');
@@ -276,7 +277,7 @@ const ItemPage = () => {
       //const socket = new SockJS(`http://${window.location.host}/ws`);
       const socket = new SockJS(`https://toykarrot.shop/ws`);
       const stompClient: Client = Stomp.over(() => socket);
-      const storedNickname = localStorage.getItem('nickname');
+      //const storedNickname = localStorage.getItem('nickname');
       socketRef.current = stompClient;
 
       socketRef.current.onConnect = () => {
@@ -289,11 +290,12 @@ const ItemPage = () => {
           ) as AuctionMessage;
           setPrice(data.price);
 
-          if (data.senderNickname === storedNickname) {
+          /*if (data.senderNickname === storedNickname) {
             setIsHighestBid(true);
           } else {
             setIsHighestBid(false);
-          }
+          }*/
+          setHighestBidder(data.senderNickname);
         });
       };
 
@@ -612,9 +614,9 @@ const ItemPage = () => {
                   <p className={styles.price}>
                     {`${Intl.NumberFormat('ko-KR').format(price)}원`}
                   </p>
-                  {isHighestBid && (
-                    <p className={styles.highestBidText}>현재 최고 입찰!</p>
-                  )}
+                  <p
+                    className={styles.highestBidText}
+                  >{`현재 최고 입찰: ${highestBidder}`}</p>
                 </div>
               </div>
               <button className={styles.chatbutton} onClick={handleSendBid}>
