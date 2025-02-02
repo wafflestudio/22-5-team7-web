@@ -27,6 +27,7 @@ import LoginPage from './pages/LoginPage';
 import MainPage from './pages/MainPage';
 import MannerPraisePage from './pages/MannerPraisePage';
 import MannersPage from './pages/MannersPage';
+import MyAuctionsPage from './pages/MyAuctionsPage';
 import MyBuysPage from './pages/MyBuysPage';
 import MyCommunityPosts from './pages/MyCommunityPosts';
 import MyLikesPage from './pages/MyLikesPage';
@@ -104,6 +105,7 @@ export const App = () => {
           <Route path="/mypage/likes" element={<MyLikesPage />} />
           <Route path="/mypage/sells" element={<MySellsPage />} />
           <Route path="/mypage/buys" element={<MyBuysPage />} />
+          <Route path="/mypage/auctions" element={<MyAuctionsPage />} />
           <Route path="/mypage/posts" element={<MyCommunityPosts />} />
           <Route path="/profile/:nickname" element={<ProfilePage />} />
           <Route path="/profile/:nickname/sells" element={<SellsPage />} />
