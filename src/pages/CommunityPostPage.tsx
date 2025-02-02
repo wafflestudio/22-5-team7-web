@@ -36,6 +36,7 @@ const CommunityPostPage = () => {
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [likeCount, setLikeCount] = useState<number>(0);
+  const myNickname = localStorage.getItem('nickname');
 
   const fetchPost = useCallback(async () => {
     try {
@@ -116,26 +117,37 @@ const CommunityPostPage = () => {
     closeOverlayFunction: () => {
       setIsOverlayOpen(false);
     },
-    overlayButtons: [
-      {
-        color: 'black',
-        text: '수정',
-        function: () => {
-          setIsOverlayOpen(false);
-          if (id !== undefined) void navigate(`/community/edit/${id}`);
-        },
-      },
-      {
-        color: 'red',
-        text: '삭제',
-        function: () => {
-          setIsOverlayOpen(false);
-          if (window.confirm('정말 삭제하시겠습니까?')) {
-            void deletePost();
-          }
-        },
-      },
-    ],
+    overlayButtons:
+      post?.author.nickname === myNickname
+        ? [
+            {
+              color: 'black',
+              text: '수정',
+              function: () => {
+                setIsOverlayOpen(false);
+                if (id !== undefined) void navigate(`/community/edit/${id}`);
+              },
+            },
+            {
+              color: 'red',
+              text: '삭제',
+              function: () => {
+                setIsOverlayOpen(false);
+                if (window.confirm('정말 삭제하시겠습니까?')) {
+                  void deletePost();
+                }
+              },
+            },
+          ]
+        : [
+            {
+              color: 'red',
+              text: '신고',
+              function: () => {
+                setIsOverlayOpen(false);
+              },
+            },
+          ],
   };
 
   const handleDotsClick = () => {
