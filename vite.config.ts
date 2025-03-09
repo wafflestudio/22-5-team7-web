@@ -7,14 +7,14 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://52.78.132.59:8080',
+        target: 'http://43.201.224.50:8080',
         changeOrigin: true,
         headers: {
           Origin: 'http://localhost:5173',
         },
       },
       '/ws': {
-        target: 'http://52.78.132.59:8080',
+        target: 'http://43.201.224.50:8080',
         changeOrigin: true,
         headers: {
           Origin: 'http://localhost:5173',
