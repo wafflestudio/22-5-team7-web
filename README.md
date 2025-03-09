@@ -10,50 +10,18 @@
 | :---------------------------------------: | :-------------: |
 | 로그인, 동네생활, 프로필 관련 페이지 담당 |   중고거래, 채팅, 경매 관련 페이지 담당   |
 
-## 주요 기능들 소개
+## 프론트엔드 기술 스택
+- 개발 언어
+<img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white"/>
 
-## 클론 코딩 필수 스펙
+- 프레임워크 및 라이브러리
 
-### <span>**필수 스펙**</span>
 
-- **회원가입 / 로그인 / 소셜 로그인**
-    - 닉네임, 아이디, 비밀번호, 이메일을 통한 회원가입
-    - 소셜 로그인 (Google, Kakao, Naver) 지원
-- **유저 계정 페이지**
-    - 프로필 수정 (사진, 닉네임, 동네)
-    - 매너온도 확인
-    - 판매내역 조회
-    - 내 매너 평가 및 거래 후기 조회
-- **글 작성 / 댓글 작성**
-    - 중고거래 및 동네생활 게시글 작성
-    - 댓글 및 댓글 좋아요 기능
-- **페이지네이션**
-    - 게시글 목록 및 댓글 목록에 페이지네이션 적용
-- **AWS 배포**
-    - EC2와 S3를 통한 프로젝트 배포
+<img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"/> <img src="https://img.shields.io/badge/Yarn-2C8EBB?style=for-the-badge&logo=yarn&logoColor=white"/> <img src="https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E"/> 
 
-### <span>**권장 스펙**</span>
+- Linter
 
-- **HTTPS 설정**
-    - 보안 강화를 위한 HTTPS 적용
-- **Github Actions CI/CD**
-    - 자동화된 배포 및 테스트를 위한 CI/CD 파이프라인 구축
-
----
-
-## 새로운 기능: **경매**
-
-- **경매 물품 올리기**
-    - 판매자가 경매 물품을 등록할 수 있습니다.
-    - 시작가와 경매 종료 시간을 설정할 수 있습니다.
-- **경매 참여**
-    - 구매자는 경매에 참여하여 입찰할 수 있습니다.
-    - 입찰 가격은 시작가의 5% 배수로 인상 가능합니다.
-- **경매 종료**
-    - 제한 시간 내에 가장 높은 가격을 부른 구매자가 낙찰받습니다.
-    - 경매 종료시 판매자와 낙찰받은 구매자 간의 채팅방이 생성됩니다.
-
----
+<img src="https://img.shields.io/badge/eslint-3A33D1?style=for-the-badge&logo=eslint&logoColor=white"/>
 
 ## 전체 기능
 
