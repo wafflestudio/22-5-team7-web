@@ -609,11 +609,13 @@ const ItemPage = () => {
                     {`${Intl.NumberFormat('ko-KR').format(item.startingPrice)}원`}
                   </p>
                 </div>
-                <div className={styles.bidbox}>
-                  <p>현재 가격: </p>
-                  <p className={styles.price}>
-                    {`${Intl.NumberFormat('ko-KR').format(price)}원`}
-                  </p>
+                <div className={styles.bidboxwrapper}>
+                  <div className={styles.bidbox}>
+                    <p>현재 가격: </p>
+                    <p className={styles.price}>
+                      {`${Intl.NumberFormat('ko-KR').format(price)}원`}
+                    </p>
+                  </div>
                   <p
                     className={styles.highestBidText}
                   >{`현재 최고 입찰: ${highestBidder}`}</p>

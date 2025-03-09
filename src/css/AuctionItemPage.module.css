@@ -405,7 +405,7 @@
 
 .bottombar {
   width: 100%;
-  height: 80px;
+  height: 90px;
   position: fixed;
   bottom: 0px;
   background-color: white;
@@ -453,6 +453,12 @@
   gap: 5px;
 }
 
+.bidboxwrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
 .bidbox {
   display: flex;
   flex-direction: row;
@@ -482,7 +488,6 @@
   color: var(--daangn-orange);
   font-size: 12px;
   font-weight: bold;
-  margin-left: 5px;
 }
 
 .chatbutton {

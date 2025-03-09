@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import leftArrow from '../assets/leftarrow.svg';
-import placeHolder from '../assets/placeholder_gray.png';
 import Loader from '../components/Loader';
 import styles from '../css/ReviewsPage.module.css';
 import type { ErrorResponseType, Review } from '../typings/user';
@@ -93,7 +92,14 @@ const ReviewsPage = () => {
           <p className={styles.reviewNumber}>후기 {reviews.length}개</p>
           {reviews.map((review, index) => (
             <div key={index} className={styles.reviewBlock}>
-              <img src={placeHolder} className={styles.reviewPic} />
+              <img
+                src={
+                  review.seller.nickname === nickname
+                    ? review.buyer.imagePresignedUrl
+                    : review.seller.imagePresignedUrl
+                }
+                className={styles.reviewPic}
+              />
               <div className={styles.reviewSubBlock}>
                 <p className={styles.reviewNickname}>
                   {review.seller.nickname === nickname
