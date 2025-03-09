@@ -171,7 +171,14 @@ const ProfilePage = () => {
           </div>
           {profile.reviews.slice(0, 3).map((review, index) => (
             <div key={index} className={styles.reviewBlock}>
-              <img src={placeHolder} className={styles.reviewPic} />
+              <img
+                src={
+                  review.seller.id === profile.user.id
+                    ? review.buyer.imagePresignedUrl
+                    : review.seller.imagePresignedUrl
+                }
+                className={styles.reviewPic}
+              />
               <div className={styles.reviewSubBlock}>
                 <p className={styles.reviewNickname}>
                   {review.seller.id === profile.user.id
