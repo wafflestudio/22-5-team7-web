@@ -115,13 +115,23 @@
 
 |                                                                                                           |                                                                                                            |                                                                                                           |
 | --------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| <img src="https://github.com/user-attachments/assets/a4041540-c6d3-4ceb-bb02-0819edad4216" width="300px"> | <img src="hhttps://github.com/user-attachments/assets/71dff873-4b8c-491c-9218-63712e67a46a" width="300px"> | <img src="https://github.com/user-attachments/assets/0c81186f-5489-4a3c-ae63-91d41fcdf4b7" width="300px"> |
+| <img src="https://github.com/user-attachments/assets/a4041540-c6d3-4ceb-bb02-0819edad4216" width="300px"> | <img src="https://github.com/user-attachments/assets/6ba77a53-3da4-43c8-9e96-e1f942b496cb" width="300px"> | <img src="https://github.com/user-attachments/assets/0c81186f-5489-4a3c-ae63-91d41fcdf4b7" width="300px"> |
+| 랜딩페이지                                                                                             | 회원가입 페이지                               | 로그인 페이지                |
+| .                                     | . | . |
 
 ### 2. 홈 페이지
 
 |                                                                                                            |
 | ---------------------------------------------------------------------------------------------------------- |
 | <img src ="https://github.com/user-attachments/assets/5c96ac7a-e9e7-4023-9b1c-191a9baa4e64" width="300px"> |
+
+### 2.1. 내 물건 팔기
+
+|                                                                                                            |                                                                                                            |
+| ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| <img src ="https://github.com/user-attachments/assets/8dadbbfb-25df-4a53-b598-bd924a1fc124" width="300px"> | <img src ="" width="300px"> |
+| 내 물건 팔기                                                                                             | .                               |
+| 내 물건을 팔기 위해 등록할 수 있는 기능입니다. 물건 당 최대 10장의 사진을 업로드할 수 있으며, 태그 및 가격, 설명, 거래 희망 장소 등을 기입할 수 있습니다.                                     | . |
 
 ### 3. 동네생활 페이지
 
@@ -165,8 +175,7 @@
 
 |                                                                                                            |                                        |
 | ---------------------------------------------------------------------------------------------------------- | -------------------------------------- |
-| <img src ="https://github.com/user-attachments/assets/d13443da-47c6-428b-9a6c-cb76f63b7504" width="300px"> | <img src ="" width="300px">            |
+| <img src ="https://github.com/user-attachments/assets/d13443da-47c6-428b-9a6c-cb76f63b7504" width="300px"> | <img src ="https://github.com/user-attachments/assets/4d104bc3-cc70-41ef-8a6a-d267b74c9d17" width="300px">            |
 | 내 동네생활 글                                                                                             | 앱 설정                                |
 | 내가 작성한 동네생활 글, 댓글을 단 글, 공감한 글을 모아볼 수 있습니다.                                     | 로그아웃을 할 수 있는 설정 화면입니다. |
 
-내 동네생활 글, 앱 설정(로그아웃) 소개
